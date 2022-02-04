@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import {ILendingPoolAddressesProvider} from '../../interfaces/ILendingPoolAddressesProvider.sol';
-import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from '../../interfaces/IOmniDexIncentivesController.sol';
 
 interface IUiPoolDataProvider {
   struct AggregatedReserveData {
@@ -78,7 +78,7 @@ interface IUiPoolDataProvider {
     view
     returns (address[] memory);
 
-  function incentivesController() external view returns (IAaveIncentivesController);
+  function incentivesController() external view returns (IOmniDexIncentivesController);
 
   function getSimpleReservesData(ILendingPoolAddressesProvider provider)
     external

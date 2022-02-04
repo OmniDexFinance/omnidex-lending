@@ -16,13 +16,13 @@ import {PercentageMath} from '../libraries/math/PercentageMath.sol';
 import {DataTypes} from '../libraries/types/DataTypes.sol';
 import {IInitializableDebtToken} from '../../interfaces/IInitializableDebtToken.sol';
 import {IInitializableOToken} from '../../interfaces/IInitializableOToken.sol';
-import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from '../../interfaces/IOmniDexIncentivesController.sol';
 import {ILendingPoolConfigurator} from '../../interfaces/ILendingPoolConfigurator.sol';
 
 /**
  * @title LendingPoolConfigurator contract
- * @author Aave
- * @dev Implements the configuration methods for the Aave protocol
+ * @author OmniDex
+ * @dev Implements the configuration methods for the OmniDex protocol
  **/
 
 contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigurator {
@@ -76,7 +76,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
           pool,
           input.treasury,
           input.underlyingAsset,
-          IAaveIncentivesController(input.incentivesController),
+          IOmniDexIncentivesController(input.incentivesController),
           input.underlyingAssetDecimals,
           input.oTokenName,
           input.oTokenSymbol,
@@ -91,7 +91,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
           IInitializableDebtToken.initialize.selector,
           pool,
           input.underlyingAsset,
-          IAaveIncentivesController(input.incentivesController),
+          IOmniDexIncentivesController(input.incentivesController),
           input.underlyingAssetDecimals,
           input.stableDebtTokenName,
           input.stableDebtTokenSymbol,
@@ -106,7 +106,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
           IInitializableDebtToken.initialize.selector,
           pool,
           input.underlyingAsset,
-          IAaveIncentivesController(input.incentivesController),
+          IOmniDexIncentivesController(input.incentivesController),
           input.underlyingAssetDecimals,
           input.variableDebtTokenName,
           input.variableDebtTokenSymbol,
@@ -151,7 +151,8 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
 
     (, , , uint256 decimals, ) = cachedPool.getConfiguration(input.asset).getParamsMemory();
 
-    bytes memory encodedCall = abi.encodeWithSelector(
+    bytes memory encodedCall =
+      abi.encodeWithSelector(
         IInitializableOToken.initialize.selector,
         cachedPool,
         input.treasury,
@@ -163,11 +164,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
         input.params
       );
 
-    _upgradeTokenImplementation(
-      reserveData.oTokenAddress,
-      input.implementation,
-      encodedCall
-    );
+    _upgradeTokenImplementation(reserveData.oTokenAddress, input.implementation, encodedCall);
 
     emit OTokenUpgraded(input.asset, reserveData.oTokenAddress, input.implementation);
   }
@@ -179,10 +176,11 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
     ILendingPool cachedPool = pool;
 
     DataTypes.ReserveData memory reserveData = cachedPool.getReserveData(input.asset);
-     
+
     (, , , uint256 decimals, ) = cachedPool.getConfiguration(input.asset).getParamsMemory();
 
-    bytes memory encodedCall = abi.encodeWithSelector(
+    bytes memory encodedCall =
+      abi.encodeWithSelector(
         IInitializableDebtToken.initialize.selector,
         cachedPool,
         input.asset,
@@ -209,17 +207,15 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
   /**
    * @dev Updates the variable debt token implementation for the asset
    **/
-  function updateVariableDebtToken(UpdateDebtTokenInput calldata input)
-    external
-    onlyPoolAdmin
-  {
+  function updateVariableDebtToken(UpdateDebtTokenInput calldata input) external onlyPoolAdmin {
     ILendingPool cachedPool = pool;
 
     DataTypes.ReserveData memory reserveData = cachedPool.getReserveData(input.asset);
 
     (, , , uint256 decimals, ) = cachedPool.getConfiguration(input.asset).getParamsMemory();
 
-    bytes memory encodedCall = abi.encodeWithSelector(
+    bytes memory encodedCall =
+      abi.encodeWithSelector(
         IInitializableDebtToken.initialize.selector,
         cachedPool,
         input.asset,

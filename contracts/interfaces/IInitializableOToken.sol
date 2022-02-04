@@ -2,12 +2,12 @@
 pragma solidity 0.6.12;
 
 import {ILendingPool} from './ILendingPool.sol';
-import {IAaveIncentivesController} from './IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from './IOmniDexIncentivesController.sol';
 
 /**
  * @title IInitializableOToken
  * @notice Interface for the initialize function on OToken
- * @author Aave
+ * @author OmniDex
  **/
 interface IInitializableOToken {
   /**
@@ -35,7 +35,7 @@ interface IInitializableOToken {
   /**
    * @dev Initializes the oToken
    * @param pool The address of the lending pool where this oToken will be used
-   * @param treasury The address of the Aave treasury, receiving the fees on this oToken
+   * @param treasury The address of the OmniDex treasury, receiving the fees on this oToken
    * @param underlyingAsset The address of the underlying asset of this oToken (E.g. WETH for aWETH)
    * @param incentivesController The smart contract managing potential incentives distribution
    * @param oTokenDecimals The decimals of the oToken, same as the underlying asset's
@@ -46,7 +46,7 @@ interface IInitializableOToken {
     ILendingPool pool,
     address treasury,
     address underlyingAsset,
-    IAaveIncentivesController incentivesController,
+    IOmniDexIncentivesController incentivesController,
     uint8 oTokenDecimals,
     string calldata oTokenName,
     string calldata oTokenSymbol,

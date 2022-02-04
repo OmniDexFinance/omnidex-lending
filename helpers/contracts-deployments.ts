@@ -4,7 +4,7 @@ import {
   tEthereumAddress,
   eContractid,
   tStringTokenSmallUnits,
-  AavePools,
+  OmniDexPools,
   TokenContractId,
   iMultiPoolsAssets,
   IReserveParams,
@@ -16,10 +16,10 @@ import { MockContract } from 'ethereum-waffle';
 import { ConfigNames, getReservesConfigByPool, loadPoolConfig } from './configuration';
 import { getFirstSigner } from './contracts-getters';
 import {
-  AaveProtocolDataProviderFactory,
+  OmniDexProtocolDataProviderFactory,
   OTokenFactory,
   OTokensAndRatesHelperFactory,
-  AaveOracleFactory,
+  OmniDexOracleFactory,
   DefaultReserveInterestRateStrategyFactory,
   DelegationAwareOTokenFactory,
   InitializableAdminUpgradeabilityProxyFactory,
@@ -222,7 +222,7 @@ export const deployValidationLogic = async (
   return withSaveAndVerify(validationLogic, eContractid.ValidationLogic, [], verify);
 };
 
-export const deployAaveLibraries = async (
+export const deployOmniDexLibraries = async (
   verify?: boolean
 ): Promise<LendingPoolLibraryAddresses> => {
   const reserveLogic = await deployReserveLogicLibrary(verify);
@@ -247,7 +247,7 @@ export const deployAaveLibraries = async (
 };
 
 export const deployLendingPool = async (verify?: boolean) => {
-  const libraries = await deployAaveLibraries(verify);
+  const libraries = await deployOmniDexLibraries(verify);
   const lendingPoolImpl = await new LendingPoolFactory(libraries, await getFirstSigner()).deploy();
   await insertContractAddressInDb(eContractid.LendingPoolImpl, lendingPoolImpl.address);
   return withSaveAndVerify(lendingPoolImpl, eContractid.LendingPool, [], verify);
@@ -277,13 +277,13 @@ export const deployMockAggregator = async (price: tStringTokenSmallUnits, verify
     verify
   );
 
-export const deployAaveOracle = async (
+export const deployOmniDexOracle = async (
   args: [tEthereumAddress[], tEthereumAddress[], tEthereumAddress, tEthereumAddress, string],
   verify?: boolean
 ) =>
   withSaveAndVerify(
-    await new AaveOracleFactory(await getFirstSigner()).deploy(...args),
-    eContractid.AaveOracle,
+    await new OmniDexOracleFactory(await getFirstSigner()).deploy(...args),
+    eContractid.OmniDexOracle,
     args,
     verify
   );
@@ -331,13 +331,13 @@ export const deployWalletBalancerProvider = async (verify?: boolean) =>
     verify
   );
 
-export const deployAaveProtocolDataProvider = async (
+export const deployOmniDexProtocolDataProvider = async (
   addressesProvider: tEthereumAddress,
   verify?: boolean
 ) =>
   withSaveAndVerify(
-    await new AaveProtocolDataProviderFactory(await getFirstSigner()).deploy(addressesProvider),
-    eContractid.AaveProtocolDataProvider,
+    await new OmniDexProtocolDataProviderFactory(await getFirstSigner()).deploy(addressesProvider),
+    eContractid.OmniDexProtocolDataProvider,
     [addressesProvider],
     verify
   );
@@ -505,7 +505,7 @@ export const deployDelegationAwareOTokenImpl = async (verify: boolean) =>
 export const deployAllMockTokens = async (verify?: boolean) => {
   const tokens: { [symbol: string]: MockContract | MintableERC20 } = {};
 
-  const protoConfigData = getReservesConfigByPool(AavePools.proto);
+  const protoConfigData = getReservesConfigByPool(OmniDexPools.proto);
 
   for (const tokenSymbol of Object.keys(TokenContractId)) {
     let decimals = '18';

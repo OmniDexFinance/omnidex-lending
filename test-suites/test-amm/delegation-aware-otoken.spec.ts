@@ -44,7 +44,7 @@ makeSuite('OToken: underlying delegation', (testEnv: TestEnv) => {
     console.log((await delegationOToken.decimals()).toString());
   });
 
-  it('Tries to delegate with the caller not being the Aave admin', async () => {
+  it('Tries to delegate with the caller not being the OmniDex admin', async () => {
     const { users } = testEnv;
 
     await expect(

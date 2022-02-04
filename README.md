@@ -13,17 +13,17 @@
  -/:             :/-  -/:             :/.     ://:         `/////////////-
 ```
 
-# Aave Protocol v2
+# OmniDex Protocol v2
 
-This repository contains the smart contracts source code and markets configuration for Aave Protocol V2. The repository uses Docker Compose and Hardhat as development enviroment for compilation, testing and deployment tasks.
+This repository contains the smart contracts source code and markets configuration for OmniDex Protocol V2. The repository uses Docker Compose and Hardhat as development enviroment for compilation, testing and deployment tasks.
 
-## What is Aave?
+## What is OmniDex?
 
-Aave is a decentralized non-custodial liquidity markets protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized (perpetually) or undercollateralized (one-block liquidity) fashion.
+OmniDex is a decentralized non-custodial liquidity markets protocol where users can participate as depositors or borrowers. Depositors provide liquidity to the market to earn a passive income, while borrowers are able to borrow in an overcollateralized (perpetually) or undercollateralized (one-block liquidity) fashion.
 
 ## Documentation
 
-The documentation of Aave V2 is in the following [Aave V2 documentation](https://docs.aave.com/developers/v/2.0/) link. At the documentation you can learn more about the protocol, see the contract interfaces, integration guides and audits.
+The documentation of OmniDex V2 is in the following [OmniDex V2 documentation](https://docs.aave.com/developers/v/2.0/) link. At the documentation you can learn more about the protocol, see the contract interfaces, integration guides and audits.
 
 For getting the latest contracts addresses, please check the [Deployed contracts](https://docs.aave.com/developers/v/2.0/deployed-contracts/deployed-contracts) page at the documentation to stay up to date.
 
@@ -40,7 +40,7 @@ A more detailed and technical description of the protocol can be found in this r
 
 ## Connect with the community
 
-You can join at the [Discord](http://aave.com/discord) channel or at the [Governance Forum](https://governance.aave.com/) for asking questions about the protocol or talk about Aave with other peers.
+You can join at the [Discord](http://aave.com/discord) channel or at the [Governance Forum](https://governance.aave.com/) for asking questions about the protocol or talk about OmniDex with other peers.
 
 ## Getting Started
 
@@ -102,9 +102,9 @@ TENDERLY_USERNAME=""
 
 ## Markets configuration
 
-The configurations related with the Aave Markets are located at `markets` directory. You can follow the `IAaveConfiguration` interface to create new Markets configuration or extend the current Aave configuration.
+The configurations related with the OmniDex Markets are located at `markets` directory. You can follow the `IOmniDexConfiguration` interface to create new Markets configuration or extend the current OmniDex configuration.
 
-Each market should have his own Market configuration file, and their own set of deployment tasks, using the Aave market config and tasks as a reference.
+Each market should have his own Market configuration file, and their own set of deployment tasks, using the OmniDex market config and tasks as a reference.
 
 ## Test
 
@@ -123,7 +123,7 @@ npm run test
 
 ## Deployments
 
-For deploying Aave Protocol V2, you can use the available scripts located at `package.json`. For a complete list, run `npm run` to see all the tasks.
+For deploying OmniDex Protocol V2, you can use the available scripts located at `package.json`. For a complete list, run `npm run` to see all the tasks.
 
 ### Kovan deployment
 
@@ -140,15 +140,15 @@ npm run aave:kovan:full:migration
 
 ### Mainnet fork deployment
 
-You can deploy Aave Protocol v2 in a forked Mainnet chain using Hardhat built-in fork feature:
+You can deploy OmniDex Protocol v2 in a forked Mainnet chain using Hardhat built-in fork feature:
 
 ```
 docker-compose run contracts-env npm run aave:fork:main
 ```
 
-### Deploy Aave into a Mainnet Fork via console
+### Deploy OmniDex into a Mainnet Fork via console
 
-You can deploy Aave into the Hardhat console in fork mode, to interact with the protocol inside the fork or for testing purposes.
+You can deploy OmniDex into the Hardhat console in fork mode, to interact with the protocol inside the fork or for testing purposes.
 
 Run the console in Mainnet fork mode:
 
@@ -156,10 +156,10 @@ Run the console in Mainnet fork mode:
 docker-compose run contracts-env npm run console:fork
 ```
 
-At the Hardhat console, interact with the Aave protocol in Mainnet fork mode:
+At the Hardhat console, interact with the OmniDex protocol in Mainnet fork mode:
 
 ```
-// Deploy the Aave protocol in fork mode
+// Deploy the OmniDex protocol in fork mode
 await run('aave:mainnet')
 
 // Or your custom Hardhat task
@@ -190,9 +190,9 @@ await lendingPool.connect(signer).deposit(DAI.address, ethers.utils.parseUnits('
 
 ```
 
-## Interact with Aave in Mainnet via console
+## Interact with OmniDex in Mainnet via console
 
-You can interact with Aave at Mainnet network using the Hardhat console, in the scenario where the frontend is down or you want to interact directly. You can check the deployed addresses at https://docs.aave.com/developers/deployed-contracts.
+You can interact with OmniDex at Mainnet network using the Hardhat console, in the scenario where the frontend is down or you want to interact directly. You can check the deployed addresses at https://docs.aave.com/developers/deployed-contracts.
 
 Run the Hardhat console pointing to the Mainnet network:
 
@@ -206,7 +206,7 @@ At the Hardhat console, you can interact with the protocol:
 // Load the HRE into helpers to access signers
 run("set-DRE")
 
-// Import getters to instance any Aave contract
+// Import getters to instance any OmniDex contract
 const contractGetters = require('./helpers/contracts-getters');
 
 // Load the first signer

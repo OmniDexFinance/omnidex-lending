@@ -1,5 +1,5 @@
 import { oneRay, ZERO_ADDRESS } from '../../helpers/constants';
-import { IAaveConfiguration, eEthereumNetwork } from '../../helpers/types';
+import { IOmniDexConfiguration, eEthereumNetwork } from '../../helpers/types';
 
 import { CommonsConfig } from './commons';
 import {
@@ -30,9 +30,9 @@ import {
 // POOL--SPECIFIC PARAMS
 // ----------------
 
-export const AaveConfig: IAaveConfiguration = {
+export const OmniDexConfig: IOmniDexConfiguration = {
   ...CommonsConfig,
-  MarketId: 'Aave genesis market',
+  MarketId: 'OmniDex genesis market',
   ProviderId: 1,
   ReservesConfig: {
     AAVE: strategyAAVE,
@@ -154,4 +154,4 @@ export const AaveConfig: IAaveConfiguration = {
   },
 };
 
-export default AaveConfig;
+export default OmniDexConfig;

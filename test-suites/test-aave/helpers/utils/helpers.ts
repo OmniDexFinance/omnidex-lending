@@ -11,10 +11,10 @@ import {
 import { tEthereumAddress } from '../../../../helpers/types';
 import BigNumber from 'bignumber.js';
 import { getDb, DRE } from '../../../../helpers/misc-utils';
-import { AaveProtocolDataProvider } from '../../../../types/AaveProtocolDataProvider';
+import { OmniDexProtocolDataProvider } from '../../../../types/OmniDexProtocolDataProvider';
 
 export const getReserveData = async (
-  helper: AaveProtocolDataProvider,
+  helper: OmniDexProtocolDataProvider,
   reserve: tEthereumAddress
 ): Promise<ReserveData> => {
   const [reserveData, tokenAddresses, rateOracle, token] = await Promise.all([
@@ -74,7 +74,7 @@ export const getReserveData = async (
 
 export const getUserData = async (
   pool: LendingPool,
-  helper: AaveProtocolDataProvider,
+  helper: OmniDexProtocolDataProvider,
   reserve: string,
   user: tEthereumAddress,
   sender?: tEthereumAddress
@@ -104,7 +104,9 @@ export const getUserData = async (
 
 export const getReserveAddressFromSymbol = async (symbol: string) => {
   const token = await getMintableERC20(
-    (await getDb().get(`${symbol}.${DRE.network.name}`).value()).address
+    (
+      await getDb().get(`${symbol}.${DRE.network.name}`).value()
+    ).address
   );
 
   if (!token) {
@@ -116,7 +118,7 @@ export const getReserveAddressFromSymbol = async (symbol: string) => {
 const getOTokenUserData = async (
   reserve: string,
   user: string,
-  helpersContract: AaveProtocolDataProvider
+  helpersContract: OmniDexProtocolDataProvider
 ) => {
   const oTokenAddress: string = (await helpersContract.getReserveTokensAddresses(reserve))
     .oTokenAddress;

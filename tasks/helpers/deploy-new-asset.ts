@@ -20,8 +20,8 @@ const LENDING_POOL_ADDRESS_PROVIDER = {
 
 const isSymbolValid = (symbol: string, network: eEthereumNetwork) =>
   Object.keys(reserveConfigs).includes('strategy' + symbol) &&
-  marketConfigs.AaveConfig.ReserveAssets[network][symbol] &&
-  marketConfigs.AaveConfig.ReservesConfig[symbol] === reserveConfigs['strategy' + symbol];
+  marketConfigs.OmniDexConfig.ReserveAssets[network][symbol] &&
+  marketConfigs.OmniDexConfig.ReservesConfig[symbol] === reserveConfigs['strategy' + symbol];
 
 task('external:deploy-new-asset', 'Deploy A token, Debt Tokens, Risk Parameters')
   .addParam('symbol', `Asset symbol, needs to have configuration ready`)
@@ -41,7 +41,7 @@ WRONG RESERVE ASSET SETUP:
     setDRE(localBRE);
     const strategyParams = reserveConfigs['strategy' + symbol];
     const reserveAssetAddress =
-      marketConfigs.AaveConfig.ReserveAssets[localBRE.network.name][symbol];
+      marketConfigs.OmniDexConfig.ReserveAssets[localBRE.network.name][symbol];
     const deployCustomOToken = chooseOTokenDeployment(strategyParams.oTokenImpl);
     const addressProvider = await getLendingPoolAddressesProvider(
       LENDING_POOL_ADDRESS_PROVIDER[network]
@@ -53,7 +53,7 @@ WRONG RESERVE ASSET SETUP:
         poolAddress,
         reserveAssetAddress,
         ZERO_ADDRESS, // Incentives Controller
-        `Aave stable debt bearing ${symbol}`,
+        `OmniDex stable debt bearing ${symbol}`,
         `stableDebt${symbol}`,
       ],
       verify
@@ -63,7 +63,7 @@ WRONG RESERVE ASSET SETUP:
         poolAddress,
         reserveAssetAddress,
         ZERO_ADDRESS, // Incentives Controller
-        `Aave variable debt bearing ${symbol}`,
+        `OmniDex variable debt bearing ${symbol}`,
         `variableDebt${symbol}`,
       ],
       verify

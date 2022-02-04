@@ -8,7 +8,7 @@ import {
   eContractid,
   tStringTokenSmallUnits,
   eEthereumNetwork,
-  AavePools,
+  OmniDexPools,
   iParamsPerNetwork,
   iParamsPerPool,
   ePolygonNetwork,
@@ -194,16 +194,16 @@ export const getOptionalParamAddressPerNetwork = (
 
 export const getParamPerPool = <T>(
   { proto, amm, matic, avalanche }: iParamsPerPool<T>,
-  pool: AavePools
+  pool: OmniDexPools
 ) => {
   switch (pool) {
-    case AavePools.proto:
+    case OmniDexPools.proto:
       return proto;
-    case AavePools.amm:
+    case OmniDexPools.amm:
       return amm;
-    case AavePools.matic:
+    case OmniDexPools.matic:
       return matic;
-    case AavePools.avalanche:
+    case OmniDexPools.avalanche:
       return avalanche;
     default:
       return proto;

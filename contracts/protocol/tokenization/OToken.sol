@@ -9,12 +9,12 @@ import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
 import {VersionedInitializable} from '../libraries/aave-upgradeability/VersionedInitializable.sol';
 import {IncentivizedERC20} from './IncentivizedERC20.sol';
-import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from '../../interfaces/IOmniDexIncentivesController.sol';
 
 /**
- * @title Aave ERC20 OToken
- * @dev Implementation of the interest bearing token for the Aave protocol
- * @author Aave
+ * @title OmniDex ERC20 OToken
+ * @dev Implementation of the interest bearing token for the OmniDex protocol
+ * @author OmniDex
  */
 contract OToken is
   VersionedInitializable,
@@ -40,7 +40,7 @@ contract OToken is
   ILendingPool internal _pool;
   address internal _treasury;
   address internal _underlyingAsset;
-  IAaveIncentivesController internal _incentivesController;
+  IOmniDexIncentivesController internal _incentivesController;
 
   modifier onlyLendingPool {
     require(_msgSender() == address(_pool), Errors.CT_CALLER_MUST_BE_LENDING_POOL);
@@ -54,7 +54,7 @@ contract OToken is
   /**
    * @dev Initializes the oToken
    * @param pool The address of the lending pool where this oToken will be used
-   * @param treasury The address of the Aave treasury, receiving the fees on this oToken
+   * @param treasury The address of the OmniDex treasury, receiving the fees on this oToken
    * @param underlyingAsset The address of the underlying asset of this oToken (E.g. WETH for aWETH)
    * @param incentivesController The smart contract managing potential incentives distribution
    * @param oTokenDecimals The decimals of the oToken, same as the underlying asset's
@@ -65,7 +65,7 @@ contract OToken is
     ILendingPool pool,
     address treasury,
     address underlyingAsset,
-    IAaveIncentivesController incentivesController,
+    IOmniDexIncentivesController incentivesController,
     uint8 oTokenDecimals,
     string calldata oTokenName,
     string calldata oTokenSymbol,
@@ -264,7 +264,7 @@ contract OToken is
   }
 
   /**
-   * @dev Returns the address of the Aave treasury, receiving the fees on this oToken
+   * @dev Returns the address of the OmniDex treasury, receiving the fees on this oToken
    **/
   function RESERVE_TREASURY_ADDRESS() public view returns (address) {
     return _treasury;
@@ -273,7 +273,7 @@ contract OToken is
   /**
    * @dev Returns the address of the underlying asset of this oToken (E.g. WETH for aWETH)
    **/
-  function UNDERLYING_ASSET_ADDRESS() public override view returns (address) {
+  function UNDERLYING_ASSET_ADDRESS() public view override returns (address) {
     return _underlyingAsset;
   }
 
@@ -287,14 +287,19 @@ contract OToken is
   /**
    * @dev For internal usage in the logic of the parent contract IncentivizedERC20
    **/
-  function _getIncentivesController() internal view override returns (IAaveIncentivesController) {
+  function _getIncentivesController()
+    internal
+    view
+    override
+    returns (IOmniDexIncentivesController)
+  {
     return _incentivesController;
   }
 
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view override returns (IAaveIncentivesController) {
+  function getIncentivesController() external view override returns (IOmniDexIncentivesController) {
     return _getIncentivesController();
   }
 

@@ -7,9 +7,9 @@ import {Errors} from '../libraries/helpers/Errors.sol';
 import {OToken} from './OToken.sol';
 
 /**
- * @title Aave OToken enabled to delegate voting power of the underlying asset to a different address
+ * @title OmniDex OToken enabled to delegate voting power of the underlying asset to a different address
  * @dev The underlying asset needs to be compatible with the COMP delegation interface
- * @author Aave
+ * @author OmniDex
  */
 contract DelegationAwareOToken is OToken {
   modifier onlyPoolAdmin {

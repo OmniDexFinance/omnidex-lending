@@ -20,7 +20,7 @@ import {
 import { DelegationAwareOTokenFactory } from '../../types';
 import { DelegationAwareOToken } from '../../types/DelegationAwareOToken';
 import { MintableDelegationERC20 } from '../../types/MintableDelegationERC20';
-import AaveConfig from '../../markets/aave';
+import OmniDexConfig from '../../markets/aave';
 
 const { parseEther } = ethers.utils;
 
@@ -38,7 +38,7 @@ makeSuite('OToken: underlying delegation', (testEnv: TestEnv) => {
       [
         pool.address,
         delegationERC20.address,
-        await getTreasuryAddress(AaveConfig),
+        await getTreasuryAddress(OmniDexConfig),
         ZERO_ADDRESS,
         'aDEL',
         'aDEL',
@@ -51,7 +51,7 @@ makeSuite('OToken: underlying delegation', (testEnv: TestEnv) => {
     console.log((await delegationOToken.decimals()).toString());
   });
 
-  it('Tries to delegate with the caller not being the Aave admin', async () => {
+  it('Tries to delegate with the caller not being the OmniDex admin', async () => {
     const { users } = testEnv;
 
     await expect(

@@ -3,7 +3,7 @@ pragma solidity 0.6.12;
 pragma experimental ABIEncoderV2;
 
 import {ILendingPoolAddressesProvider} from '../interfaces/ILendingPoolAddressesProvider.sol';
-import {IAaveIncentivesController} from '../interfaces/IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from '../interfaces/IOmniDexIncentivesController.sol';
 import {IUiIncentiveDataProviderV3} from './interfaces/IUiIncentiveDataProviderV3.sol';
 import {ILendingPool} from '../interfaces/ILendingPool.sol';
 import {IOToken} from '../interfaces/IOToken.sol';
@@ -46,8 +46,8 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
   {
     ILendingPool lendingPool = ILendingPool(provider.getLendingPool());
     address[] memory reserves = lendingPool.getReservesList();
-    AggregatedReserveIncentiveData[]
-      memory reservesIncentiveData = new AggregatedReserveIncentiveData[](reserves.length);
+    AggregatedReserveIncentiveData[] memory reservesIncentiveData =
+      new AggregatedReserveIncentiveData[](reserves.length);
 
     for (uint256 i = 0; i < reserves.length; i++) {
       AggregatedReserveIncentiveData memory reserveIncentiveData = reservesIncentiveData[i];
@@ -56,7 +56,7 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
       DataTypes.ReserveData memory baseData = lendingPool.getReserveData(reserves[i]);
 
       try IOToken(baseData.oTokenAddress).getIncentivesController() returns (
-        IAaveIncentivesController oTokenIncentiveController
+        IOmniDexIncentivesController oTokenIncentiveController
       ) {
         RewardInfo[] memory aRewardsInformation = new RewardInfo[](1);
         if (address(oTokenIncentiveController) != address(0)) {
@@ -67,20 +67,19 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
             uint256 aEmissionPerSecond,
             uint256 aIncentivesLastUpdateTimestamp
           ) {
-
-              aRewardsInformation[0] = RewardInfo(
-                getSymbol(aRewardToken),
-                aRewardToken,
-                address(0),
-                aEmissionPerSecond,
-                aIncentivesLastUpdateTimestamp,
-                oTokenIncentivesIndex,
-                oTokenIncentiveController.DISTRIBUTION_END(),
-                0,
-                IERC20Detailed(aRewardToken).decimals(),
-                oTokenIncentiveController.PRECISION(),
-                0
-              );
+            aRewardsInformation[0] = RewardInfo(
+              getSymbol(aRewardToken),
+              aRewardToken,
+              address(0),
+              aEmissionPerSecond,
+              aIncentivesLastUpdateTimestamp,
+              oTokenIncentivesIndex,
+              oTokenIncentiveController.DISTRIBUTION_END(),
+              0,
+              IERC20Detailed(aRewardToken).decimals(),
+              oTokenIncentiveController.PRECISION(),
+              0
+            );
             reserveIncentiveData.aIncentiveData = IncentiveData(
               baseData.oTokenAddress,
               address(oTokenIncentiveController),
@@ -122,7 +121,7 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
       }
 
       try IStableDebtToken(baseData.stableDebtTokenAddress).getIncentivesController() returns (
-        IAaveIncentivesController sTokenIncentiveController
+        IOmniDexIncentivesController sTokenIncentiveController
       ) {
         RewardInfo[] memory sRewardsInformation = new RewardInfo[](1);
         if (address(sTokenIncentiveController) != address(0)) {
@@ -188,7 +187,7 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
       }
 
       try IVariableDebtToken(baseData.variableDebtTokenAddress).getIncentivesController() returns (
-        IAaveIncentivesController vTokenIncentiveController
+        IOmniDexIncentivesController vTokenIncentiveController
       ) {
         RewardInfo[] memory vRewardsInformation = new RewardInfo[](1);
         if (address(vTokenIncentiveController) != address(0)) {
@@ -274,9 +273,8 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
     ILendingPool lendingPool = ILendingPool(provider.getLendingPool());
     address[] memory reserves = lendingPool.getReservesList();
 
-    UserReserveIncentiveData[] memory userReservesIncentivesData = new UserReserveIncentiveData[](
-      user != address(0) ? reserves.length : 0
-    );
+    UserReserveIncentiveData[] memory userReservesIncentivesData =
+      new UserReserveIncentiveData[](user != address(0) ? reserves.length : 0);
 
     for (uint256 i = 0; i < reserves.length; i++) {
       DataTypes.ReserveData memory baseData = lendingPool.getReserveData(reserves[i]);
@@ -285,7 +283,7 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
       userReservesIncentivesData[i].underlyingAsset = reserves[i];
 
       try IOToken(baseData.oTokenAddress).getIncentivesController() returns (
-        IAaveIncentivesController oTokenIncentiveController
+        IOmniDexIncentivesController oTokenIncentiveController
       ) {
         if (address(oTokenIncentiveController) != address(0)) {
           UserRewardInfo[] memory aUserRewardsInformation = new UserRewardInfo[](1);
@@ -314,7 +312,7 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
       ) {}
 
       try IVariableDebtToken(baseData.variableDebtTokenAddress).getIncentivesController() returns (
-        IAaveIncentivesController vTokenIncentiveController
+        IOmniDexIncentivesController vTokenIncentiveController
       ) {
         if (address(vTokenIncentiveController) != address(0)) {
           UserRewardInfo[] memory vUserRewardsInformation = new UserRewardInfo[](1);
@@ -343,7 +341,7 @@ contract UiIncentiveDataProviderV2V3 is IUiIncentiveDataProviderV3 {
       ) {}
 
       try IStableDebtToken(baseData.stableDebtTokenAddress).getIncentivesController() returns (
-        IAaveIncentivesController sTokenIncentiveController
+        IOmniDexIncentivesController sTokenIncentiveController
       ) {
         if (address(sTokenIncentiveController) != address(0)) {
           UserRewardInfo[] memory sUserRewardsInformation = new UserRewardInfo[](1);

@@ -16,7 +16,7 @@ import {
   deployLendingPoolCollateralManager,
   deployMockFlashLoanReceiver,
   deployWalletBalancerProvider,
-  deployAaveProtocolDataProvider,
+  deployOmniDexProtocolDataProvider,
   deployLendingRateOracle,
   deployStableAndVariableTokensHelper,
   deployOTokensAndRatesHelper,
@@ -28,10 +28,10 @@ import {
   deployFlashLiquidationAdapter,
   authorizeWETHGateway,
   deployOTokenImplementations,
-  deployAaveOracle,
+  deployOmniDexOracle,
 } from '../../helpers/contracts-deployments';
 import { Signer } from 'ethers';
-import { TokenContractId, eContractid, tEthereumAddress, AavePools } from '../../helpers/types';
+import { TokenContractId, eContractid, tEthereumAddress, OmniDexPools } from '../../helpers/types';
 import { MintableERC20 } from '../../types/MintableERC20';
 import {
   ConfigNames,
@@ -66,7 +66,7 @@ const LENDING_RATE_ORACLE_RATES_COMMON = AmmConfig.LendingRateOracleRatesCommon;
 const deployAllMockTokens = async (deployer: Signer) => {
   const tokens: { [symbol: string]: MockContract | MintableERC20 | WETH9Mocked } = {};
 
-  const ammConfigData = getReservesConfigByPool(AavePools.amm);
+  const ammConfigData = getReservesConfigByPool(OmniDexPools.amm);
 
   for (const tokenSymbol of Object.keys(TokenContractId)) {
     if (tokenSymbol === 'WETH') {
@@ -226,7 +226,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     config.OracleQuoteCurrency
   );
 
-  await deployAaveOracle([
+  await deployOmniDexOracle([
     tokens,
     aggregators,
     fallbackOracle.address,
@@ -250,9 +250,9 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   );
   await deployOTokenImplementations(ConfigNames.Amm, ReservesConfig);
 
-  const testHelpers = await deployAaveProtocolDataProvider(addressesProvider.address);
+  const testHelpers = await deployOmniDexProtocolDataProvider(addressesProvider.address);
 
-  await insertContractAddressInDb(eContractid.AaveProtocolDataProvider, testHelpers.address);
+  await insertContractAddressInDb(eContractid.OmniDexProtocolDataProvider, testHelpers.address);
   const admin = await deployer.getAddress();
 
   console.log('Initialize configuration');

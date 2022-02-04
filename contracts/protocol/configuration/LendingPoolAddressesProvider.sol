@@ -13,8 +13,8 @@ import {ILendingPoolAddressesProvider} from '../../interfaces/ILendingPoolAddres
  * @title LendingPoolAddressesProvider contract
  * @dev Main registry of addresses part of or connected to the protocol, including permissioned roles
  * - Acting also as factory of proxies and admin of those, so with right to change its implementations
- * - Owned by the Aave Governance
- * @author Aave
+ * - Owned by the OmniDex Governance
+ * @author OmniDex
  **/
 contract LendingPoolAddressesProvider is Ownable, ILendingPoolAddressesProvider {
   string private _marketId;
@@ -33,7 +33,7 @@ contract LendingPoolAddressesProvider is Ownable, ILendingPoolAddressesProvider 
   }
 
   /**
-   * @dev Returns the id of the Aave market to which this contracts points to
+   * @dev Returns the id of the OmniDex market to which this contracts points to
    * @return The market id
    **/
   function getMarketId() external view override returns (string memory) {

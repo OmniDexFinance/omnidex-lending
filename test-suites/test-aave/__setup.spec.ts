@@ -16,7 +16,7 @@ import {
   deployLendingPoolCollateralManager,
   deployMockFlashLoanReceiver,
   deployWalletBalancerProvider,
-  deployAaveProtocolDataProvider,
+  deployOmniDexProtocolDataProvider,
   deployLendingRateOracle,
   deployStableAndVariableTokensHelper,
   deployOTokensAndRatesHelper,
@@ -31,10 +31,10 @@ import {
   deployParaSwapLiquiditySwapAdapter,
   authorizeWETHGateway,
   deployOTokenImplementations,
-  deployAaveOracle,
+  deployOmniDexOracle,
 } from '../../helpers/contracts-deployments';
 import { Signer } from 'ethers';
-import { TokenContractId, eContractid, tEthereumAddress, AavePools } from '../../helpers/types';
+import { TokenContractId, eContractid, tEthereumAddress, OmniDexPools } from '../../helpers/types';
 import { MintableERC20 } from '../../types/MintableERC20';
 import {
   ConfigNames,
@@ -51,7 +51,7 @@ import {
 } from '../../helpers/oracles-helpers';
 import { DRE, waitForTx } from '../../helpers/misc-utils';
 import { initReservesByHelper, configureReservesByHelper } from '../../helpers/init-helpers';
-import AaveConfig from '../../markets/aave';
+import OmniDexConfig from '../../markets/aave';
 import { oneEther, ZERO_ADDRESS } from '../../helpers/constants';
 import {
   getLendingPool,
@@ -60,15 +60,15 @@ import {
 } from '../../helpers/contracts-getters';
 import { WETH9Mocked } from '../../types/WETH9Mocked';
 
-const MOCK_USD_PRICE_IN_WEI = AaveConfig.ProtocolGlobalParams.MockUsdPriceInWei;
-const ALL_ASSETS_INITIAL_PRICES = AaveConfig.Mocks.AllAssetsInitialPrices;
-const USD_ADDRESS = AaveConfig.ProtocolGlobalParams.UsdAddress;
-const LENDING_RATE_ORACLE_RATES_COMMON = AaveConfig.LendingRateOracleRatesCommon;
+const MOCK_USD_PRICE_IN_WEI = OmniDexConfig.ProtocolGlobalParams.MockUsdPriceInWei;
+const ALL_ASSETS_INITIAL_PRICES = OmniDexConfig.Mocks.AllAssetsInitialPrices;
+const USD_ADDRESS = OmniDexConfig.ProtocolGlobalParams.UsdAddress;
+const LENDING_RATE_ORACLE_RATES_COMMON = OmniDexConfig.LendingRateOracleRatesCommon;
 
 const deployAllMockTokens = async (deployer: Signer) => {
   const tokens: { [symbol: string]: MockContract | MintableERC20 | WETH9Mocked } = {};
 
-  const protoConfigData = getReservesConfigByPool(AavePools.proto);
+  const protoConfigData = getReservesConfigByPool(OmniDexPools.proto);
 
   for (const tokenSymbol of Object.keys(TokenContractId)) {
     if (tokenSymbol === 'WETH') {
@@ -98,14 +98,14 @@ const deployAllMockTokens = async (deployer: Signer) => {
 const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   console.time('setup');
   const aaveAdmin = await deployer.getAddress();
-  const config = loadPoolConfig(ConfigNames.Aave);
+  const config = loadPoolConfig(ConfigNames.OmniDex);
 
   const mockTokens: {
     [symbol: string]: MockContract | MintableERC20 | WETH9Mocked;
   } = {
     ...(await deployAllMockTokens(deployer)),
   };
-  const addressesProvider = await deployLendingPoolAddressesProvider(AaveConfig.MarketId);
+  const addressesProvider = await deployLendingPoolAddressesProvider(OmniDexConfig.MarketId);
   await waitForTx(await addressesProvider.setPoolAdmin(aaveAdmin));
 
   //setting users[1] as emergency admin, which is in position 2 in the DRE addresses list
@@ -224,7 +224,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     config.OracleQuoteCurrency
   );
 
-  await deployAaveOracle([
+  await deployOmniDexOracle([
     tokens,
     aggregators,
     fallbackOracle.address,
@@ -252,9 +252,9 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     ...config.ReservesConfig,
   };
 
-  const testHelpers = await deployAaveProtocolDataProvider(addressesProvider.address);
+  const testHelpers = await deployOmniDexProtocolDataProvider(addressesProvider.address);
 
-  await deployOTokenImplementations(ConfigNames.Aave, reservesParams, false);
+  await deployOTokenImplementations(ConfigNames.OmniDex, reservesParams, false);
 
   const admin = await deployer.getAddress();
 
@@ -272,7 +272,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     admin,
     treasuryAddress,
     ZERO_ADDRESS,
-    ConfigNames.Aave,
+    ConfigNames.OmniDex,
     false
   );
 

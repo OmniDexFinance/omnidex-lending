@@ -3,7 +3,7 @@ import { Signer } from 'ethers';
 import {
   getLendingPool,
   getLendingPoolAddressesProvider,
-  getAaveProtocolDataProvider,
+  getOmniDexProtocolDataProvider,
   getOToken,
   getMintableERC20,
   getLendingPoolConfiguratorProxy,
@@ -18,7 +18,7 @@ import {
 } from '../../../helpers/contracts-getters';
 import { eEthereumNetwork, eNetwork, tEthereumAddress } from '../../../helpers/types';
 import { LendingPool } from '../../../types/LendingPool';
-import { AaveProtocolDataProvider } from '../../../types/AaveProtocolDataProvider';
+import { OmniDexProtocolDataProvider } from '../../../types/OmniDexProtocolDataProvider';
 import { MintableERC20 } from '../../../types/MintableERC20';
 import { OToken } from '../../../types/OToken';
 import { LendingPoolConfigurator } from '../../../types/LendingPoolConfigurator';
@@ -38,7 +38,7 @@ import { getParamPerNetwork } from '../../../helpers/contracts-helpers';
 import { WETH9Mocked } from '../../../types/WETH9Mocked';
 import { WETHGateway } from '../../../types/WETHGateway';
 import { solidity } from 'ethereum-waffle';
-import { AaveConfig } from '../../../markets/aave';
+import { OmniDexConfig } from '../../../markets/aave';
 import { FlashLiquidationAdapter } from '../../../types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { usingTenderly } from '../../../helpers/tenderly-utils';
@@ -57,7 +57,7 @@ export interface TestEnv {
   pool: LendingPool;
   configurator: LendingPoolConfigurator;
   oracle: PriceOracle;
-  helpersContract: AaveProtocolDataProvider;
+  helpersContract: OmniDexProtocolDataProvider;
   weth: WETH9Mocked;
   aWETH: OToken;
   dai: MintableERC20;
@@ -83,7 +83,7 @@ const testEnv: TestEnv = {
   users: [] as SignerWithAddress[],
   pool: {} as LendingPool,
   configurator: {} as LendingPoolConfigurator,
-  helpersContract: {} as AaveProtocolDataProvider,
+  helpersContract: {} as OmniDexProtocolDataProvider,
   oracle: {} as PriceOracle,
   weth: {} as WETH9Mocked,
   aWETH: {} as OToken,
@@ -122,14 +122,14 @@ export async function initializeMakeSuite() {
 
   if (process.env.FORK) {
     testEnv.registry = await getLendingPoolAddressesProviderRegistry(
-      getParamPerNetwork(AaveConfig.ProviderRegistry, process.env.FORK as eNetwork)
+      getParamPerNetwork(OmniDexConfig.ProviderRegistry, process.env.FORK as eNetwork)
     );
   } else {
     testEnv.registry = await getLendingPoolAddressesProviderRegistry();
     testEnv.oracle = await getPriceOracle();
   }
 
-  testEnv.helpersContract = await getAaveProtocolDataProvider();
+  testEnv.helpersContract = await getOmniDexProtocolDataProvider();
 
   const allTokens = await testEnv.helpersContract.getAllOTokens();
   const aDaiAddress = allTokens.find((oToken) => oToken.symbol === 'aDAI')?.tokenAddress;

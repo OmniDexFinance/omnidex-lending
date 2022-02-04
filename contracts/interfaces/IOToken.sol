@@ -4,7 +4,7 @@ pragma solidity 0.6.12;
 import {IERC20} from '../dependencies/openzeppelin/contracts/IERC20.sol';
 import {IScaledBalanceToken} from './IScaledBalanceToken.sol';
 import {IInitializableOToken} from './IInitializableOToken.sol';
-import {IAaveIncentivesController} from './IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from './IOmniDexIncentivesController.sol';
 
 interface IOToken is IERC20, IScaledBalanceToken, IInitializableOToken {
   /**
@@ -98,7 +98,7 @@ interface IOToken is IERC20, IScaledBalanceToken, IInitializableOToken {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view returns (IAaveIncentivesController);
+  function getIncentivesController() external view returns (IOmniDexIncentivesController);
 
   /**
    * @dev Returns the address of the underlying asset of this oToken (E.g. WETH for aWETH)

@@ -11,7 +11,7 @@ import {DataTypes} from '../protocol/libraries/types/DataTypes.sol';
 /**
  * @title UniswapRepayAdapter
  * @notice Uniswap V2 Adapter to perform a repay of a debt with collateral.
- * @author Aave
+ * @author OmniDex
  **/
 contract UniswapRepayAdapter is BaseUniswapAdapter {
   struct RepayParams {
