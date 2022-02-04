@@ -95,7 +95,7 @@ const deployAllMockTokens = async (deployer: Signer) => {
 
 const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   console.time('setup');
-  const aaveAdmin = await deployer.getAddress();
+  const omniDexAdmin = await deployer.getAddress();
   const config = loadPoolConfig(ConfigNames.Amm);
   const {
     OTokenNamePrefix,
@@ -108,7 +108,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   const mockTokens = await deployAllMockTokens(deployer);
 
   const addressesProvider = await deployLendingPoolAddressesProvider(AmmConfig.MarketId);
-  await waitForTx(await addressesProvider.setPoolAdmin(aaveAdmin));
+  await waitForTx(await addressesProvider.setPoolAdmin(omniDexAdmin));
 
   //setting users[1] as emergency admin, which is in position 2 in the DRE addresses list
   const addressList = await getEthersSignersAddresses();
@@ -160,7 +160,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       USDC: mockTokens.USDC.address,
       USDT: mockTokens.USDT.address,
       SUSD: mockTokens.SUSD.address,
-      AAVE: mockTokens.AAVE.address,
+      CHARM: mockTokens.CHARM.address,
       BAT: mockTokens.BAT.address,
       MKR: mockTokens.MKR.address,
       LINK: mockTokens.LINK.address,
@@ -181,7 +181,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       // WETH: mockTokens.LpWETH.address,
       UniDAIWETH: mockTokens.UniDAIWETH.address,
       UniWBTCWETH: mockTokens.UniWBTCWETH.address,
-      UniAAVEWETH: mockTokens.UniAAVEWETH.address,
+      UniCHARMWETH: mockTokens.UniCHARMWETH.address,
       UniBATWETH: mockTokens.UniBATWETH.address,
       UniDAIUSDC: mockTokens.UniDAIUSDC.address,
       UniCRVWETH: mockTokens.UniCRVWETH.address,
@@ -246,7 +246,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     LENDING_RATE_ORACLE_RATES_COMMON,
     allReservesAddresses,
     lendingRateOracle,
-    aaveAdmin
+    omniDexAdmin
   );
   await deployOTokenImplementations(ConfigNames.Amm, ReservesConfig);
 

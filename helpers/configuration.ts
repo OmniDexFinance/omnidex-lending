@@ -7,12 +7,12 @@ import {
   IBaseConfiguration,
 } from './types';
 import { getEthersSignersAddresses, getParamPerPool } from './contracts-helpers';
-import OmniDexConfig from '../markets/aave';
+import OmniDexConfig from '../markets/omnidex';
 import MaticConfig from '../markets/matic';
 import AvalancheConfig from '../markets/avalanche';
 import AmmConfig from '../markets/amm';
 
-import { CommonsConfig } from '../markets/aave/commons';
+import { CommonsConfig } from '../markets/omnidex/commons';
 import { DRE, filterMapBy } from './misc-utils';
 import { tEthereumAddress } from './types';
 import { getParamPerNetwork } from './contracts-helpers';

@@ -20,7 +20,7 @@ import {
 import { DelegationAwareOTokenFactory } from '../../types';
 import { DelegationAwareOToken } from '../../types/DelegationAwareOToken';
 import { MintableDelegationERC20 } from '../../types/MintableDelegationERC20';
-import OmniDexConfig from '../../markets/aave';
+import OmniDexConfig from '../../markets/omnidex';
 
 const { parseEther } = ethers.utils;
 

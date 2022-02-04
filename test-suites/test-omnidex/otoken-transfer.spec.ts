@@ -8,9 +8,9 @@ import { expect } from 'chai';
 import { ethers } from 'ethers';
 import { RateMode, ProtocolErrors } from '../../helpers/types';
 import { makeSuite, TestEnv } from './helpers/make-suite';
-import { CommonsConfig } from '../../markets/aave/commons';
+import { CommonsConfig } from '../../markets/omnidex/commons';
 
-const AAVE_REFERRAL = CommonsConfig.ProtocolGlobalParams.OmniDexReferral;
+const CHARM_REFERRAL = CommonsConfig.ProtocolGlobalParams.OmniDexReferral;
 
 makeSuite('OToken: Transfer', (testEnv: TestEnv) => {
   const {
@@ -66,7 +66,7 @@ makeSuite('OToken: Transfer', (testEnv: TestEnv) => {
         weth.address,
         ethers.utils.parseEther('0.1'),
         RateMode.Stable,
-        AAVE_REFERRAL,
+        CHARM_REFERRAL,
         users[1].address
       );
 

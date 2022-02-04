@@ -7,7 +7,9 @@ import {ILendingPool} from '../../interfaces/ILendingPool.sol';
 import {IOToken} from '../../interfaces/IOToken.sol';
 import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
-import {VersionedInitializable} from '../libraries/aave-upgradeability/VersionedInitializable.sol';
+import {
+  VersionedInitializable
+} from '../libraries/omnidex-upgradeability/VersionedInitializable.sol';
 import {IncentivizedERC20} from './IncentivizedERC20.sol';
 import {IOmniDexIncentivesController} from '../../interfaces/IOmniDexIncentivesController.sol';
 

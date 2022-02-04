@@ -121,11 +121,11 @@ export const deployUiPoolDataProviderV2V3 = async (
   );
 
 export const deployUiPoolDataProvider = async (
-  [incentivesController, aaveOracle]: [tEthereumAddress, tEthereumAddress],
+  [incentivesController, omniDexOracle]: [tEthereumAddress, tEthereumAddress],
   verify?: boolean
 ) => {
   const id = eContractid.UiPoolDataProvider;
-  const args: string[] = [incentivesController, aaveOracle];
+  const args: string[] = [incentivesController, omniDexOracle];
   const instance = await deployContract<UiPoolDataProvider>(id, args);
   if (verify) {
     await verifyContract(id, instance, args);

@@ -5,7 +5,7 @@ import {
 } from '../../helpers/contracts-deployments';
 import { getEthersSigners } from '../../helpers/contracts-helpers';
 import { waitForTx } from '../../helpers/misc-utils';
-import { OmniDexConfig } from '../../markets/aave';
+import { OmniDexConfig } from '../../markets/omnidex';
 
 task(
   'dev:deploy-address-provider',

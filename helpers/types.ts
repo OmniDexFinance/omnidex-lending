@@ -220,7 +220,7 @@ export interface iAssetBase<T> {
   USDC: T;
   USDT: T;
   SUSD: T;
-  AAVE: T;
+  CHARM: T;
   BAT: T;
   MKR: T;
   LINK: T;
@@ -237,7 +237,7 @@ export interface iAssetBase<T> {
   ENJ: T;
   UniDAIWETH: T;
   UniWBTCWETH: T;
-  UniAAVEWETH: T;
+  UniCHARMWETH: T;
   UniBATWETH: T;
   UniDAIUSDC: T;
   UniCRVWETH: T;
@@ -268,7 +268,7 @@ export type iOmniDexPoolAssets<T> = Pick<
   | 'USDC'
   | 'USDT'
   | 'SUSD'
-  | 'AAVE'
+  | 'CHARM'
   | 'BAT'
   | 'MKR'
   | 'LINK'
@@ -295,7 +295,7 @@ export type iLpPoolAssets<T> = Pick<
   | 'WETH'
   | 'UniDAIWETH'
   | 'UniWBTCWETH'
-  | 'UniAAVEWETH'
+  | 'UniCHARMWETH'
   | 'UniBATWETH'
   | 'UniDAIUSDC'
   | 'UniCRVWETH'
@@ -313,7 +313,7 @@ export type iLpPoolAssets<T> = Pick<
 
 export type iMaticPoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'DAI' | 'USDC' | 'USDT' | 'WBTC' | 'WETH' | 'WMATIC' | 'AAVE'
+  'DAI' | 'USDC' | 'USDT' | 'WBTC' | 'WETH' | 'WMATIC' | 'CHARM'
 >;
 
 export type iXDAIPoolAssets<T> = Pick<
@@ -323,7 +323,7 @@ export type iXDAIPoolAssets<T> = Pick<
 
 export type iAvalanchePoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'WETH' | 'DAI' | 'USDT' | 'AAVE' | 'WBTC' | 'WAVAX' | 'USDC'
+  'WETH' | 'DAI' | 'USDT' | 'CHARM' | 'WBTC' | 'WAVAX' | 'USDC'
 >;
 
 export type iMultiPoolsAssets<T> = iAssetCommon<T> | iOmniDexPoolAssets<T>;
@@ -334,7 +334,7 @@ export type iAssetAggregatorBase<T> = iAssetsWithoutETH<T>;
 
 export enum TokenContractId {
   DAI = 'DAI',
-  AAVE = 'AAVE',
+  CHARM = 'CHARM',
   TUSD = 'TUSD',
   BAT = 'BAT',
   WETH = 'WETH',
@@ -356,7 +356,7 @@ export enum TokenContractId {
   ENJ = 'ENJ',
   UniDAIWETH = 'UniDAIWETH',
   UniWBTCWETH = 'UniWBTCWETH',
-  UniAAVEWETH = 'UniAAVEWETH',
+  UniCHARMWETH = 'UniCHARMWETH',
   UniBATWETH = 'UniBATWETH',
   UniDAIUSDC = 'UniDAIUSDC',
   UniCRVWETH = 'UniCRVWETH',

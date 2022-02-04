@@ -38,7 +38,7 @@ import { getParamPerNetwork } from '../../../helpers/contracts-helpers';
 import { WETH9Mocked } from '../../../types/WETH9Mocked';
 import { WETHGateway } from '../../../types/WETHGateway';
 import { solidity } from 'ethereum-waffle';
-import { OmniDexConfig } from '../../../markets/aave';
+import { OmniDexConfig } from '../../../markets/omnidex';
 import { FlashLiquidationAdapter } from '../../../types';
 import { HardhatRuntimeEnvironment } from 'hardhat/types';
 import { usingTenderly } from '../../../helpers/tenderly-utils';
@@ -63,7 +63,7 @@ export interface TestEnv {
   dai: MintableERC20;
   aDai: OToken;
   usdc: MintableERC20;
-  aave: MintableERC20;
+  charm: MintableERC20;
   addressesProvider: LendingPoolAddressesProvider;
   uniswapLiquiditySwapAdapter: UniswapLiquiditySwapAdapter;
   uniswapRepayAdapter: UniswapRepayAdapter;
@@ -90,7 +90,7 @@ const testEnv: TestEnv = {
   dai: {} as MintableERC20,
   aDai: {} as OToken,
   usdc: {} as MintableERC20,
-  aave: {} as MintableERC20,
+  charm: {} as MintableERC20,
   addressesProvider: {} as LendingPoolAddressesProvider,
   uniswapLiquiditySwapAdapter: {} as UniswapLiquiditySwapAdapter,
   uniswapRepayAdapter: {} as UniswapRepayAdapter,
@@ -140,13 +140,13 @@ export async function initializeMakeSuite() {
 
   const daiAddress = reservesTokens.find((token) => token.symbol === 'DAI')?.tokenAddress;
   const usdcAddress = reservesTokens.find((token) => token.symbol === 'USDC')?.tokenAddress;
-  const aaveAddress = reservesTokens.find((token) => token.symbol === 'AAVE')?.tokenAddress;
+  const charmAddress = reservesTokens.find((token) => token.symbol === 'CHARM')?.tokenAddress;
   const wethAddress = reservesTokens.find((token) => token.symbol === 'WETH')?.tokenAddress;
 
   if (!aDaiAddress || !aWEthAddress) {
     process.exit(1);
   }
-  if (!daiAddress || !usdcAddress || !aaveAddress || !wethAddress) {
+  if (!daiAddress || !usdcAddress || !charmAddress || !wethAddress) {
     process.exit(1);
   }
 
@@ -155,7 +155,7 @@ export async function initializeMakeSuite() {
 
   testEnv.dai = await getMintableERC20(daiAddress);
   testEnv.usdc = await getMintableERC20(usdcAddress);
-  testEnv.aave = await getMintableERC20(aaveAddress);
+  testEnv.charm = await getMintableERC20(charmAddress);
   testEnv.weth = await getWETHMocked(wethAddress);
   testEnv.wethGateway = await getWETHGateway();
 

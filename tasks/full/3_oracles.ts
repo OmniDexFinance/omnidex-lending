@@ -36,7 +36,7 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
       const lendingRateOracles = getLendingRateOracles(poolConfig);
       const addressesProvider = await getLendingPoolAddressesProvider();
       const admin = await getGenesisPoolAdmin(poolConfig);
-      const aaveOracleAddress = getParamPerNetwork(poolConfig.OmniDexOracle, network);
+      const omniDexOracleAddress = getParamPerNetwork(poolConfig.OmniDexOracle, network);
       const lendingRateOracleAddress = getParamPerNetwork(poolConfig.LendingRateOracle, network);
       const fallbackOracleAddress = await getParamPerNetwork(FallbackOracle, network);
       const reserveAssets = await getParamPerNetwork(ReserveAssets, network);
@@ -52,14 +52,14 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
         poolConfig.OracleQuoteCurrency
       );
 
-      let aaveOracle: OmniDexOracle;
+      let omniDexOracle: OmniDexOracle;
       let lendingRateOracle: LendingRateOracle;
 
-      if (notFalsyOrZeroAddress(aaveOracleAddress)) {
-        aaveOracle = await await getOmniDexOracle(aaveOracleAddress);
-        await waitForTx(await aaveOracle.setAssetSources(tokens, aggregators));
+      if (notFalsyOrZeroAddress(omniDexOracleAddress)) {
+        omniDexOracle = await await getOmniDexOracle(omniDexOracleAddress);
+        await waitForTx(await omniDexOracle.setAssetSources(tokens, aggregators));
       } else {
-        aaveOracle = await deployOmniDexOracle(
+        omniDexOracle = await deployOmniDexOracle(
           [
             tokens,
             aggregators,
@@ -69,7 +69,7 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
           ],
           verify
         );
-        await waitForTx(await aaveOracle.setAssetSources(tokens, aggregators));
+        await waitForTx(await omniDexOracle.setAssetSources(tokens, aggregators));
       }
 
       if (notFalsyOrZeroAddress(lendingRateOracleAddress)) {
@@ -85,11 +85,11 @@ task('full:deploy-oracles', 'Deploy oracles for dev enviroment')
         );
       }
 
-      console.log('OmniDex Oracle: %s', aaveOracle.address);
+      console.log('OmniDex Oracle: %s', omniDexOracle.address);
       console.log('Lending Rate Oracle: %s', lendingRateOracle.address);
 
       // Register the proxy price provider on the addressesProvider
-      await waitForTx(await addressesProvider.setPriceOracle(aaveOracle.address));
+      await waitForTx(await addressesProvider.setPriceOracle(omniDexOracle.address));
       await waitForTx(await addressesProvider.setLendingRateOracle(lendingRateOracle.address));
     } catch (error) {
       if (DRE.network.name.includes('tenderly')) {

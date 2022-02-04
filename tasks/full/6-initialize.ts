@@ -90,11 +90,11 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
         '\tSetting OmniDexProtocolDataProvider at AddressesProvider at id: 0x01',
         collateralManagerAddress
       );
-      const aaveProtocolDataProvider = await getOmniDexProtocolDataProvider();
+      const omniDexProtocolDataProvider = await getOmniDexProtocolDataProvider();
       await waitForTx(
         await addressesProvider.setAddress(
           '0x0100000000000000000000000000000000000000000000000000000000000000',
-          aaveProtocolDataProvider.address
+          omniDexProtocolDataProvider.address
         )
       );
 
