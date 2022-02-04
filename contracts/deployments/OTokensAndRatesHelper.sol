@@ -7,18 +7,18 @@ import {
   LendingPoolAddressesProvider
 } from '../protocol/configuration/LendingPoolAddressesProvider.sol';
 import {LendingPoolConfigurator} from '../protocol/lendingpool/LendingPoolConfigurator.sol';
-import {AToken} from '../protocol/tokenization/AToken.sol';
+import {OToken} from '../protocol/tokenization/OToken.sol';
 import {
   DefaultReserveInterestRateStrategy
 } from '../protocol/lendingpool/DefaultReserveInterestRateStrategy.sol';
 import {Ownable} from '../dependencies/openzeppelin/contracts/Ownable.sol';
 import {StringLib} from './StringLib.sol';
 
-contract ATokensAndRatesHelper is Ownable {
+contract OTokensAndRatesHelper is Ownable {
   address payable private pool;
   address private addressesProvider;
   address private poolConfigurator;
-  event deployedContracts(address aToken, address strategy);
+  event deployedContracts(address oToken, address strategy);
 
   struct InitDeploymentInput {
     address asset;
@@ -48,7 +48,7 @@ contract ATokensAndRatesHelper is Ownable {
   function initDeployment(InitDeploymentInput[] calldata inputParams) external onlyOwner {
     for (uint256 i = 0; i < inputParams.length; i++) {
       emit deployedContracts(
-        address(new AToken()),
+        address(new OToken()),
         address(
           new DefaultReserveInterestRateStrategy(
             LendingPoolAddressesProvider(addressesProvider),

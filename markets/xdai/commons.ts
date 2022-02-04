@@ -14,7 +14,7 @@ import { ICommonConfiguration, eXDaiNetwork } from '../../helpers/types';
 
 export const CommonsConfig: ICommonConfiguration = {
   MarketId: 'Commons',
-  ATokenNamePrefix: 'Aave XDAI Market',
+  OTokenNamePrefix: 'Aave XDAI Market',
   StableDebtTokenNamePrefix: 'Aave XDAI Market stable debt',
   VariableDebtTokenNamePrefix: 'Aave XDAI Market variable debt',
   SymbolPrefix: 'm',
@@ -115,7 +115,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eXDaiNetwork.xdai]: {},
   },
   ReservesConfig: {},
-  ATokenDomainSeparator: {
+  OTokenDomainSeparator: {
     [eXDaiNetwork.xdai]: '',
   },
   WETH: {

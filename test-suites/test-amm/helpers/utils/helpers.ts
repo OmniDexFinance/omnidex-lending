@@ -4,7 +4,7 @@ import {
   getLendingRateOracle,
   getIErc20Detailed,
   getMintableERC20,
-  getAToken,
+  getOToken,
   getStableDebtToken,
   getVariableDebtToken,
 } from '../../../../helpers/contracts-getters';
@@ -65,7 +65,7 @@ export const getReserveData = async (
     principalStableDebt: new BigNumber(principalStableDebt.toString()),
     scaledVariableDebt: new BigNumber(scaledVariableDebt.toString()),
     address: reserve,
-    aTokenAddress: tokenAddresses.aTokenAddress,
+    oTokenAddress: tokenAddresses.oTokenAddress,
     symbol,
     decimals,
     marketStableRate: new BigNumber(rate),
@@ -79,17 +79,17 @@ export const getUserData = async (
   user: tEthereumAddress,
   sender?: tEthereumAddress
 ): Promise<UserReserveData> => {
-  const [userData, scaledATokenBalance] = await Promise.all([
+  const [userData, scaledOTokenBalance] = await Promise.all([
     helper.getUserReserveData(reserve, user),
-    getATokenUserData(reserve, user, helper),
+    getOTokenUserData(reserve, user, helper),
   ]);
 
   const token = await getMintableERC20(reserve);
   const walletBalance = new BigNumber((await token.balanceOf(sender || user)).toString());
 
   return {
-    scaledATokenBalance: new BigNumber(scaledATokenBalance),
-    currentATokenBalance: new BigNumber(userData.currentATokenBalance.toString()),
+    scaledOTokenBalance: new BigNumber(scaledOTokenBalance),
+    currentOTokenBalance: new BigNumber(userData.currentOTokenBalance.toString()),
     currentStableDebt: new BigNumber(userData.currentStableDebt.toString()),
     currentVariableDebt: new BigNumber(userData.currentVariableDebt.toString()),
     principalStableDebt: new BigNumber(userData.principalStableDebt.toString()),
@@ -114,16 +114,16 @@ export const getReserveAddressFromSymbol = async (symbol: string) => {
   return token.address;
 };
 
-const getATokenUserData = async (
+const getOTokenUserData = async (
   reserve: string,
   user: string,
   helpersContract: AaveProtocolDataProvider
 ) => {
-  const aTokenAddress: string = (await helpersContract.getReserveTokensAddresses(reserve))
-    .aTokenAddress;
+  const oTokenAddress: string = (await helpersContract.getReserveTokensAddresses(reserve))
+    .oTokenAddress;
 
-  const aToken = await getAToken(aTokenAddress);
+  const oToken = await getOToken(oTokenAddress);
 
-  const scaledBalance = await aToken.scaledBalanceOf(user);
+  const scaledBalance = await oToken.scaledBalanceOf(user);
   return scaledBalance.toString();
 };

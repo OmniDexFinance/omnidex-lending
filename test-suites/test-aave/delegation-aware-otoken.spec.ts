@@ -8,33 +8,33 @@ import { makeSuite, TestEnv } from './helpers/make-suite';
 import { DRE } from '../../helpers/misc-utils';
 import {
   ConfigNames,
-  getATokenDomainSeparatorPerNetwork,
+  getOTokenDomainSeparatorPerNetwork,
   getTreasuryAddress,
   loadPoolConfig,
 } from '../../helpers/configuration';
 import { waitForTx } from '../../helpers/misc-utils';
 import {
-  deployDelegationAwareAToken,
+  deployDelegationAwareOToken,
   deployMintableDelegationERC20,
 } from '../../helpers/contracts-deployments';
-import { DelegationAwareATokenFactory } from '../../types';
-import { DelegationAwareAToken } from '../../types/DelegationAwareAToken';
+import { DelegationAwareOTokenFactory } from '../../types';
+import { DelegationAwareOToken } from '../../types/DelegationAwareOToken';
 import { MintableDelegationERC20 } from '../../types/MintableDelegationERC20';
 import AaveConfig from '../../markets/aave';
 
 const { parseEther } = ethers.utils;
 
-makeSuite('AToken: underlying delegation', (testEnv: TestEnv) => {
+makeSuite('OToken: underlying delegation', (testEnv: TestEnv) => {
   const poolConfig = loadPoolConfig(ConfigNames.Commons);
-  let delegationAToken = <DelegationAwareAToken>{};
+  let delegationOToken = <DelegationAwareOToken>{};
   let delegationERC20 = <MintableDelegationERC20>{};
 
-  it('Deploys a new MintableDelegationERC20 and a DelegationAwareAToken', async () => {
+  it('Deploys a new MintableDelegationERC20 and a DelegationAwareOToken', async () => {
     const { pool } = testEnv;
 
     delegationERC20 = await deployMintableDelegationERC20(['DEL', 'DEL', '18']);
 
-    delegationAToken = await deployDelegationAwareAToken(
+    delegationOToken = await deployDelegationAwareOToken(
       [
         pool.address,
         delegationERC20.address,
@@ -46,23 +46,23 @@ makeSuite('AToken: underlying delegation', (testEnv: TestEnv) => {
       false
     );
 
-    //await delegationAToken.initialize(pool.address, ZERO_ADDRESS, delegationERC20.address, ZERO_ADDRESS, '18', 'aDEL', 'aDEL');
+    //await delegationOToken.initialize(pool.address, ZERO_ADDRESS, delegationERC20.address, ZERO_ADDRESS, '18', 'aDEL', 'aDEL');
 
-    console.log((await delegationAToken.decimals()).toString());
+    console.log((await delegationOToken.decimals()).toString());
   });
 
   it('Tries to delegate with the caller not being the Aave admin', async () => {
     const { users } = testEnv;
 
     await expect(
-      delegationAToken.connect(users[1].signer).delegateUnderlyingTo(users[2].address)
+      delegationOToken.connect(users[1].signer).delegateUnderlyingTo(users[2].address)
     ).to.be.revertedWith(ProtocolErrors.CALLER_NOT_POOL_ADMIN);
   });
 
   it('Tries to delegate to user 2', async () => {
     const { users } = testEnv;
 
-    await delegationAToken.delegateUnderlyingTo(users[2].address);
+    await delegationOToken.delegateUnderlyingTo(users[2].address);
 
     const delegateeAddress = await delegationERC20.delegatee();
 

@@ -4,7 +4,7 @@ import {
   getLendingPool,
   getLendingPoolAddressesProvider,
   getAaveProtocolDataProvider,
-  getAToken,
+  getOToken,
   getMintableERC20,
   getLendingPoolConfiguratorProxy,
   getPriceOracle,
@@ -20,7 +20,7 @@ import { eEthereumNetwork, eNetwork, tEthereumAddress } from '../../../helpers/t
 import { LendingPool } from '../../../types/LendingPool';
 import { AaveProtocolDataProvider } from '../../../types/AaveProtocolDataProvider';
 import { MintableERC20 } from '../../../types/MintableERC20';
-import { AToken } from '../../../types/AToken';
+import { OToken } from '../../../types/OToken';
 import { LendingPoolConfigurator } from '../../../types/LendingPoolConfigurator';
 
 import chai from 'chai';
@@ -59,9 +59,9 @@ export interface TestEnv {
   oracle: PriceOracle;
   helpersContract: AaveProtocolDataProvider;
   weth: WETH9Mocked;
-  aWETH: AToken;
+  aWETH: OToken;
   dai: MintableERC20;
-  aDai: AToken;
+  aDai: OToken;
   usdc: MintableERC20;
   aave: MintableERC20;
   addressesProvider: LendingPoolAddressesProvider;
@@ -86,9 +86,9 @@ const testEnv: TestEnv = {
   helpersContract: {} as AaveProtocolDataProvider,
   oracle: {} as PriceOracle,
   weth: {} as WETH9Mocked,
-  aWETH: {} as AToken,
+  aWETH: {} as OToken,
   dai: {} as MintableERC20,
-  aDai: {} as AToken,
+  aDai: {} as OToken,
   usdc: {} as MintableERC20,
   aave: {} as MintableERC20,
   addressesProvider: {} as LendingPoolAddressesProvider,
@@ -131,10 +131,10 @@ export async function initializeMakeSuite() {
 
   testEnv.helpersContract = await getAaveProtocolDataProvider();
 
-  const allTokens = await testEnv.helpersContract.getAllATokens();
-  const aDaiAddress = allTokens.find((aToken) => aToken.symbol === 'aDAI')?.tokenAddress;
+  const allTokens = await testEnv.helpersContract.getAllOTokens();
+  const aDaiAddress = allTokens.find((oToken) => oToken.symbol === 'aDAI')?.tokenAddress;
 
-  const aWEthAddress = allTokens.find((aToken) => aToken.symbol === 'aWETH')?.tokenAddress;
+  const aWEthAddress = allTokens.find((oToken) => oToken.symbol === 'aWETH')?.tokenAddress;
 
   const reservesTokens = await testEnv.helpersContract.getAllReservesTokens();
 
@@ -150,8 +150,8 @@ export async function initializeMakeSuite() {
     process.exit(1);
   }
 
-  testEnv.aDai = await getAToken(aDaiAddress);
-  testEnv.aWETH = await getAToken(aWEthAddress);
+  testEnv.aDai = await getOToken(aDaiAddress);
+  testEnv.aWETH = await getOToken(aWEthAddress);
 
   testEnv.dai = await getMintableERC20(daiAddress);
   testEnv.usdc = await getMintableERC20(usdcAddress);

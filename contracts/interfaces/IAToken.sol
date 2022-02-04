@@ -3,10 +3,10 @@ pragma solidity 0.6.12;
 
 import {IERC20} from '../dependencies/openzeppelin/contracts/IERC20.sol';
 import {IScaledBalanceToken} from './IScaledBalanceToken.sol';
-import {IInitializableAToken} from './IInitializableAToken.sol';
+import {IInitializableOToken} from './IInitializableOToken.sol';
 import {IAaveIncentivesController} from './IAaveIncentivesController.sol';
 
-interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
+interface IOToken is IERC20, IScaledBalanceToken, IInitializableOToken {
   /**
    * @dev Emitted after the mint action
    * @param from The address performing the mint
@@ -16,7 +16,7 @@ interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
   event Mint(address indexed from, uint256 value, uint256 index);
 
   /**
-   * @dev Mints `amount` aTokens to `user`
+   * @dev Mints `amount` oTokens to `user`
    * @param user The address receiving the minted tokens
    * @param amount The amount of tokens getting minted
    * @param index The new liquidity index of the reserve
@@ -29,8 +29,8 @@ interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
   ) external returns (bool);
 
   /**
-   * @dev Emitted after aTokens are burned
-   * @param from The owner of the aTokens, getting them burned
+   * @dev Emitted after oTokens are burned
+   * @param from The owner of the oTokens, getting them burned
    * @param target The address that will receive the underlying
    * @param value The amount being burned
    * @param index The new liquidity index of the reserve
@@ -47,8 +47,8 @@ interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
   event BalanceTransfer(address indexed from, address indexed to, uint256 value, uint256 index);
 
   /**
-   * @dev Burns aTokens from `user` and sends the equivalent amount of underlying to `receiverOfUnderlying`
-   * @param user The owner of the aTokens, getting them burned
+   * @dev Burns oTokens from `user` and sends the equivalent amount of underlying to `receiverOfUnderlying`
+   * @param user The owner of the oTokens, getting them burned
    * @param receiverOfUnderlying The address that will receive the underlying
    * @param amount The amount being burned
    * @param index The new liquidity index of the reserve
@@ -61,15 +61,15 @@ interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
   ) external;
 
   /**
-   * @dev Mints aTokens to the reserve treasury
+   * @dev Mints oTokens to the reserve treasury
    * @param amount The amount of tokens getting minted
    * @param index The new liquidity index of the reserve
    */
   function mintToTreasury(uint256 amount, uint256 index) external;
 
   /**
-   * @dev Transfers aTokens in the event of a borrow being liquidated, in case the liquidators reclaims the aToken
-   * @param from The address getting liquidated, current owner of the aTokens
+   * @dev Transfers oTokens in the event of a borrow being liquidated, in case the liquidators reclaims the oToken
+   * @param from The address getting liquidated, current owner of the oTokens
    * @param to The recipient
    * @param value The amount of tokens getting transferred
    **/
@@ -89,7 +89,7 @@ interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
   function transferUnderlyingTo(address user, uint256 amount) external returns (uint256);
 
   /**
-   * @dev Invoked to execute actions on the aToken side after a repayment.
+   * @dev Invoked to execute actions on the oToken side after a repayment.
    * @param user The user executing the repayment
    * @param amount The amount getting repaid
    **/
@@ -101,7 +101,7 @@ interface IAToken is IERC20, IScaledBalanceToken, IInitializableAToken {
   function getIncentivesController() external view returns (IAaveIncentivesController);
 
   /**
-   * @dev Returns the address of the underlying asset of this aToken (E.g. WETH for aWETH)
+   * @dev Returns the address of the underlying asset of this oToken (E.g. WETH for aWETH)
    **/
   function UNDERLYING_ASSET_ADDRESS() external view returns (address);
 }

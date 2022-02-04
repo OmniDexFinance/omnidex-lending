@@ -15,7 +15,7 @@ import {Errors} from '../libraries/helpers/Errors.sol';
 import {PercentageMath} from '../libraries/math/PercentageMath.sol';
 import {DataTypes} from '../libraries/types/DataTypes.sol';
 import {IInitializableDebtToken} from '../../interfaces/IInitializableDebtToken.sol';
-import {IInitializableAToken} from '../../interfaces/IInitializableAToken.sol';
+import {IInitializableOToken} from '../../interfaces/IInitializableOToken.sol';
 import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
 import {ILendingPoolConfigurator} from '../../interfaces/ILendingPoolConfigurator.sol';
 
@@ -68,18 +68,18 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
   }
 
   function _initReserve(ILendingPool pool, InitReserveInput calldata input) internal {
-    address aTokenProxyAddress =
+    address oTokenProxyAddress =
       _initTokenWithProxy(
-        input.aTokenImpl,
+        input.oTokenImpl,
         abi.encodeWithSelector(
-          IInitializableAToken.initialize.selector,
+          IInitializableOToken.initialize.selector,
           pool,
           input.treasury,
           input.underlyingAsset,
           IAaveIncentivesController(input.incentivesController),
           input.underlyingAssetDecimals,
-          input.aTokenName,
-          input.aTokenSymbol,
+          input.oTokenName,
+          input.oTokenSymbol,
           input.params
         )
       );
@@ -116,7 +116,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
 
     pool.initReserve(
       input.underlyingAsset,
-      aTokenProxyAddress,
+      oTokenProxyAddress,
       stableDebtTokenProxyAddress,
       variableDebtTokenProxyAddress,
       input.interestRateStrategyAddress
@@ -134,7 +134,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
 
     emit ReserveInitialized(
       input.underlyingAsset,
-      aTokenProxyAddress,
+      oTokenProxyAddress,
       stableDebtTokenProxyAddress,
       variableDebtTokenProxyAddress,
       input.interestRateStrategyAddress
@@ -142,9 +142,9 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
   }
 
   /**
-   * @dev Updates the aToken implementation for the reserve
+   * @dev Updates the oToken implementation for the reserve
    **/
-  function updateAToken(UpdateATokenInput calldata input) external onlyPoolAdmin {
+  function updateOToken(UpdateOTokenInput calldata input) external onlyPoolAdmin {
     ILendingPool cachedPool = pool;
 
     DataTypes.ReserveData memory reserveData = cachedPool.getReserveData(input.asset);
@@ -152,7 +152,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
     (, , , uint256 decimals, ) = cachedPool.getConfiguration(input.asset).getParamsMemory();
 
     bytes memory encodedCall = abi.encodeWithSelector(
-        IInitializableAToken.initialize.selector,
+        IInitializableOToken.initialize.selector,
         cachedPool,
         input.treasury,
         input.asset,
@@ -164,12 +164,12 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
       );
 
     _upgradeTokenImplementation(
-      reserveData.aTokenAddress,
+      reserveData.oTokenAddress,
       input.implementation,
       encodedCall
     );
 
-    emit ATokenUpgraded(input.asset, reserveData.aTokenAddress, input.implementation);
+    emit OTokenUpgraded(input.asset, reserveData.oTokenAddress, input.implementation);
   }
 
   /**
@@ -444,7 +444,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
   }
 
   /**
-   * @dev pauses or unpauses all the actions of the protocol, including aToken transfers
+   * @dev pauses or unpauses all the actions of the protocol, including oToken transfers
    * @param val true if protocol needs to be paused, false otherwise
    **/
   function setPoolPause(bool val) external onlyEmergencyAdmin {
@@ -477,7 +477,7 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
   function _checkNoLiquidity(address asset) internal view {
     DataTypes.ReserveData memory reserveData = pool.getReserveData(asset);
 
-    uint256 availableLiquidity = IERC20Detailed(asset).balanceOf(reserveData.aTokenAddress);
+    uint256 availableLiquidity = IERC20Detailed(asset).balanceOf(reserveData.oTokenAddress);
 
     require(
       availableLiquidity == 0 && reserveData.currentLiquidityRate == 0,

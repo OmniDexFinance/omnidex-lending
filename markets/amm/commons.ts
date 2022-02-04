@@ -15,7 +15,7 @@ import { ICommonConfiguration, eEthereumNetwork } from '../../helpers/types';
 
 export const CommonsConfig: ICommonConfiguration = {
   MarketId: 'Commons',
-  ATokenNamePrefix: 'Aave AMM Market',
+  OTokenNamePrefix: 'Aave AMM Market',
   StableDebtTokenNamePrefix: 'Aave AMM Market stable debt',
   VariableDebtTokenNamePrefix: 'Aave AMM Market variable debt',
   SymbolPrefix: 'Amm',
@@ -307,7 +307,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eEthereumNetwork.tenderly]: {},
   },
   ReservesConfig: {},
-  ATokenDomainSeparator: {
+  OTokenDomainSeparator: {
     [eEthereumNetwork.coverage]:
       '0x95b73a72c6ecf4ccbbba5178800023260bad8e75cdccdb8e4827a2977a37c820',
     [eEthereumNetwork.hardhat]:

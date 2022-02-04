@@ -70,9 +70,9 @@ export enum eContractid {
   InitializableAdminUpgradeabilityProxy = 'InitializableAdminUpgradeabilityProxy',
   MockFlashLoanReceiver = 'MockFlashLoanReceiver',
   WalletBalanceProvider = 'WalletBalanceProvider',
-  AToken = 'AToken',
-  MockAToken = 'MockAToken',
-  DelegationAwareAToken = 'DelegationAwareAToken',
+  OToken = 'OToken',
+  MockOToken = 'MockOToken',
+  DelegationAwareOToken = 'DelegationAwareOToken',
   MockStableDebtToken = 'MockStableDebtToken',
   MockVariableDebtToken = 'MockVariableDebtToken',
   AaveProtocolDataProvider = 'AaveProtocolDataProvider',
@@ -82,7 +82,7 @@ export enum eContractid {
   FeeProvider = 'FeeProvider',
   TokenDistributor = 'TokenDistributor',
   StableAndVariableTokensHelper = 'StableAndVariableTokensHelper',
-  ATokensAndRatesHelper = 'ATokensAndRatesHelper',
+  OTokensAndRatesHelper = 'OTokensAndRatesHelper',
   UiPoolDataProvider = 'UiPoolDataProvider',
   UiPoolDataProviderV2 = 'UiPoolDataProviderV2',
   UiPoolDataProviderV2V3 = 'UiPoolDataProviderV2V3',
@@ -108,7 +108,7 @@ export enum eContractid {
  * Error messages prefix glossary:
  *  - VL = ValidationLogic
  *  - MATH = Math libraries
- *  - AT = aToken or DebtTokens
+ *  - AT = oToken or DebtTokens
  *  - LP = LendingPool
  *  - LPAPR = LendingPoolAddressesProviderRegistry
  *  - LPC = LendingPoolConfiguration
@@ -154,7 +154,7 @@ export enum ProtocolErrors {
   CT_TRANSFER_AMOUNT_NOT_GT_0 = '31', // 'Transferred amount needs to be greater than zero'
   RL_RESERVE_ALREADY_INITIALIZED = '32', // 'Reserve has already been initialized'
   LPC_RESERVE_LIQUIDITY_NOT_0 = '34', // 'The liquidity of the reserve needs to be 0'
-  LPC_INVALID_ATOKEN_POOL_ADDRESS = '35', // 'The liquidity of the reserve needs to be 0'
+  LPC_INVALID_OTOKEN_POOL_ADDRESS = '35', // 'The liquidity of the reserve needs to be 0'
   LPC_INVALID_STABLE_DEBT_TOKEN_POOL_ADDRESS = '36', // 'The liquidity of the reserve needs to be 0'
   LPC_INVALID_VARIABLE_DEBT_TOKEN_POOL_ADDRESS = '37', // 'The liquidity of the reserve needs to be 0'
   LPC_INVALID_STABLE_DEBT_TOKEN_UNDERLYING_ADDRESS = '38', // 'The liquidity of the reserve needs to be 0'
@@ -183,7 +183,7 @@ export enum ProtocolErrors {
   LP_FAILED_COLLATERAL_SWAP = '60',
   LP_INVALID_EQUAL_ASSETS_TO_SWAP = '61',
   LP_REENTRANCY_NOT_ALLOWED = '62',
-  LP_CALLER_MUST_BE_AN_ATOKEN = '63',
+  LP_CALLER_MUST_BE_AN_OTOKEN = '63',
   LP_IS_PAUSED = '64', // 'Pool is paused'
   LP_NO_MORE_RESERVES_ALLOWED = '65',
   LP_INVALID_FLASH_LOAN_EXECUTOR_RETURN = '66',
@@ -377,7 +377,7 @@ export enum TokenContractId {
 }
 
 export interface IReserveParams extends IReserveBorrowParams, IReserveCollateralParams {
-  aTokenImpl: eContractid;
+  oTokenImpl: eContractid;
   reserveFactor: string;
   strategy: IInterestRateStrategyParams;
 }
@@ -493,7 +493,7 @@ export interface ILendingRate {
 
 export interface IBaseConfiguration {
   MarketId: string;
-  ATokenNamePrefix: string;
+  OTokenNamePrefix: string;
   StableDebtTokenNamePrefix: string;
   VariableDebtTokenNamePrefix: string;
   SymbolPrefix: string;
@@ -514,7 +514,7 @@ export interface IBaseConfiguration {
   PoolAdminIndex: number;
   EmergencyAdmin: iParamsPerNetwork<tEthereumAddress | undefined>;
   EmergencyAdminIndex: number;
-  ATokenDomainSeparator: iParamsPerNetwork<string>;
+  OTokenDomainSeparator: iParamsPerNetwork<string>;
   WETH: iParamsPerNetwork<tEthereumAddress>;
   WrappedNativeToken: iParamsPerNetwork<tEthereumAddress>;
   WethGateway: iParamsPerNetwork<tEthereumAddress>;

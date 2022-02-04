@@ -14,7 +14,7 @@ import BigNumber from 'bignumber.js';
 import { DRE, evmRevert, evmSnapshot } from '../../helpers/misc-utils';
 import { ethers } from 'ethers';
 import { eContractid } from '../../helpers/types';
-import { AToken } from '../../types/AToken';
+import { OToken } from '../../types/OToken';
 import { BUIDLEREVM_CHAINID } from '../../helpers/buidler-constants';
 import { MAX_UINT_AMOUNT } from '../../helpers/constants';
 const { parseEther } = ethers.utils;
@@ -206,7 +206,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         await pool.connect(user).deposit(usdc.address, amountUSDCtoSwap, userAddress, 0);
 
         const aUsdcData = await pool.getReserveData(usdc.address);
-        const aUsdc = await getContract<AToken>(eContractid.AToken, aUsdcData.aTokenAddress);
+        const aUsdc = await getContract<OToken>(eContractid.OToken, aUsdcData.oTokenAddress);
 
         await mockUniswapRouter.setAmountToReturn(weth.address, expectedDaiAmountForEth);
         await mockUniswapRouter.setAmountToReturn(usdc.address, expectedDaiAmountForUsdc);
@@ -329,7 +329,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         await pool.connect(user).deposit(usdc.address, amountUSDCtoSwap, userAddress, 0);
 
         const aUsdcData = await pool.getReserveData(usdc.address);
-        const aUsdc = await getContract<AToken>(eContractid.AToken, aUsdcData.aTokenAddress);
+        const aUsdc = await getContract<OToken>(eContractid.OToken, aUsdcData.oTokenAddress);
 
         await mockUniswapRouter.setAmountToReturn(weth.address, expectedDaiAmountForEth);
         await mockUniswapRouter.setAmountToReturn(usdc.address, expectedDaiAmountForUsdc);
@@ -880,7 +880,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         await mockUniswapRouter.connect(user).setAmountToReturn(usdc.address, expectedDaiAmount);
 
         const aUsdcData = await pool.getReserveData(usdc.address);
-        const aUsdc = await getContract<AToken>(eContractid.AToken, aUsdcData.aTokenAddress);
+        const aUsdc = await getContract<OToken>(eContractid.OToken, aUsdcData.oTokenAddress);
         const aUsdcBalance = await aUsdc.balanceOf(userAddress);
         await aUsdc.connect(user).approve(uniswapLiquiditySwapAdapter.address, aUsdcBalance);
         // Subtract the FL fee from the amount to be swapped 0,09%
@@ -1023,7 +1023,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
           [false]
         );
 
-        // Flashloan + premium > aToken balance. Then it will only swap the balance - premium
+        // Flashloan + premium > oToken balance. Then it will only swap the balance - premium
         const flashloanFee = liquidityToSwap.mul(9).div(10000);
         const swappedAmount = liquidityToSwap.sub(flashloanFee);
 
@@ -1126,7 +1126,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
           [false]
         );
 
-        // Flashloan + premium > aToken balance. Then it will only swap the balance - premium
+        // Flashloan + premium > oToken balance. Then it will only swap the balance - premium
         const flashloanFee = liquidityToSwap.mul(9).div(10000);
         const swappedAmount = liquidityToSwap.sub(flashloanFee);
 
@@ -1506,7 +1506,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         await pool.connect(user).deposit(usdc.address, amountUSDCtoSwap, userAddress, 0);
 
         const aUsdcData = await pool.getReserveData(usdc.address);
-        const aUsdc = await getContract<AToken>(eContractid.AToken, aUsdcData.aTokenAddress);
+        const aUsdc = await getContract<OToken>(eContractid.OToken, aUsdcData.oTokenAddress);
 
         await mockUniswapRouter.setAmountToReturn(weth.address, expectedDaiAmountForEth);
         await mockUniswapRouter.setAmountToReturn(usdc.address, expectedDaiAmountForUsdc);
@@ -1615,7 +1615,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         await pool.connect(user).deposit(usdc.address, amountUSDCtoSwap, userAddress, 0);
 
         const aUsdcData = await pool.getReserveData(usdc.address);
-        const aUsdc = await getContract<AToken>(eContractid.AToken, aUsdcData.aTokenAddress);
+        const aUsdc = await getContract<OToken>(eContractid.OToken, aUsdcData.oTokenAddress);
 
         await mockUniswapRouter.setAmountToReturn(weth.address, expectedDaiAmountForEth);
         await mockUniswapRouter.setAmountToReturn(usdc.address, expectedDaiAmountForUsdc);
@@ -1727,7 +1727,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         // User will swap liquidity 10 aEth to aDai
         await aWETH.connect(user).approve(uniswapLiquiditySwapAdapter.address, liquidityToSwap);
 
-        // Only has 10 atokens, so all the balance will be swapped
+        // Only has 10 otokens, so all the balance will be swapped
         const bigAmountToSwap = parseEther('100');
 
         await expect(
@@ -1792,7 +1792,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         const liquidityToSwap = parseEther('10');
         expect(userAEthBalanceBefore).to.be.eq(liquidityToSwap);
 
-        // Only has 10 atokens, so all the balance will be swapped
+        // Only has 10 otokens, so all the balance will be swapped
         const bigAmountToSwap = parseEther('100');
 
         const chainId = DRE.network.config.chainId || BUIDLEREVM_CHAINID;

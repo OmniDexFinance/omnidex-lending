@@ -18,7 +18,7 @@ export const strategyDAI: IReserveParams = {
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
-  aTokenImpl: eContractid.AToken,
+  oTokenImpl: eContractid.OToken,
   reserveFactor: '1000',
 };
 
@@ -30,7 +30,7 @@ export const strategyUSDC: IReserveParams = {
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '6',
-  aTokenImpl: eContractid.AToken,
+  oTokenImpl: eContractid.OToken,
   reserveFactor: '1000',
 };
 
@@ -42,7 +42,7 @@ export const strategyUSDT: IReserveParams = {
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '6',
-  aTokenImpl: eContractid.AToken,
+  oTokenImpl: eContractid.OToken,
   reserveFactor: '1000',
 };
 
@@ -54,7 +54,7 @@ export const strategyWETH: IReserveParams = {
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
-  aTokenImpl: eContractid.AToken,
+  oTokenImpl: eContractid.OToken,
   reserveFactor: '1000',
 };
 
@@ -66,7 +66,7 @@ export const strategyWBTC: IReserveParams = {
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '8',
-  aTokenImpl: eContractid.AToken,
+  oTokenImpl: eContractid.OToken,
   reserveFactor: '2000',
 };
 
@@ -78,7 +78,7 @@ export const strategyMATIC: IReserveParams = {
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
-  aTokenImpl: eContractid.AToken,
+  oTokenImpl: eContractid.OToken,
   reserveFactor: '2000',
 };
 
@@ -90,6 +90,6 @@ export const strategyAAVE: IReserveParams = {
   borrowingEnabled: false,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
-  aTokenImpl: eContractid.AToken,
+  oTokenImpl: eContractid.OToken,
   reserveFactor: '0',
 };

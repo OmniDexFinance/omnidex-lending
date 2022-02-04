@@ -27,7 +27,7 @@ interface IUiPoolDataProvider {
     uint128 variableBorrowRate;
     uint128 stableBorrowRate;
     uint40 lastUpdateTimestamp;
-    address aTokenAddress;
+    address oTokenAddress;
     address stableDebtTokenAddress;
     address variableDebtTokenAddress;
     address interestRateStrategyAddress;
@@ -49,21 +49,21 @@ interface IUiPoolDataProvider {
     uint256 aIncentivesLastUpdateTimestamp;
     uint256 vIncentivesLastUpdateTimestamp;
     uint256 sIncentivesLastUpdateTimestamp;
-    uint256 aTokenIncentivesIndex;
+    uint256 oTokenIncentivesIndex;
     uint256 vTokenIncentivesIndex;
     uint256 sTokenIncentivesIndex;
   }
 
   struct UserReserveData {
     address underlyingAsset;
-    uint256 scaledATokenBalance;
+    uint256 scaledOTokenBalance;
     bool usageAsCollateralEnabledOnUser;
     uint256 stableBorrowRate;
     uint256 scaledVariableDebt;
     uint256 principalStableDebt;
     uint256 stableBorrowLastUpdateTimestamp;
     // incentives
-    uint256 aTokenincentivesUserIndex;
+    uint256 oTokenincentivesUserIndex;
     uint256 vTokenincentivesUserIndex;
     uint256 sTokenincentivesUserIndex;
   }

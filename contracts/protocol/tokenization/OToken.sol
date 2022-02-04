@@ -4,7 +4,7 @@ pragma solidity 0.6.12;
 import {IERC20} from '../../dependencies/openzeppelin/contracts/IERC20.sol';
 import {SafeERC20} from '../../dependencies/openzeppelin/contracts/SafeERC20.sol';
 import {ILendingPool} from '../../interfaces/ILendingPool.sol';
-import {IAToken} from '../../interfaces/IAToken.sol';
+import {IOToken} from '../../interfaces/IOToken.sol';
 import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
 import {VersionedInitializable} from '../libraries/aave-upgradeability/VersionedInitializable.sol';
@@ -12,14 +12,14 @@ import {IncentivizedERC20} from './IncentivizedERC20.sol';
 import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
 
 /**
- * @title Aave ERC20 AToken
+ * @title Aave ERC20 OToken
  * @dev Implementation of the interest bearing token for the Aave protocol
  * @author Aave
  */
-contract AToken is
+contract OToken is
   VersionedInitializable,
-  IncentivizedERC20('ATOKEN_IMPL', 'ATOKEN_IMPL', 0),
-  IAToken
+  IncentivizedERC20('OTOKEN_IMPL', 'OTOKEN_IMPL', 0),
+  IOToken
 {
   using WadRayMath for uint256;
   using SafeERC20 for IERC20;
@@ -30,7 +30,7 @@ contract AToken is
   bytes32 public constant PERMIT_TYPEHASH =
     keccak256('Permit(address owner,address spender,uint256 value,uint256 nonce,uint256 deadline)');
 
-  uint256 public constant ATOKEN_REVISION = 0x1;
+  uint256 public constant OTOKEN_REVISION = 0x1;
 
   /// @dev owner => next valid nonce to submit with permit()
   mapping(address => uint256) public _nonces;
@@ -48,27 +48,27 @@ contract AToken is
   }
 
   function getRevision() internal pure virtual override returns (uint256) {
-    return ATOKEN_REVISION;
+    return OTOKEN_REVISION;
   }
 
   /**
-   * @dev Initializes the aToken
-   * @param pool The address of the lending pool where this aToken will be used
-   * @param treasury The address of the Aave treasury, receiving the fees on this aToken
-   * @param underlyingAsset The address of the underlying asset of this aToken (E.g. WETH for aWETH)
+   * @dev Initializes the oToken
+   * @param pool The address of the lending pool where this oToken will be used
+   * @param treasury The address of the Aave treasury, receiving the fees on this oToken
+   * @param underlyingAsset The address of the underlying asset of this oToken (E.g. WETH for aWETH)
    * @param incentivesController The smart contract managing potential incentives distribution
-   * @param aTokenDecimals The decimals of the aToken, same as the underlying asset's
-   * @param aTokenName The name of the aToken
-   * @param aTokenSymbol The symbol of the aToken
+   * @param oTokenDecimals The decimals of the oToken, same as the underlying asset's
+   * @param oTokenName The name of the oToken
+   * @param oTokenSymbol The symbol of the oToken
    */
   function initialize(
     ILendingPool pool,
     address treasury,
     address underlyingAsset,
     IAaveIncentivesController incentivesController,
-    uint8 aTokenDecimals,
-    string calldata aTokenName,
-    string calldata aTokenSymbol,
+    uint8 oTokenDecimals,
+    string calldata oTokenName,
+    string calldata oTokenSymbol,
     bytes calldata params
   ) external override initializer {
     uint256 chainId;
@@ -81,16 +81,16 @@ contract AToken is
     DOMAIN_SEPARATOR = keccak256(
       abi.encode(
         EIP712_DOMAIN,
-        keccak256(bytes(aTokenName)),
+        keccak256(bytes(oTokenName)),
         keccak256(EIP712_REVISION),
         chainId,
         address(this)
       )
     );
 
-    _setName(aTokenName);
-    _setSymbol(aTokenSymbol);
-    _setDecimals(aTokenDecimals);
+    _setName(oTokenName);
+    _setSymbol(oTokenSymbol);
+    _setDecimals(oTokenDecimals);
 
     _pool = pool;
     _treasury = treasury;
@@ -102,17 +102,17 @@ contract AToken is
       address(pool),
       treasury,
       address(incentivesController),
-      aTokenDecimals,
-      aTokenName,
-      aTokenSymbol,
+      oTokenDecimals,
+      oTokenName,
+      oTokenSymbol,
       params
     );
   }
 
   /**
-   * @dev Burns aTokens from `user` and sends the equivalent amount of underlying to `receiverOfUnderlying`
+   * @dev Burns oTokens from `user` and sends the equivalent amount of underlying to `receiverOfUnderlying`
    * - Only callable by the LendingPool, as extra state updates there need to be managed
-   * @param user The owner of the aTokens, getting them burned
+   * @param user The owner of the oTokens, getting them burned
    * @param receiverOfUnderlying The address that will receive the underlying
    * @param amount The amount being burned
    * @param index The new liquidity index of the reserve
@@ -134,7 +134,7 @@ contract AToken is
   }
 
   /**
-   * @dev Mints `amount` aTokens to `user`
+   * @dev Mints `amount` oTokens to `user`
    * - Only callable by the LendingPool, as extra state updates there need to be managed
    * @param user The address receiving the minted tokens
    * @param amount The amount of tokens getting minted
@@ -159,7 +159,7 @@ contract AToken is
   }
 
   /**
-   * @dev Mints aTokens to the reserve treasury
+   * @dev Mints oTokens to the reserve treasury
    * - Only callable by the LendingPool
    * @param amount The amount of tokens getting minted
    * @param index The new liquidity index of the reserve
@@ -182,9 +182,9 @@ contract AToken is
   }
 
   /**
-   * @dev Transfers aTokens in the event of a borrow being liquidated, in case the liquidators reclaims the aToken
+   * @dev Transfers oTokens in the event of a borrow being liquidated, in case the liquidators reclaims the oToken
    * - Only callable by the LendingPool
-   * @param from The address getting liquidated, current owner of the aTokens
+   * @param from The address getting liquidated, current owner of the oTokens
    * @param to The recipient
    * @param value The amount of tokens getting transferred
    **/
@@ -240,7 +240,7 @@ contract AToken is
   }
 
   /**
-   * @dev calculates the total supply of the specific aToken
+   * @dev calculates the total supply of the specific oToken
    * since the balance of every single user increases over time, the total supply
    * does that too.
    * @return the current total supply
@@ -264,21 +264,21 @@ contract AToken is
   }
 
   /**
-   * @dev Returns the address of the Aave treasury, receiving the fees on this aToken
+   * @dev Returns the address of the Aave treasury, receiving the fees on this oToken
    **/
   function RESERVE_TREASURY_ADDRESS() public view returns (address) {
     return _treasury;
   }
 
   /**
-   * @dev Returns the address of the underlying asset of this aToken (E.g. WETH for aWETH)
+   * @dev Returns the address of the underlying asset of this oToken (E.g. WETH for aWETH)
    **/
   function UNDERLYING_ASSET_ADDRESS() public override view returns (address) {
     return _underlyingAsset;
   }
 
   /**
-   * @dev Returns the address of the lending pool where this aToken is used
+   * @dev Returns the address of the lending pool where this oToken is used
    **/
   function POOL() public view returns (ILendingPool) {
     return _pool;
@@ -301,7 +301,7 @@ contract AToken is
   /**
    * @dev Transfers the underlying asset to `target`. Used by the LendingPool to transfer
    * assets in borrow(), withdraw() and flashLoan()
-   * @param target The recipient of the aTokens
+   * @param target The recipient of the oTokens
    * @param amount The amount getting transferred
    * @return The amount transferred
    **/
@@ -316,7 +316,7 @@ contract AToken is
   }
 
   /**
-   * @dev Invoked to execute actions on the aToken side after a repayment.
+   * @dev Invoked to execute actions on the oToken side after a repayment.
    * @param user The user executing the repayment
    * @param amount The amount getting repaid
    **/
@@ -360,7 +360,7 @@ contract AToken is
   }
 
   /**
-   * @dev Transfers the aTokens between two users. Validates the transfer
+   * @dev Transfers the oTokens between two users. Validates the transfer
    * (ie checks for valid HF after the transfer) if required
    * @param from The source address
    * @param to The destination address

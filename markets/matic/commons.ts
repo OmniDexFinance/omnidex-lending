@@ -14,7 +14,7 @@ import { ICommonConfiguration, ePolygonNetwork } from '../../helpers/types';
 
 export const CommonsConfig: ICommonConfiguration = {
   MarketId: 'Commons',
-  ATokenNamePrefix: 'Aave Matic Market',
+  OTokenNamePrefix: 'Aave Matic Market',
   StableDebtTokenNamePrefix: 'Aave Matic Market stable debt',
   VariableDebtTokenNamePrefix: 'Aave Matic Market variable debt',
   SymbolPrefix: 'm',
@@ -142,7 +142,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [ePolygonNetwork.mumbai]: {},
   },
   ReservesConfig: {},
-  ATokenDomainSeparator: {
+  OTokenDomainSeparator: {
     [ePolygonNetwork.mumbai]: '',
     [ePolygonNetwork.matic]: '',
   },

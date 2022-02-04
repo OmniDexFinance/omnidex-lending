@@ -19,7 +19,7 @@ import {
   deployAaveProtocolDataProvider,
   deployLendingRateOracle,
   deployStableAndVariableTokensHelper,
-  deployATokensAndRatesHelper,
+  deployOTokensAndRatesHelper,
   deployWETHGateway,
   deployWETHMocked,
   deployMockUniswapRouter,
@@ -30,7 +30,7 @@ import {
   deployMockParaSwapAugustusRegistry,
   deployParaSwapLiquiditySwapAdapter,
   authorizeWETHGateway,
-  deployATokenImplementations,
+  deployOTokenImplementations,
   deployAaveOracle,
 } from '../../helpers/contracts-deployments';
 import { Signer } from 'ethers';
@@ -141,7 +141,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   // Deploy deployment helpers
   await deployStableAndVariableTokensHelper([lendingPoolProxy.address, addressesProvider.address]);
-  await deployATokensAndRatesHelper([
+  await deployOTokensAndRatesHelper([
     lendingPoolProxy.address,
     addressesProvider.address,
     lendingPoolConfiguratorProxy.address,
@@ -254,18 +254,18 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   const testHelpers = await deployAaveProtocolDataProvider(addressesProvider.address);
 
-  await deployATokenImplementations(ConfigNames.Aave, reservesParams, false);
+  await deployOTokenImplementations(ConfigNames.Aave, reservesParams, false);
 
   const admin = await deployer.getAddress();
 
-  const { ATokenNamePrefix, StableDebtTokenNamePrefix, VariableDebtTokenNamePrefix, SymbolPrefix } =
+  const { OTokenNamePrefix, StableDebtTokenNamePrefix, VariableDebtTokenNamePrefix, SymbolPrefix } =
     config;
   const treasuryAddress = await getTreasuryAddress(config);
 
   await initReservesByHelper(
     reservesParams,
     allReservesAddresses,
-    ATokenNamePrefix,
+    OTokenNamePrefix,
     StableDebtTokenNamePrefix,
     VariableDebtTokenNamePrefix,
     SymbolPrefix,

@@ -1,8 +1,8 @@
 import { task } from 'hardhat/config';
 import { getParamPerNetwork, insertContractAddressInDb } from '../../helpers/contracts-helpers';
 import {
-  deployATokenImplementations,
-  deployATokensAndRatesHelper,
+  deployOTokenImplementations,
+  deployOTokensAndRatesHelper,
   deployLendingPool,
   deployLendingPoolConfigurator,
   deployStableAndVariableTokensHelper,
@@ -84,11 +84,11 @@ task('full:deploy-lending-pool', 'Deploy lending pool for dev enviroment')
         [lendingPoolProxy.address, addressesProvider.address],
         verify
       );
-      await deployATokensAndRatesHelper(
+      await deployOTokensAndRatesHelper(
         [lendingPoolProxy.address, addressesProvider.address, lendingPoolConfiguratorProxy.address],
         verify
       );
-      await deployATokenImplementations(pool, poolConfig.ReservesConfig, verify);
+      await deployOTokenImplementations(pool, poolConfig.ReservesConfig, verify);
     } catch (error) {
       if (DRE.network.name.includes('tenderly')) {
         const transactionLink = `https://dashboard.tenderly.co/${DRE.config.tenderly.username}/${

@@ -8,7 +8,7 @@ import { CommonsConfig } from '../../markets/aave/commons';
 
 const AAVE_REFERRAL = CommonsConfig.ProtocolGlobalParams.AaveReferral;
 
-makeSuite('AToken: Transfer', (testEnv: TestEnv) => {
+makeSuite('OToken: Transfer', (testEnv: TestEnv) => {
   const {
     INVALID_FROM_BALANCE_AFTER_TRANSFER,
     INVALID_TO_BALANCE_AFTER_TRANSFER,

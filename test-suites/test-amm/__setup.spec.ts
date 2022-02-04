@@ -19,7 +19,7 @@ import {
   deployAaveProtocolDataProvider,
   deployLendingRateOracle,
   deployStableAndVariableTokensHelper,
-  deployATokensAndRatesHelper,
+  deployOTokensAndRatesHelper,
   deployWETHGateway,
   deployWETHMocked,
   deployMockUniswapRouter,
@@ -27,7 +27,7 @@ import {
   deployUniswapRepayAdapter,
   deployFlashLiquidationAdapter,
   authorizeWETHGateway,
-  deployATokenImplementations,
+  deployOTokenImplementations,
   deployAaveOracle,
 } from '../../helpers/contracts-deployments';
 import { Signer } from 'ethers';
@@ -98,7 +98,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   const aaveAdmin = await deployer.getAddress();
   const config = loadPoolConfig(ConfigNames.Amm);
   const {
-    ATokenNamePrefix,
+    OTokenNamePrefix,
     StableDebtTokenNamePrefix,
     VariableDebtTokenNamePrefix,
     SymbolPrefix,
@@ -143,7 +143,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   // Deploy deployment helpers
   await deployStableAndVariableTokensHelper([lendingPoolProxy.address, addressesProvider.address]);
-  await deployATokensAndRatesHelper([
+  await deployOTokensAndRatesHelper([
     lendingPoolProxy.address,
     addressesProvider.address,
     lendingPoolConfiguratorProxy.address,
@@ -248,7 +248,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     lendingRateOracle,
     aaveAdmin
   );
-  await deployATokenImplementations(ConfigNames.Amm, ReservesConfig);
+  await deployOTokenImplementations(ConfigNames.Amm, ReservesConfig);
 
   const testHelpers = await deployAaveProtocolDataProvider(addressesProvider.address);
 
@@ -262,7 +262,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   await initReservesByHelper(
     ReservesConfig,
     allReservesAddresses,
-    ATokenNamePrefix,
+    OTokenNamePrefix,
     StableDebtTokenNamePrefix,
     VariableDebtTokenNamePrefix,
     SymbolPrefix,

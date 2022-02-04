@@ -4,7 +4,7 @@ pragma experimental ABIEncoderV2;
 
 interface ILendingPoolConfigurator {
   struct InitReserveInput {
-    address aTokenImpl;
+    address oTokenImpl;
     address stableDebtTokenImpl;
     address variableDebtTokenImpl;
     uint8 underlyingAssetDecimals;
@@ -13,8 +13,8 @@ interface ILendingPoolConfigurator {
     address treasury;
     address incentivesController;
     string underlyingAssetName;
-    string aTokenName;
-    string aTokenSymbol;
+    string oTokenName;
+    string oTokenSymbol;
     string variableDebtTokenName;
     string variableDebtTokenSymbol;
     string stableDebtTokenName;
@@ -22,7 +22,7 @@ interface ILendingPoolConfigurator {
     bytes params;
   }
 
-  struct UpdateATokenInput {
+  struct UpdateOTokenInput {
     address asset;
     address treasury;
     address incentivesController;
@@ -44,14 +44,14 @@ interface ILendingPoolConfigurator {
   /**
    * @dev Emitted when a reserve is initialized.
    * @param asset The address of the underlying asset of the reserve
-   * @param aToken The address of the associated aToken contract
+   * @param oToken The address of the associated oToken contract
    * @param stableDebtToken The address of the associated stable rate debt token
    * @param variableDebtToken The address of the associated variable rate debt token
    * @param interestRateStrategyAddress The address of the interest rate strategy for the reserve
    **/
   event ReserveInitialized(
     address indexed asset,
-    address indexed aToken,
+    address indexed oToken,
     address stableDebtToken,
     address variableDebtToken,
     address interestRateStrategyAddress
@@ -142,12 +142,12 @@ interface ILendingPoolConfigurator {
   event ReserveInterestRateStrategyChanged(address indexed asset, address strategy);
 
   /**
-   * @dev Emitted when an aToken implementation is upgraded
+   * @dev Emitted when an oToken implementation is upgraded
    * @param asset The address of the underlying asset of the reserve
-   * @param proxy The aToken proxy address
-   * @param implementation The new aToken implementation
+   * @param proxy The oToken proxy address
+   * @param implementation The new oToken implementation
    **/
-  event ATokenUpgraded(
+  event OTokenUpgraded(
     address indexed asset,
     address indexed proxy,
     address indexed implementation
@@ -157,7 +157,7 @@ interface ILendingPoolConfigurator {
    * @dev Emitted when the implementation of a stable debt token is upgraded
    * @param asset The address of the underlying asset of the reserve
    * @param proxy The stable debt token proxy address
-   * @param implementation The new aToken implementation
+   * @param implementation The new oToken implementation
    **/
   event StableDebtTokenUpgraded(
     address indexed asset,
@@ -169,7 +169,7 @@ interface ILendingPoolConfigurator {
    * @dev Emitted when the implementation of a variable debt token is upgraded
    * @param asset The address of the underlying asset of the reserve
    * @param proxy The variable debt token proxy address
-   * @param implementation The new aToken implementation
+   * @param implementation The new oToken implementation
    **/
   event VariableDebtTokenUpgraded(
     address indexed asset,

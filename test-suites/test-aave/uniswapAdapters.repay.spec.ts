@@ -511,7 +511,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         ).to.be.revertedWith('maxAmountToSwap exceed max slippage');
       });
 
-      it('should swap, repay debt and pull the needed ATokens leaving no leftovers', async () => {
+      it('should swap, repay debt and pull the needed OTokens leaving no leftovers', async () => {
         const {
           users,
           pool,
@@ -1135,7 +1135,7 @@ makeSuite('Uniswap adapters', (testEnv: TestEnv) => {
         ).to.be.revertedWith('maxAmountToSwap exceed max slippage');
       });
 
-      it('should swap, repay debt and pull the needed ATokens leaving no leftovers', async () => {
+      it('should swap, repay debt and pull the needed OTokens leaving no leftovers', async () => {
         const {
           users,
           pool,

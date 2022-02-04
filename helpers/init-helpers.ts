@@ -8,8 +8,8 @@ import {
 import { AaveProtocolDataProvider } from '../types/AaveProtocolDataProvider';
 import { chunk, getDb, waitForTx } from './misc-utils';
 import {
-  getAToken,
-  getATokensAndRatesHelper,
+  getOToken,
+  getOTokensAndRatesHelper,
   getLendingPoolAddressesProvider,
   getLendingPoolConfiguratorProxy,
 } from './contracts-getters';
@@ -21,9 +21,9 @@ import { BigNumberish } from 'ethers';
 import { ConfigNames } from './configuration';
 import { deployRateStrategy } from './contracts-deployments';
 
-export const getATokenExtraParams = async (aTokenName: string, tokenAddress: tEthereumAddress) => {
-  console.log(aTokenName);
-  switch (aTokenName) {
+export const getOTokenExtraParams = async (oTokenName: string, tokenAddress: tEthereumAddress) => {
+  console.log(oTokenName);
+  switch (oTokenName) {
     default:
       return '0x10';
   }
@@ -32,7 +32,7 @@ export const getATokenExtraParams = async (aTokenName: string, tokenAddress: tEt
 export const initReservesByHelper = async (
   reservesParams: iMultiPoolsAssets<IReserveParams>,
   tokenAddresses: { [symbol: string]: tEthereumAddress },
-  aTokenNamePrefix: string,
+  oTokenNamePrefix: string,
   stableDebtTokenNamePrefix: string,
   variableDebtTokenNamePrefix: string,
   symbolPrefix: string,
@@ -51,7 +51,7 @@ export const initReservesByHelper = async (
   let reserveSymbols: string[] = [];
 
   let initInputParams: {
-    aTokenImpl: string;
+    oTokenImpl: string;
     stableDebtTokenImpl: string;
     variableDebtTokenImpl: string;
     underlyingAssetDecimals: BigNumberish;
@@ -60,8 +60,8 @@ export const initReservesByHelper = async (
     treasury: string;
     incentivesController: string;
     underlyingAssetName: string;
-    aTokenName: string;
-    aTokenSymbol: string;
+    oTokenName: string;
+    oTokenSymbol: string;
     variableDebtTokenName: string;
     variableDebtTokenSymbol: string;
     stableDebtTokenName: string;
@@ -88,7 +88,7 @@ export const initReservesByHelper = async (
       console.log(`- Skipping init of ${symbol} due token address is not set at markets config`);
       continue;
     }
-    const { strategy, aTokenImpl, reserveDecimals } = params;
+    const { strategy, oTokenImpl, reserveDecimals } = params;
     const {
       optimalUtilizationRate,
       baseVariableBorrowRate,
@@ -121,7 +121,7 @@ export const initReservesByHelper = async (
     // Prepare input parameters
     reserveSymbols.push(symbol);
     initInputParams.push({
-      aTokenImpl: await getContractAddressWithJsonFallback(aTokenImpl, poolName),
+      oTokenImpl: await getContractAddressWithJsonFallback(oTokenImpl, poolName),
       stableDebtTokenImpl: await getContractAddressWithJsonFallback(
         eContractid.StableDebtToken,
         poolName
@@ -136,13 +136,13 @@ export const initReservesByHelper = async (
       treasury: treasuryAddress,
       incentivesController: incentivesController,
       underlyingAssetName: symbol,
-      aTokenName: `${aTokenNamePrefix} ${symbol}`,
-      aTokenSymbol: `a${symbolPrefix}${symbol}`,
+      oTokenName: `${oTokenNamePrefix} ${symbol}`,
+      oTokenSymbol: `a${symbolPrefix}${symbol}`,
       variableDebtTokenName: `${variableDebtTokenNamePrefix} ${symbolPrefix}${symbol}`,
       variableDebtTokenSymbol: `variableDebt${symbolPrefix}${symbol}`,
       stableDebtTokenName: `${stableDebtTokenNamePrefix} ${symbol}`,
       stableDebtTokenSymbol: `stableDebt${symbolPrefix}${symbol}`,
-      params: await getATokenExtraParams(aTokenImpl, tokenAddresses[symbol]),
+      params: await getOTokenExtraParams(oTokenImpl, tokenAddresses[symbol]),
     });
   }
 
@@ -196,7 +196,7 @@ export const configureReservesByHelper = async (
   admin: tEthereumAddress
 ) => {
   const addressProvider = await getLendingPoolAddressesProvider();
-  const atokenAndRatesDeployer = await getATokensAndRatesHelper();
+  const otokenAndRatesDeployer = await getOTokensAndRatesHelper();
   const tokens: string[] = [];
   const symbols: string[] = [];
 
@@ -259,8 +259,8 @@ export const configureReservesByHelper = async (
     symbols.push(assetSymbol);
   }
   if (tokens.length) {
-    // Set aTokenAndRatesDeployer as temporal admin
-    await waitForTx(await addressProvider.setPoolAdmin(atokenAndRatesDeployer.address));
+    // Set oTokenAndRatesDeployer as temporal admin
+    await waitForTx(await addressProvider.setPoolAdmin(otokenAndRatesDeployer.address));
 
     // Deploy init per chunks
     const enableChunks = 20;
@@ -270,7 +270,7 @@ export const configureReservesByHelper = async (
     console.log(`- Configure reserves in ${chunkedInputParams.length} txs`);
     for (let chunkIndex = 0; chunkIndex < chunkedInputParams.length; chunkIndex++) {
       await waitForTx(
-        await atokenAndRatesDeployer.configureReserves(chunkedInputParams[chunkIndex])
+        await otokenAndRatesDeployer.configureReserves(chunkedInputParams[chunkIndex])
       );
       console.log(`  - Init for: ${chunkedSymbols[chunkIndex].join(', ')}`);
     }
@@ -287,7 +287,7 @@ const getAddressById = async (
 
 // Function deprecated
 const isErc20SymbolCorrect = async (token: tEthereumAddress, symbol: string) => {
-  const erc20 = await getAToken(token); // using aToken for ERC20 interface
+  const erc20 = await getOToken(token); // using oToken for ERC20 interface
   const erc20Symbol = await erc20.symbol();
   return symbol === erc20Symbol;
 };

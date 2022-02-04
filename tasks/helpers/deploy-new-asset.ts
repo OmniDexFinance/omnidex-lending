@@ -5,7 +5,7 @@ import * as marketConfigs from '../../markets/aave';
 import * as reserveConfigs from '../../markets/aave/reservesConfigs';
 import { getLendingPoolAddressesProvider } from './../../helpers/contracts-getters';
 import {
-  chooseATokenDeployment,
+  chooseOTokenDeployment,
   deployDefaultReserveInterestRateStrategy,
   deployStableDebtToken,
   deployVariableDebtToken,
@@ -42,12 +42,12 @@ WRONG RESERVE ASSET SETUP:
     const strategyParams = reserveConfigs['strategy' + symbol];
     const reserveAssetAddress =
       marketConfigs.AaveConfig.ReserveAssets[localBRE.network.name][symbol];
-    const deployCustomAToken = chooseATokenDeployment(strategyParams.aTokenImpl);
+    const deployCustomOToken = chooseOTokenDeployment(strategyParams.oTokenImpl);
     const addressProvider = await getLendingPoolAddressesProvider(
       LENDING_POOL_ADDRESS_PROVIDER[network]
     );
     const poolAddress = await addressProvider.getLendingPool();
-    const aToken = await deployCustomAToken(verify);
+    const oToken = await deployCustomOToken(verify);
     const stableDebt = await deployStableDebtToken(
       [
         poolAddress,
@@ -82,7 +82,7 @@ WRONG RESERVE ASSET SETUP:
     );
     console.log(`
     New interest bearing asset deployed on ${network}:
-    Interest bearing a${symbol} address: ${aToken.address}
+    Interest bearing a${symbol} address: ${oToken.address}
     Variable Debt variableDebt${symbol} address: ${variableDebt.address}
     Stable Debt stableDebt${symbol} address: ${stableDebt.address}
     Strategy Implementation for ${symbol} address: ${rates.address}

@@ -6,7 +6,7 @@ import { APPROVAL_AMOUNT_LENDING_POOL, PERCENTAGE_FACTOR, RAY } from '../../help
 import { rateStrategyStableOne } from '../../markets/aave/rateStrategies';
 
 import { strategyDAI } from '../../markets/aave/reservesConfigs';
-import { AToken, DefaultReserveInterestRateStrategy, MintableERC20 } from '../../types';
+import { OToken, DefaultReserveInterestRateStrategy, MintableERC20 } from '../../types';
 import BigNumber from 'bignumber.js';
 import './helpers/utils/math';
 
@@ -15,7 +15,7 @@ const { expect } = require('chai');
 makeSuite('Interest rate strategy tests', (testEnv: TestEnv) => {
   let strategyInstance: DefaultReserveInterestRateStrategy;
   let dai: MintableERC20;
-  let aDai: AToken;
+  let aDai: OToken;
 
   before(async () => {
     dai = testEnv.dai;
