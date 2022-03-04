@@ -158,7 +158,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       USDC: mockTokens.USDC.address,
       USDT: mockTokens.USDT.address,
       SUSD: mockTokens.SUSD.address,
-      CHARM: mockTokens.CHARM.address,
+      KARMA: mockTokens.KARMA.address,
       BAT: mockTokens.BAT.address,
       MKR: mockTokens.MKR.address,
       LINK: mockTokens.LINK.address,
@@ -179,7 +179,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       // WETH: mockTokens.LpWETH.address,
       UniDAIWETH: mockTokens.UniDAIWETH.address,
       UniWBTCWETH: mockTokens.UniWBTCWETH.address,
-      UniCHARMWETH: mockTokens.UniCHARMWETH.address,
+      UniKARMAWETH: mockTokens.UniKARMAWETH.address,
       UniBATWETH: mockTokens.UniBATWETH.address,
       UniDAIUSDC: mockTokens.UniDAIUSDC.address,
       UniCRVWETH: mockTokens.UniCRVWETH.address,
@@ -198,6 +198,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       STAKE: mockTokens.STAKE.address,
       xSUSHI: mockTokens.xSUSHI.address,
       WAVAX: mockTokens.WAVAX.address,
+      WTLOS: mockTokens.WTLOS.address,
     },
     fallbackOracle
   );
@@ -247,7 +248,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     omniDexAdmin
   );
 
-  // Reserve params from CHARM pool + mocked tokens
+  // Reserve params from KARMA pool + mocked tokens
   const reservesParams = {
     ...config.ReservesConfig,
   };

@@ -5,7 +5,7 @@ import {
   rateStrategyStableTwo,
   rateStrategyStableThree,
   rateStrategyWETH,
-  rateStrategyCHARM,
+  rateStrategyKARMA,
   rateStrategyVolatileOne,
   rateStrategyVolatileTwo,
   rateStrategyVolatileThree,
@@ -84,8 +84,8 @@ export const strategyUSDT: IReserveParams = {
   reserveFactor: '1000',
 };
 
-export const strategyCHARM: IReserveParams = {
-  strategy: rateStrategyCHARM,
+export const strategyKARMA: IReserveParams = {
+  strategy: rateStrategyKARMA,
   baseLTVAsCollateral: '5000',
   liquidationThreshold: '6500',
   liquidationBonus: '11000',

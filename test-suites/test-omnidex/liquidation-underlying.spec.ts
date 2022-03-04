@@ -378,25 +378,25 @@ makeSuite('LendingPool liquidation - liquidator receiving the underlying asset',
     );
   });
 
-  it('User 4 deposits 10 CHARM - drops HF, liquidates the CHARM, which results on a lower amount being liquidated', async () => {
-    const { charm, usdc, users, pool, oracle, helpersContract } = testEnv;
+  it('User 4 deposits 10 KARMA - drops HF, liquidates the KARMA, which results on a lower amount being liquidated', async () => {
+    const { karma, usdc, users, pool, oracle, helpersContract } = testEnv;
 
     const depositor = users[3];
     const borrower = users[4];
     const liquidator = users[5];
 
-    //mints CHARM to borrower
-    await charm.connect(borrower.signer).mint(await convertToCurrencyDecimals(charm.address, '10'));
+    //mints KARMA to borrower
+    await karma.connect(borrower.signer).mint(await convertToCurrencyDecimals(karma.address, '10'));
 
     //approve protocol to access the borrower wallet
-    await charm.connect(borrower.signer).approve(pool.address, APPROVAL_AMOUNT_LENDING_POOL);
+    await karma.connect(borrower.signer).approve(pool.address, APPROVAL_AMOUNT_LENDING_POOL);
 
-    //borrower deposits 10 CHARM
-    const amountToDeposit = await convertToCurrencyDecimals(charm.address, '10');
+    //borrower deposits 10 KARMA
+    const amountToDeposit = await convertToCurrencyDecimals(karma.address, '10');
 
     await pool
       .connect(borrower.signer)
-      .deposit(charm.address, amountToDeposit, borrower.address, '0');
+      .deposit(karma.address, amountToDeposit, borrower.address, '0');
     const usdcPrice = await oracle.getAssetPrice(usdc.address);
 
     //drops HF below 1
@@ -419,19 +419,19 @@ makeSuite('LendingPool liquidation - liquidator receiving the underlying asset',
     );
 
     const usdcReserveDataBefore = await helpersContract.getReserveData(usdc.address);
-    const charmReserveDataBefore = await helpersContract.getReserveData(charm.address);
+    const karmaReserveDataBefore = await helpersContract.getReserveData(karma.address);
 
     const amountToLiquidate = new BigNumber(userReserveDataBefore.currentStableDebt.toString())
       .div(2)
       .decimalPlaces(0, BigNumber.ROUND_DOWN)
       .toFixed(0);
 
-    const collateralPrice = await oracle.getAssetPrice(charm.address);
+    const collateralPrice = await oracle.getAssetPrice(karma.address);
     const principalPrice = await oracle.getAssetPrice(usdc.address);
 
     await pool
       .connect(liquidator.signer)
-      .liquidationCall(charm.address, usdc.address, borrower.address, amountToLiquidate, false);
+      .liquidationCall(karma.address, usdc.address, borrower.address, amountToLiquidate, false);
 
     const userReserveDataAfter = await helpersContract.getUserReserveData(
       usdc.address,
@@ -441,11 +441,11 @@ makeSuite('LendingPool liquidation - liquidator receiving the underlying asset',
     const userGlobalDataAfter = await pool.getUserAccountData(borrower.address);
 
     const usdcReserveDataAfter = await helpersContract.getReserveData(usdc.address);
-    const charmReserveDataAfter = await helpersContract.getReserveData(charm.address);
+    const karmaReserveDataAfter = await helpersContract.getReserveData(karma.address);
 
-    const charmConfiguration = await helpersContract.getReserveConfigurationData(charm.address);
-    const collateralDecimals = charmConfiguration.decimals.toString();
-    const liquidationBonus = charmConfiguration.liquidationBonus.toString();
+    const karmaConfiguration = await helpersContract.getReserveConfigurationData(karma.address);
+    const collateralDecimals = karmaConfiguration.decimals.toString();
+    const liquidationBonus = karmaConfiguration.liquidationBonus.toString();
 
     const principalDecimals = (
       await helpersContract.getReserveConfigurationData(usdc.address)
@@ -482,8 +482,8 @@ makeSuite('LendingPool liquidation - liquidator receiving the underlying asset',
       'Invalid principal available liquidity'
     );
 
-    expect(charmReserveDataAfter.availableLiquidity.toString()).to.be.bignumber.almostEqual(
-      new BigNumber(charmReserveDataBefore.availableLiquidity.toString())
+    expect(karmaReserveDataAfter.availableLiquidity.toString()).to.be.bignumber.almostEqual(
+      new BigNumber(karmaReserveDataBefore.availableLiquidity.toString())
         .minus(expectedCollateralLiquidated)
         .toFixed(0),
       'Invalid collateral available liquidity'

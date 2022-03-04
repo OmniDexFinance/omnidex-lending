@@ -29,11 +29,11 @@ export const APPROVAL_AMOUNT_LENDING_POOL = '1000000000000000000000000000';
 export const TOKEN_DISTRIBUTOR_PERCENTAGE_BASE = '10000';
 export const MOCK_USD_PRICE_IN_WEI = '5848466240000000';
 export const USD_ADDRESS = '0x10F7Fc1F91Ba351f9C629c5947AD69bD03C05b96';
-export const CHARM_REFERRAL = '0';
+export const KARMA_REFERRAL = '0';
 
 export const MOCK_CHAINLINK_AGGREGATORS_PRICES = {
   // Update to USD-based price feeds
-  CHARM: oneEther.multipliedBy('0.003620948469').toFixed(),
+  KARMA: oneEther.multipliedBy('0.003620948469').toFixed(),
   BAT: oneEther.multipliedBy('0.00137893825230').toFixed(),
   BUSD: oneEther.multipliedBy('0.00736484').toFixed(),
   DAI: oneEther.multipliedBy('0.00369068412860').toFixed(),
@@ -55,7 +55,7 @@ export const MOCK_CHAINLINK_AGGREGATORS_PRICES = {
   ZRX: oneEther.multipliedBy('0.001151').toFixed(),
   UniDAIWETH: oneEther.multipliedBy('22.407436').toFixed(),
   UniWBTCWETH: oneEther.multipliedBy('22.407436').toFixed(),
-  UniCHARMWETH: oneEther.multipliedBy('0.003620948469').toFixed(),
+  UniKARMAWETH: oneEther.multipliedBy('0.003620948469').toFixed(),
   UniBATWETH: oneEther.multipliedBy('22.407436').toFixed(),
   UniDAIUSDC: oneEther.multipliedBy('22.407436').toFixed(),
   UniCRVWETH: oneEther.multipliedBy('22.407436').toFixed(),
@@ -73,6 +73,7 @@ export const MOCK_CHAINLINK_AGGREGATORS_PRICES = {
   STAKE: oneEther.multipliedBy('0.003620948469').toFixed(),
   xSUSHI: oneEther.multipliedBy('0.00913428586').toFixed(),
   WAVAX: oneEther.multipliedBy('0.006051936629').toFixed(),
+  WTLOS: oneEther.multipliedBy('0.006051936629').toFixed(),
   USD: '5848466240000000',
 };
 
@@ -87,6 +88,8 @@ export const chainlinkAggregatorProxy = {
   'arbitrum-rinkeby': '0x5f0423B1a6935dc5596e7A24d98532b67A0AeFd8',
   arbitrum: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
   rinkeby: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
+  telos_mainnet: ZERO_ADDRESS,
+  telos_testnet: ZERO_ADDRESS,
 };
 
 export const chainlinkEthUsdAggregatorProxy = {
@@ -100,4 +103,6 @@ export const chainlinkEthUsdAggregatorProxy = {
   'arbitrum-rinkeby': '0x5f0423B1a6935dc5596e7A24d98532b67A0AeFd8',
   arbitrum: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
   rinkeby: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
+  telos_mainnet: ZERO_ADDRESS,
+  telos_testnet: ZERO_ADDRESS,
 };

@@ -10,6 +10,7 @@ import { getEthersSignersAddresses, getParamPerPool } from './contracts-helpers'
 import OmniDexConfig from '../markets/omnidex';
 import MaticConfig from '../markets/matic';
 import AvalancheConfig from '../markets/avalanche';
+import TelosConfig from '../markets/telos';
 import AmmConfig from '../markets/amm';
 
 import { CommonsConfig } from '../markets/omnidex/commons';
@@ -24,6 +25,7 @@ export enum ConfigNames {
   Matic = 'Matic',
   Amm = 'Amm',
   Avalanche = 'Avalanche',
+  Telos = 'Telos',
 }
 
 export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
@@ -36,6 +38,8 @@ export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
       return AmmConfig;
     case ConfigNames.Avalanche:
       return AvalancheConfig;
+    case ConfigNames.Telos:
+      return TelosConfig;
     case ConfigNames.Commons:
       return CommonsConfig;
     default:
@@ -65,6 +69,9 @@ export const getReservesConfigByPool = (pool: OmniDexPools): iMultiPoolsAssets<I
       },
       [OmniDexPools.avalanche]: {
         ...AvalancheConfig.ReservesConfig,
+      },
+      [OmniDexPools.telos]: {
+        ...TelosConfig.ReservesConfig,
       },
     },
     pool

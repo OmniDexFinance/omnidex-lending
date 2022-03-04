@@ -4,6 +4,7 @@ import {
   eAvalancheNetwork,
   eEthereumNetwork,
   ePolygonNetwork,
+  eTelosNetwork,
   eXDaiNetwork,
   iParamsPerNetwork,
 } from './helpers/types';
@@ -55,6 +56,8 @@ export const NETWORKS_RPC_URL: iParamsPerNetwork<string> = {
   [eXDaiNetwork.xdai]: 'https://rpc.xdaichain.com/',
   [eAvalancheNetwork.avalanche]: 'https://api.avax.network/ext/bc/C/rpc',
   [eAvalancheNetwork.fuji]: 'https://api.avax-test.network/ext/bc/C/rpc',
+  [eTelosNetwork.telos_mainnet]: 'https://mainnet.telos.net/evm',
+  [eTelosNetwork.telos_testnet]: 'https://testnet.telos.net/evm',
 };
 
 export const NETWORKS_DEFAULT_GAS: iParamsPerNetwork<number> = {
@@ -70,6 +73,8 @@ export const NETWORKS_DEFAULT_GAS: iParamsPerNetwork<number> = {
   [eXDaiNetwork.xdai]: 1 * GWEI,
   [eAvalancheNetwork.avalanche]: 225 * GWEI,
   [eAvalancheNetwork.fuji]: 85 * GWEI,
+  [eTelosNetwork.telos_mainnet]: 85 * GWEI,
+  [eTelosNetwork.telos_testnet]: 85 * GWEI,
 };
 
 export const BLOCK_TO_FORK: iParamsPerNetwork<number | undefined> = {
@@ -85,4 +90,6 @@ export const BLOCK_TO_FORK: iParamsPerNetwork<number | undefined> = {
   [eXDaiNetwork.xdai]: undefined,
   [eAvalancheNetwork.avalanche]: undefined,
   [eAvalancheNetwork.fuji]: undefined,
+  [eTelosNetwork.telos_mainnet]: undefined,
+  [eTelosNetwork.telos_testnet]: undefined,
 };

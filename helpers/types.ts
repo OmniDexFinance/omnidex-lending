@@ -4,7 +4,12 @@ export interface SymbolMap<T> {
   [symbol: string]: T;
 }
 
-export type eNetwork = eEthereumNetwork | ePolygonNetwork | eXDaiNetwork | eAvalancheNetwork;
+export type eNetwork =
+  | eEthereumNetwork
+  | ePolygonNetwork
+  | eXDaiNetwork
+  | eAvalancheNetwork
+  | eTelosNetwork;
 
 export enum eEthereumNetwork {
   buidlerevm = 'buidlerevm',
@@ -30,6 +35,11 @@ export enum eAvalancheNetwork {
   fuji = 'fuji',
 }
 
+export enum eTelosNetwork {
+  telos_mainnet = 'telos_mainnet',
+  telos_testnet = 'telos_testnet',
+}
+
 export enum EthereumNetworkNames {
   kovan = 'kovan',
   ropsten = 'ropsten',
@@ -39,6 +49,8 @@ export enum EthereumNetworkNames {
   xdai = 'xdai',
   avalanche = 'avalanche',
   fuji = 'fuji',
+  telos_mainnet = 'telos_mainnet',
+  telos_testnet = 'telos_testnet',
 }
 
 export enum OmniDexPools {
@@ -46,6 +58,7 @@ export enum OmniDexPools {
   matic = 'matic',
   amm = 'amm',
   avalanche = 'avalanche',
+  telos = 'telos',
 }
 
 export enum eContractid {
@@ -220,7 +233,7 @@ export interface iAssetBase<T> {
   USDC: T;
   USDT: T;
   SUSD: T;
-  CHARM: T;
+  KARMA: T;
   BAT: T;
   MKR: T;
   LINK: T;
@@ -237,7 +250,7 @@ export interface iAssetBase<T> {
   ENJ: T;
   UniDAIWETH: T;
   UniWBTCWETH: T;
-  UniCHARMWETH: T;
+  UniKARMAWETH: T;
   UniBATWETH: T;
   UniDAIUSDC: T;
   UniCRVWETH: T;
@@ -255,6 +268,7 @@ export interface iAssetBase<T> {
   STAKE: T;
   xSUSHI: T;
   WAVAX: T;
+  WTLOS: T;
 }
 
 export type iAssetsWithoutETH<T> = Omit<iAssetBase<T>, 'ETH'>;
@@ -268,7 +282,7 @@ export type iOmniDexPoolAssets<T> = Pick<
   | 'USDC'
   | 'USDT'
   | 'SUSD'
-  | 'CHARM'
+  | 'KARMA'
   | 'BAT'
   | 'MKR'
   | 'LINK'
@@ -295,7 +309,7 @@ export type iLpPoolAssets<T> = Pick<
   | 'WETH'
   | 'UniDAIWETH'
   | 'UniWBTCWETH'
-  | 'UniCHARMWETH'
+  | 'UniKARMAWETH'
   | 'UniBATWETH'
   | 'UniDAIUSDC'
   | 'UniCRVWETH'
@@ -313,7 +327,7 @@ export type iLpPoolAssets<T> = Pick<
 
 export type iMaticPoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'DAI' | 'USDC' | 'USDT' | 'WBTC' | 'WETH' | 'WMATIC' | 'CHARM'
+  'DAI' | 'USDC' | 'USDT' | 'WBTC' | 'WETH' | 'WMATIC' | 'KARMA'
 >;
 
 export type iXDAIPoolAssets<T> = Pick<
@@ -323,7 +337,12 @@ export type iXDAIPoolAssets<T> = Pick<
 
 export type iAvalanchePoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'WETH' | 'DAI' | 'USDT' | 'CHARM' | 'WBTC' | 'WAVAX' | 'USDC'
+  'WETH' | 'DAI' | 'USDT' | 'KARMA' | 'WBTC' | 'WAVAX' | 'USDC'
+>;
+
+export type iTelosPoolAssets<T> = Pick<
+  iAssetsWithoutUSD<T>,
+  'WETH' | 'USDT' | 'KARMA' | 'WBTC' | 'WAVAX' | 'USDC' | 'WTLOS'
 >;
 
 export type iMultiPoolsAssets<T> = iAssetCommon<T> | iOmniDexPoolAssets<T>;
@@ -334,7 +353,7 @@ export type iAssetAggregatorBase<T> = iAssetsWithoutETH<T>;
 
 export enum TokenContractId {
   DAI = 'DAI',
-  CHARM = 'CHARM',
+  KARMA = 'KARMA',
   TUSD = 'TUSD',
   BAT = 'BAT',
   WETH = 'WETH',
@@ -356,7 +375,7 @@ export enum TokenContractId {
   ENJ = 'ENJ',
   UniDAIWETH = 'UniDAIWETH',
   UniWBTCWETH = 'UniWBTCWETH',
-  UniCHARMWETH = 'UniCHARMWETH',
+  UniKARMAWETH = 'UniKARMAWETH',
   UniBATWETH = 'UniBATWETH',
   UniDAIUSDC = 'UniDAIUSDC',
   UniCRVWETH = 'UniCRVWETH',
@@ -374,6 +393,7 @@ export enum TokenContractId {
   STAKE = 'STAKE',
   xSUSHI = 'xSUSHI',
   WAVAX = 'WAVAX',
+  WTLOS = 'WTLOS',
 }
 
 export interface IReserveParams extends IReserveBorrowParams, IReserveCollateralParams {
@@ -417,7 +437,8 @@ export type iParamsPerNetwork<T> =
   | iEthereumParamsPerNetwork<T>
   | iPolygonParamsPerNetwork<T>
   | iXDaiParamsPerNetwork<T>
-  | iAvalancheParamsPerNetwork<T>;
+  | iAvalancheParamsPerNetwork<T>
+  | iTelosParamsPerNetwork<T>;
 
 export interface iParamsPerNetworkAll<T>
   extends iEthereumParamsPerNetwork<T>,
@@ -448,11 +469,17 @@ export interface iAvalancheParamsPerNetwork<T> {
   [eAvalancheNetwork.fuji]: T;
 }
 
+export interface iTelosParamsPerNetwork<T> {
+  [eTelosNetwork.telos_mainnet]: T;
+  [eTelosNetwork.telos_testnet]: T;
+}
+
 export interface iParamsPerPool<T> {
   [OmniDexPools.proto]: T;
   [OmniDexPools.matic]: T;
   [OmniDexPools.amm]: T;
   [OmniDexPools.avalanche]: T;
+  [OmniDexPools.telos]: T;
 }
 
 export interface iBasicDistributionParams {
@@ -550,6 +577,10 @@ export interface IXDAIConfiguration extends ICommonConfiguration {
 
 export interface IAvalancheConfiguration extends ICommonConfiguration {
   ReservesConfig: iAvalanchePoolAssets<IReserveParams>;
+}
+
+export interface ITelosConfiguration extends ICommonConfiguration {
+  ReservesConfig: iTelosPoolAssets<IReserveParams>;
 }
 
 export interface ITokenAddress {

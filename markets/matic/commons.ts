@@ -59,7 +59,7 @@ export const CommonsConfig: ICommonConfiguration = {
     WMATIC: {
       borrowRate: oneRay.multipliedBy(0.05).toFixed(),
     },
-    CHARM: {
+    KARMA: {
       borrowRate: oneRay.multipliedBy(0.03).toFixed(),
     },
   },
@@ -120,7 +120,7 @@ export const CommonsConfig: ICommonConfiguration = {
   },
   ChainlinkAggregator: {
     [ePolygonNetwork.matic]: {
-      CHARM: '0xbE23a3AA13038CfC28aFd0ECe4FdE379fE7fBfc4',
+      KARMA: '0xbE23a3AA13038CfC28aFd0ECe4FdE379fE7fBfc4',
       DAI: '0xFC539A559e170f848323e19dfD66007520510085',
       USDC: '0xefb7e6be8356cCc6827799B6A7348eE674A80EaE',
       USDT: '0xf9d5AAC6E5572AEFa6bd64108ff86a222F69B64d',

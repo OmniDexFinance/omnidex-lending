@@ -46,9 +46,9 @@ export const rateStrategyWETH: IInterestRateStrategyParams = {
   stableRateSlope2: new BigNumber(1).multipliedBy(oneRay).toFixed(),
 }
 
-// CHARM
-export const rateStrategyCHARM: IInterestRateStrategyParams = {
-  name: "rateStrategyCHARM",
+// KARMA
+export const rateStrategyKARMA: IInterestRateStrategyParams = {
+  name: "rateStrategyKARMA",
   optimalUtilizationRate: new BigNumber(0.45).multipliedBy(oneRay).toFixed(),
   baseVariableBorrowRate: '0',
   variableRateSlope1: '0',

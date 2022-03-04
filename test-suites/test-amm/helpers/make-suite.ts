@@ -61,7 +61,7 @@ export interface TestEnv {
   dai: MintableERC20;
   aDai: OToken;
   usdc: MintableERC20;
-  charm: MintableERC20;
+  karma: MintableERC20;
   addressesProvider: LendingPoolAddressesProvider;
   uniswapLiquiditySwapAdapter: UniswapLiquiditySwapAdapter;
   uniswapRepayAdapter: UniswapRepayAdapter;
@@ -87,7 +87,7 @@ const testEnv: TestEnv = {
   dai: {} as MintableERC20,
   aDai: {} as OToken,
   usdc: {} as MintableERC20,
-  charm: {} as MintableERC20,
+  karma: {} as MintableERC20,
   addressesProvider: {} as LendingPoolAddressesProvider,
   uniswapLiquiditySwapAdapter: {} as UniswapLiquiditySwapAdapter,
   uniswapRepayAdapter: {} as UniswapRepayAdapter,
@@ -136,13 +136,13 @@ export async function initializeMakeSuite() {
 
   const daiAddress = reservesTokens.find((token) => token.symbol === 'DAI')?.tokenAddress;
   const usdcAddress = reservesTokens.find((token) => token.symbol === 'USDC')?.tokenAddress;
-  const charmAddress = reservesTokens.find((token) => token.symbol === 'UniCHARMWETH')?.tokenAddress;
+  const karmaAddress = reservesTokens.find((token) => token.symbol === 'UniKARMAWETH')?.tokenAddress;
   const wethAddress = reservesTokens.find((token) => token.symbol === 'WETH')?.tokenAddress;
 
   if (!aDaiAddress || !aWEthAddress) {
     process.exit(1);
   }
-  if (!daiAddress || !usdcAddress || !charmAddress || !wethAddress) {
+  if (!daiAddress || !usdcAddress || !karmaAddress || !wethAddress) {
     process.exit(1);
   }
 
@@ -151,7 +151,7 @@ export async function initializeMakeSuite() {
 
   testEnv.dai = await getMintableERC20(daiAddress);
   testEnv.usdc = await getMintableERC20(usdcAddress);
-  testEnv.charm = await getMintableERC20(charmAddress);
+  testEnv.karma = await getMintableERC20(karmaAddress);
   testEnv.weth = await getWETHMocked(wethAddress);
   testEnv.wethGateway = await getWETHGateway();
 

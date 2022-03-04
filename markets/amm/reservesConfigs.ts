@@ -90,7 +90,7 @@ export const strategyWBTCWETH: IReserveParams = {
   reserveFactor: '1500'
 };
 
-export const strategyCHARMWETH: IReserveParams = {
+export const strategyKARMAWETH: IReserveParams = {
   strategy: rateStrategyAmmBase,
   baseLTVAsCollateral: '6000',
   liquidationThreshold: '7000',

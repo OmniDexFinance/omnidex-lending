@@ -6,7 +6,7 @@ import { RateMode, ProtocolErrors } from '../../helpers/types';
 import { makeSuite, TestEnv } from './helpers/make-suite';
 import { CommonsConfig } from '../../markets/amm/commons';
 
-const CHARM_REFERRAL = CommonsConfig.ProtocolGlobalParams.OmniDexReferral;
+const KARMA_REFERRAL = CommonsConfig.ProtocolGlobalParams.OmniDexReferral;
 
 makeSuite('OToken: Transfer', (testEnv: TestEnv) => {
   const {
@@ -62,7 +62,7 @@ makeSuite('OToken: Transfer', (testEnv: TestEnv) => {
         weth.address,
         ethers.utils.parseEther('0.1'),
         RateMode.Variable,
-        CHARM_REFERRAL,
+        KARMA_REFERRAL,
         users[1].address
       );
 
