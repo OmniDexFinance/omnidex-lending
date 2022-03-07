@@ -3,6 +3,7 @@ import {
   OTokenFactory,
   OTokensAndRatesHelperFactory,
   OmniDexOracleFactory,
+  OmniDexFallbackOracleFactory,
   DefaultReserveInterestRateStrategyFactory,
   GenericLogicFactory,
   InitializableAdminUpgradeabilityProxyFactory,
@@ -384,6 +385,15 @@ export const getOmniDexOracle = async (address?: tEthereumAddress) =>
     address ||
       (
         await getDb().get(`${eContractid.OmniDexOracle}.${DRE.network.name}`).value()
+      ).address,
+    await getFirstSigner()
+  );
+
+export const getOmniDexFallbackOracle = async (address?: tEthereumAddress) =>
+  await OmniDexFallbackOracleFactory.connect(
+    address ||
+      (
+        await getDb().get(`${eContractid.OmniDexFallbackOracle}.${DRE.network.name}`).value()
       ).address,
     await getFirstSigner()
   );

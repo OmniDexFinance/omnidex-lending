@@ -78,6 +78,7 @@ export enum eContractid {
   MockAggregator = 'MockAggregator',
   LendingRateOracle = 'LendingRateOracle',
   OmniDexOracle = 'OmniDexOracle',
+  OmniDexFallbackOracle = 'OmniDexFallbackOracle',
   DefaultReserveInterestRateStrategy = 'DefaultReserveInterestRateStrategy',
   LendingPoolCollateralManager = 'LendingPoolCollateralManager',
   InitializableAdminUpgradeabilityProxy = 'InitializableAdminUpgradeabilityProxy',

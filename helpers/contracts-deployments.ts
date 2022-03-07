@@ -20,6 +20,7 @@ import {
   OTokenFactory,
   OTokensAndRatesHelperFactory,
   OmniDexOracleFactory,
+  OmniDexFallbackOracleFactory,
   DefaultReserveInterestRateStrategyFactory,
   DelegationAwareOTokenFactory,
   InitializableAdminUpgradeabilityProxyFactory,
@@ -285,6 +286,14 @@ export const deployOmniDexOracle = async (
     await new OmniDexOracleFactory(await getFirstSigner()).deploy(...args),
     eContractid.OmniDexOracle,
     args,
+    verify
+  );
+
+export const deployOmniDexFallbackOracle = async (verify?: boolean) =>
+  withSaveAndVerify(
+    await new OmniDexFallbackOracleFactory(await getFirstSigner()).deploy(),
+    eContractid.OmniDexFallbackOracle,
+    [],
     verify
   );
 
