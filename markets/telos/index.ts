@@ -30,18 +30,18 @@ export const TelosConfig: ITelosConfiguration = {
   },
   ReserveAssets: {
     [eTelosNetwork.telos_mainnet]: {
-      WETH: '0x49d5c2bdffac6ce2bfdb6640f4f80f226bc10bab',
-      USDT: '0xc7198437980c041c805a1edcba50c1ce5db95118',
-      USDC: '0xa7d7079b0fead91f3e65f86e8915cb59c1a4c664',
-      KARMA: '0x63a72806098bd3d9520cc43356dd78afe5d386d9',
-      WBTC: '0x50b7545627a5162f82a992c33b87adc75187b218',
-      WAVAX: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
-      WTLOS: '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7',
+      WETH: '0xfa9343c3897324496a05fc75abed6bac29f8a40f',
+      USDT: '0xefaeee334f0fd1712f9a8cc375f427d9cdd40d73',
+      USDC: '0x818ec0a7fe18ff94269904fced6ae3dae6d6dc0b',
+      KARMA: '0x730d2Fa7dC7642E041bcE231E85b39e9bF4a6a64',
+      WBTC: '0xf390830df829cf22c53c8840554b98eafc5dcbc2',
+      WAVAX: '0x7c598c96d02398d89fbcb9d41eab3df0c16f227d',
+      WTLOS: '0xD102cE6A4dB07D247fcc28F366A623Df0938CA9E',
     },
     [eTelosNetwork.telos_testnet]: {
       WETH: '0xC2F29fe79a438735186001d6416383C97712cB78', // MintableERC20 token
-      USDT: '0x6D4b73084e0B74908B9B4a8EE1FAE178a59f778B', // MintableERC20 token
-      USDC: '0x9B102eC3677E74E66123b778D509581dC87f5F4e', // MintableERC20 token
+      USDT: '0x5e70fe707B7ac9bb9B809853F2d8EDE3d478556A', // MintableERC20 token
+      USDC: '0xca69f2E8f3614C2011AcAA47d1516CFA36fa540F', // MintableERC20 token
       KARMA: '0x0A54DC84B497c25A314A997B4Bb8b09bcaF31Abd',
       WTLOS: '0xaE85Bf723A9e74d6c663dd226996AC1b8d075AA9',
     },

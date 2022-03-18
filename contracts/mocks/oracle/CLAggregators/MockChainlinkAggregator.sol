@@ -50,6 +50,10 @@ contract MockChainlinkAggregator is IChainlinkAggregator, Ownable {
     _sybils[sybil] = false;
   }
 
+  function setDecimals(uint8 decimals) external onlyOwner {
+    _decimals = decimals;
+  }
+
   function decimals() external view override returns (uint8) {
     return _decimals;
   }

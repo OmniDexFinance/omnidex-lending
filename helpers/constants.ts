@@ -89,7 +89,7 @@ export const chainlinkAggregatorProxy = {
   arbitrum: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
   rinkeby: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
   telos_mainnet: ZERO_ADDRESS,
-  telos_testnet: ZERO_ADDRESS,
+  telos_testnet: '0x42e84fbE2f05D7d2403e865CcA42eC4D57CCA06C',
 };
 
 export const chainlinkEthUsdAggregatorProxy = {
@@ -104,5 +104,5 @@ export const chainlinkEthUsdAggregatorProxy = {
   arbitrum: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
   rinkeby: '0x8A753747A1Fa494EC906cE90E9f37563A8AF630e',
   telos_mainnet: ZERO_ADDRESS,
-  telos_testnet: ZERO_ADDRESS,
+  telos_testnet: '0x3Fe1dc4EfCeA7B01d7701cB1CDcEA0C02a62d8ff',
 };

@@ -18,7 +18,7 @@ export const CommonsConfig: ICommonConfiguration = {
   OTokenNamePrefix: 'OmniDex Telos Market',
   StableDebtTokenNamePrefix: 'OmniDex Telos Market stable debt',
   VariableDebtTokenNamePrefix: 'OmniDex Telos Market variable debt',
-  SymbolPrefix: 'o',
+  SymbolPrefix: '',
   ProviderId: 0, // Overriden in index.ts
   OracleQuoteCurrency: 'USD',
   OracleQuoteUnit: oneUsd.toString(),
@@ -81,7 +81,7 @@ export const CommonsConfig: ICommonConfiguration = {
   },
   ProviderRegistry: {
     [eTelosNetwork.telos_mainnet]: '',
-    [eTelosNetwork.telos_testnet]: '0x41844918A23f1c304853D75d6326988E36C29864',
+    [eTelosNetwork.telos_testnet]: '0x2a93677B0cD0c661C95258D660BFFBDFE7e82e3c',
   },
   ProviderRegistryOwner: {
     [eTelosNetwork.telos_mainnet]: '',
@@ -89,23 +89,23 @@ export const CommonsConfig: ICommonConfiguration = {
   },
   LendingRateOracle: {
     [eTelosNetwork.telos_mainnet]: '',
-    [eTelosNetwork.telos_testnet]: '0x2A222B96DF993B3e350D6B5C29a471CEa2b7E2f3',
+    [eTelosNetwork.telos_testnet]: '0xcCE91b7656ae0Bd43bF9c5D4DBf1B0064f037383',
   },
   LendingPoolCollateralManager: {
     [eTelosNetwork.telos_mainnet]: '',
-    [eTelosNetwork.telos_testnet]: '0x787e94C92c0232bD6b42DD3eE9239b5C9A03874A',
+    [eTelosNetwork.telos_testnet]: '0x8a3e482a4575FD00c6222873992dE1f82B9b8791',
   },
   LendingPoolConfigurator: {
     [eTelosNetwork.telos_mainnet]: '',
-    [eTelosNetwork.telos_testnet]: '0x48debce7ba11231Db28883E52487BBd19073753B',
+    [eTelosNetwork.telos_testnet]: '0xfa50D90aC1de87d3A6F3cc4605058F71aD272Ba1',
   },
   LendingPool: {
     [eTelosNetwork.telos_mainnet]: '',
-    [eTelosNetwork.telos_testnet]: '0x6f7FdE6BFC2EE69A8E92575Fe49ea65433BDe2C0',
+    [eTelosNetwork.telos_testnet]: '0x27aa06D0c9B48adce4B449763441602D03f49F88',
   },
   WethGateway: {
     [eTelosNetwork.telos_mainnet]: '',
-    [eTelosNetwork.telos_testnet]: '0xBDDbA7497B040c2FCa5F87eaF56e173FC63D4474',
+    [eTelosNetwork.telos_testnet]: '0x66094EEb44f328Ce79083C5233847813f43544BC',
   },
   TokenDistributor: {
     [eTelosNetwork.telos_mainnet]: '',
@@ -113,7 +113,7 @@ export const CommonsConfig: ICommonConfiguration = {
   },
   OmniDexOracle: {
     [eTelosNetwork.telos_mainnet]: '',
-    [eTelosNetwork.telos_testnet]: '0x62b10debDaD0a6d19480e0F254511E1C7c200123',
+    [eTelosNetwork.telos_testnet]: '0xB95b6C20E28C0Cd9E4C0B1628EB3E9c48d674AEe',
   },
   FallbackOracle: {
     [eTelosNetwork.telos_mainnet]: ZERO_ADDRESS,
