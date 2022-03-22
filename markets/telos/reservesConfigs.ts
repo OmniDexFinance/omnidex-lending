@@ -11,7 +11,7 @@ export const strategyWTLOS: IReserveParams = {
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
   oTokenImpl: eContractid.OToken,
-  reserveFactor: '1500',
+  reserveFactor: '750',
 };
 
 export const strategyWAVAX: IReserveParams = {
@@ -23,7 +23,7 @@ export const strategyWAVAX: IReserveParams = {
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
   oTokenImpl: eContractid.OToken,
-  reserveFactor: '1500',
+  reserveFactor: '750',
 };
 
 export const strategyWETH: IReserveParams = {
@@ -35,7 +35,7 @@ export const strategyWETH: IReserveParams = {
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
   oTokenImpl: eContractid.OToken,
-  reserveFactor: '1000',
+  reserveFactor: '500',
 };
 
 export const strategyWBTC: IReserveParams = {
@@ -47,7 +47,7 @@ export const strategyWBTC: IReserveParams = {
   stableBorrowRateEnabled: false,
   reserveDecimals: '8',
   oTokenImpl: eContractid.OToken,
-  reserveFactor: '1000',
+  reserveFactor: '500',
 };
 
 export const strategyKARMA: IReserveParams = {
@@ -59,7 +59,7 @@ export const strategyKARMA: IReserveParams = {
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
   oTokenImpl: eContractid.OToken,
-  reserveFactor: '2000',
+  reserveFactor: '1000',
 };
 
 export const strategyUSDT: IReserveParams = {
@@ -71,7 +71,7 @@ export const strategyUSDT: IReserveParams = {
   stableBorrowRateEnabled: false,
   reserveDecimals: '6',
   oTokenImpl: eContractid.OToken,
-  reserveFactor: '1000',
+  reserveFactor: '500',
 };
 
 export const strategyUSDC: IReserveParams = {
@@ -83,5 +83,5 @@ export const strategyUSDC: IReserveParams = {
   stableBorrowRateEnabled: false,
   reserveDecimals: '6',
   oTokenImpl: eContractid.OToken,
-  reserveFactor: '1000',
+  reserveFactor: '500',
 };
