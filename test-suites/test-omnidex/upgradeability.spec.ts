@@ -33,7 +33,7 @@ makeSuite('Upgradeability', (testEnv: TestEnv) => {
       ZERO_ADDRESS,
       ZERO_ADDRESS,
       'OmniDex Interest bearing DAI updated',
-      'aDAI',
+      'oDAI',
       '0x10',
     ]);
 

@@ -40,13 +40,13 @@ makeSuite('OToken: underlying delegation', (testEnv: TestEnv) => {
         delegationERC20.address,
         await getTreasuryAddress(OmniDexConfig),
         ZERO_ADDRESS,
-        'aDEL',
-        'aDEL',
+        'oDEL',
+        'oDEL',
       ],
       false
     );
 
-    //await delegationOToken.initialize(pool.address, ZERO_ADDRESS, delegationERC20.address, ZERO_ADDRESS, '18', 'aDEL', 'aDEL');
+    //await delegationOToken.initialize(pool.address, ZERO_ADDRESS, delegationERC20.address, ZERO_ADDRESS, '18', 'oDEL', 'oDEL');
 
     console.log((await delegationOToken.decimals()).toString());
   });

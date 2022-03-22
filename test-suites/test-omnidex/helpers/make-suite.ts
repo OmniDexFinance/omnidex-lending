@@ -132,9 +132,9 @@ export async function initializeMakeSuite() {
   testEnv.helpersContract = await getOmniDexProtocolDataProvider();
 
   const allTokens = await testEnv.helpersContract.getAllOTokens();
-  const aDaiAddress = allTokens.find((oToken) => oToken.symbol === 'aDAI')?.tokenAddress;
+  const aDaiAddress = allTokens.find((oToken) => oToken.symbol === 'oDAI')?.tokenAddress;
 
-  const aWEthAddress = allTokens.find((oToken) => oToken.symbol === 'aWETH')?.tokenAddress;
+  const aWEthAddress = allTokens.find((oToken) => oToken.symbol === 'oWETH')?.tokenAddress;
 
   const reservesTokens = await testEnv.helpersContract.getAllReservesTokens();
 
