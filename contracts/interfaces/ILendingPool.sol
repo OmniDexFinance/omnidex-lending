@@ -124,6 +124,16 @@ interface ILendingPool {
   event Unpaused();
 
   /**
+   * @dev Emitted when the flash loan pause is triggered.
+   */
+  event FlashLoansPaused();
+
+  /**
+   * @dev Emitted when the flash loan pause is lifted.
+   */
+  event FlashLoansUnpaused();
+
+  /**
    * @dev Emitted when a borrower is liquidated. This event is emitted by the LendingPool via
    * LendingPoolCollateral manager using a DELEGATECALL
    * This allows to have the events in the generated ABI for LendingPool.
@@ -407,4 +417,8 @@ interface ILendingPool {
   function setPause(bool val) external;
 
   function paused() external view returns (bool);
+
+  function setFlashLoansPause(bool val) external;
+
+  function flashLoansPaused() external view returns (bool);
 }

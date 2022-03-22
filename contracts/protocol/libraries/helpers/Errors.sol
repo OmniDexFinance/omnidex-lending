@@ -103,6 +103,7 @@ library Errors {
   string public constant LP_NOT_CONTRACT = '78';
   string public constant SDT_STABLE_DEBT_OVERFLOW = '79';
   string public constant SDT_BURN_EXCEEDS_BALANCE = '80';
+  string public constant LP_FLASHLOAN_IS_PAUSED = '81'; // 'Flash loans are paused'
 
   enum CollateralManagerErrors {
     NO_ERROR,

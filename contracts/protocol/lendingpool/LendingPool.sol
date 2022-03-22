@@ -63,6 +63,11 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
     _;
   }
 
+  modifier whenFlashLoansNotPaused() {
+    _whenFlashLoansNotPaused();
+    _;
+  }
+
   function _whenNotPaused() internal view {
     require(!_paused, Errors.LP_IS_PAUSED);
   }
@@ -72,6 +77,10 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
       _addressesProvider.getLendingPoolConfigurator() == msg.sender,
       Errors.LP_CALLER_NOT_LENDING_POOL_CONFIGURATOR
     );
+  }
+
+  function _whenFlashLoansNotPaused() internal view {
+    require(!_flashLoansPaused, Errors.LP_FLASHLOAN_IS_PAUSED);
   }
 
   function getRevision() internal pure override returns (uint256) {
@@ -490,7 +499,7 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
     address onBehalfOf,
     bytes calldata params,
     uint16 referralCode
-  ) external override whenNotPaused {
+  ) external override whenNotPaused whenFlashLoansNotPaused {
     FlashLoanLocalVars memory vars;
 
     ValidationLogic.validateFlashloan(assets, amounts);
@@ -689,6 +698,13 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
   }
 
   /**
+   * @dev Returns if the flash loans are paused
+   */
+  function flashLoansPaused() external view override returns (bool) {
+    return _flashLoansPaused;
+  }
+
+  /**
    * @dev Returns the list of the initialized reserves
    **/
   function getReservesList() external view override returns (address[] memory) {
@@ -830,7 +846,7 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
   }
 
   /**
-   * @dev Set the _pause state of a reserve
+   * @dev Set the _paused state of a reserve
    * - Only callable by the LendingPoolConfigurator contract
    * @param val `true` to pause the reserve, `false` to un-pause it
    */
@@ -840,6 +856,20 @@ contract LendingPool is VersionedInitializable, ILendingPool, LendingPoolStorage
       emit Paused();
     } else {
       emit Unpaused();
+    }
+  }
+
+  /**
+   * @dev Set the _flashLoansPaused state of a reserve
+   * - Only callable by the LendingPoolConfigurator contract
+   * @param val `true` to pause the reserve, `false` to un-pause it
+   */
+  function setFlashLoansPause(bool val) external override onlyLendingPoolConfigurator {
+    _flashLoansPaused = val;
+    if (_flashLoansPaused) {
+      emit FlashLoansPaused();
+    } else {
+      emit FlashLoansUnpaused();
     }
   }
 

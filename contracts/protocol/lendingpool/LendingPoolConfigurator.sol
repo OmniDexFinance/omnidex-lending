@@ -449,6 +449,14 @@ contract LendingPoolConfigurator is VersionedInitializable, ILendingPoolConfigur
     pool.setPause(val);
   }
 
+  /**
+   * @dev pauses or unpauses all flash loans
+   * @param val true if flash loans needs to be paused, false otherwise
+   **/
+  function setFlashLoanPause(bool val) external onlyEmergencyAdmin {
+    pool.setFlashLoansPause(val);
+  }
+
   function _initTokenWithProxy(address implementation, bytes memory initParams)
     internal
     returns (address)
