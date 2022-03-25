@@ -25,15 +25,7 @@ For getting the latest contracts addresses, please check the [Deployed contracts
 
 OmniDex Lending is a fork of Aave Protocol V2 and as such a more detailed and technical description of the protocol can be found in this repository, [here](./aave-v2-whitepaper.pdf)
 
-## Audits
- 
- OmniDex Lending is a fork of the Aave V2 Protocol. Providing copies of the Aave V2 Protocol audits here.
-- MixBytes (16/09/2020 - 03/12/2020): [report](./audits/Mixbytes-aave-v2-03-12-2020.pdf)
-- PeckShield (29/09/2020 - 03/12/2020) : [report](./audits/Peckshield-aave-v2-03-12-2020-EN.pdf) (Also available in Chinese in the same folder)
-- CertiK (28/09/2020 - 02/12/2020): [report](./audits/Certik-aave-v2-03-12-2020.pdf)
-- Consensys Diligence (09/09/2020 - 09/10/2020): [report](https://consensys.net/diligence/audits/2020/09/aave-protocol-v2/)
-- Certora, formal verification (02/08/2020 - 29/10/2020): [report](./audits/Certora-FV-aave-v2-03-12-2020.pdf)
-- SigmaPrime (January 2021): [report](./audits/SigmaPrime-aave-v2-01-2021.pdf)
+
 
 ## Connect with the community
 
@@ -122,18 +114,6 @@ npm run test
 
 For deploying OmniDex Lending Protocol V1, you can use the available scripts located at `package.json`. For a complete list, run `npm run` to see all the tasks.
 
-### Kovan deployment
-
-```
-# In one terminal
-docker-compose up
-
-# Open another tab or terminal
-docker-compose exec contracts-env bash
-
-# A new Bash terminal is prompted, connected to the container
-npm run omnidex:kovan:full:migration
-```
 
 ### Mainnet fork deployment
 
