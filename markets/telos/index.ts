@@ -9,6 +9,9 @@ import {
   strategyWBTC,
   strategyWAVAX,
   strategyWTLOS,
+  strategyWBNB,
+  strategyWMATIC,
+  strategyWFTM,
 } from './reservesConfigs';
 
 // ----------------
@@ -27,6 +30,9 @@ export const TelosConfig: ITelosConfiguration = {
     WBTC: strategyWBTC,
     WAVAX: strategyWAVAX,
     WTLOS: strategyWTLOS,
+    WBNB: strategyWBNB,
+    WMATIC: strategyWMATIC,
+    WFTM: strategyWFTM,
   },
   ReserveAssets: {
     [eTelosNetwork.telos_mainnet]: {
@@ -44,6 +50,7 @@ export const TelosConfig: ITelosConfiguration = {
       USDC: '0xca69f2E8f3614C2011AcAA47d1516CFA36fa540F', // MintableERC20 token
       KARMA: '0x0A54DC84B497c25A314A997B4Bb8b09bcaF31Abd',
       WTLOS: '0xaE85Bf723A9e74d6c663dd226996AC1b8d075AA9',
+      WBNB: '0x56A76233ca1aDc23eECb503E59Ae6E83887a9ABa', // MintableERC20 token
     },
   },
 };

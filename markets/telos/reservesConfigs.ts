@@ -26,6 +26,42 @@ export const strategyWAVAX: IReserveParams = {
   reserveFactor: '750',
 };
 
+export const strategyWBNB: IReserveParams = {
+  strategy: rateStrategyVolatileOne,
+  baseLTVAsCollateral: '5000',
+  liquidationThreshold: '6500',
+  liquidationBonus: '11000',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '18',
+  oTokenImpl: eContractid.OToken,
+  reserveFactor: '750',
+};
+
+export const strategyWMATIC: IReserveParams = {
+  strategy: rateStrategyVolatileOne,
+  baseLTVAsCollateral: '5000',
+  liquidationThreshold: '6500',
+  liquidationBonus: '11000',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '18',
+  oTokenImpl: eContractid.OToken,
+  reserveFactor: '750',
+};
+
+export const strategyWFTM: IReserveParams = {
+  strategy: rateStrategyVolatileOne,
+  baseLTVAsCollateral: '5000',
+  liquidationThreshold: '6500',
+  liquidationBonus: '11000',
+  borrowingEnabled: true,
+  stableBorrowRateEnabled: false,
+  reserveDecimals: '18',
+  oTokenImpl: eContractid.OToken,
+  reserveFactor: '750',
+};
+
 export const strategyWETH: IReserveParams = {
   strategy: rateStrategyVolatileOne,
   baseLTVAsCollateral: '8000',

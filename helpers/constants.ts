@@ -74,6 +74,8 @@ export const MOCK_CHAINLINK_AGGREGATORS_PRICES = {
   xSUSHI: oneEther.multipliedBy('0.00913428586').toFixed(),
   WAVAX: oneEther.multipliedBy('0.006051936629').toFixed(),
   WTLOS: oneEther.multipliedBy('0.006051936629').toFixed(),
+  WBNB: oneEther.multipliedBy('0.006051936629').toFixed(),
+  WFTM: oneEther.multipliedBy('0.006051936629').toFixed(),
   USD: '5848466240000000',
 };
 

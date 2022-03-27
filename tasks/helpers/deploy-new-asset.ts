@@ -1,8 +1,8 @@
 import { task } from 'hardhat/config';
 import { eEthereumNetwork } from '../../helpers/types';
 import { getTreasuryAddress } from '../../helpers/configuration';
-import * as marketConfigs from '../../markets/omnidex';
-import * as reserveConfigs from '../../markets/omnidex/reservesConfigs';
+import * as marketConfigs from '../../markets/telos';
+import * as reserveConfigs from '../../markets/telos/reservesConfigs';
 import { getLendingPoolAddressesProvider } from './../../helpers/contracts-getters';
 import {
   chooseOTokenDeployment,
@@ -14,14 +14,14 @@ import { setDRE } from '../../helpers/misc-utils';
 import { ZERO_ADDRESS } from './../../helpers/constants';
 
 const LENDING_POOL_ADDRESS_PROVIDER = {
-  main: '0xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
-  kovan: '0x652B2937Efd0B5beA1c8d54293FC1289672AFC6b',
+  telos_mainnet: '0xb53c1a33016b2dc2ff3653530bff1848a515c8c5',
+  telos_testnet: '0x5205eCa2F42e9594955fBE4440312072201CEBe9',
 };
 
 const isSymbolValid = (symbol: string, network: eEthereumNetwork) =>
   Object.keys(reserveConfigs).includes('strategy' + symbol) &&
-  marketConfigs.OmniDexConfig.ReserveAssets[network][symbol] &&
-  marketConfigs.OmniDexConfig.ReservesConfig[symbol] === reserveConfigs['strategy' + symbol];
+  marketConfigs.TelosConfig.ReserveAssets[network][symbol] &&
+  marketConfigs.TelosConfig.ReservesConfig[symbol] === reserveConfigs['strategy' + symbol];
 
 task('external:deploy-new-asset', 'Deploy A token, Debt Tokens, Risk Parameters')
   .addParam('symbol', `Asset symbol, needs to have configuration ready`)
@@ -33,15 +33,15 @@ task('external:deploy-new-asset', 'Deploy A token, Debt Tokens, Risk Parameters'
         `
 WRONG RESERVE ASSET SETUP:
         The symbol ${symbol} has no reserve Config and/or reserve Asset setup.
-        update /markets/omnidex/index.ts and add the asset address for ${network} network
-        update /markets/omnidex/reservesConfigs.ts and add parameters for ${symbol}
+        update /markets/telos/index.ts and add the asset address for ${network} network
+        update /markets/telos/reservesConfigs.ts and add parameters for ${symbol}
         `
       );
     }
     setDRE(localBRE);
     const strategyParams = reserveConfigs['strategy' + symbol];
     const reserveAssetAddress =
-      marketConfigs.OmniDexConfig.ReserveAssets[localBRE.network.name][symbol];
+      marketConfigs.TelosConfig.ReserveAssets[localBRE.network.name][symbol];
     const deployCustomOToken = chooseOTokenDeployment(strategyParams.oTokenImpl);
     const addressProvider = await getLendingPoolAddressesProvider(
       LENDING_POOL_ADDRESS_PROVIDER[network]
@@ -53,7 +53,7 @@ WRONG RESERVE ASSET SETUP:
         poolAddress,
         reserveAssetAddress,
         ZERO_ADDRESS, // Incentives Controller
-        `OmniDex stable debt bearing ${symbol}`,
+        `OmniDex Telos Market stable debt ${symbol}`,
         `stableDebt${symbol}`,
       ],
       verify
@@ -63,7 +63,7 @@ WRONG RESERVE ASSET SETUP:
         poolAddress,
         reserveAssetAddress,
         ZERO_ADDRESS, // Incentives Controller
-        `OmniDex variable debt bearing ${symbol}`,
+        `OmniDex Telos Market variable debt ${symbol}`,
         `variableDebt${symbol}`,
       ],
       verify
@@ -82,7 +82,7 @@ WRONG RESERVE ASSET SETUP:
     );
     console.log(`
     New interest bearing asset deployed on ${network}:
-    Interest bearing a${symbol} address: ${oToken.address}
+    Interest bearing o${symbol} address: ${oToken.address}
     Variable Debt variableDebt${symbol} address: ${variableDebt.address}
     Stable Debt stableDebt${symbol} address: ${stableDebt.address}
     Strategy Implementation for ${symbol} address: ${rates.address}

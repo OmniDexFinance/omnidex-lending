@@ -270,6 +270,8 @@ export interface iAssetBase<T> {
   xSUSHI: T;
   WAVAX: T;
   WTLOS: T;
+  WBNB: T;
+  WFTM: T;
 }
 
 export type iAssetsWithoutETH<T> = Omit<iAssetBase<T>, 'ETH'>;
@@ -343,7 +345,7 @@ export type iAvalanchePoolAssets<T> = Pick<
 
 export type iTelosPoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'WETH' | 'USDT' | 'KARMA' | 'WBTC' | 'WAVAX' | 'USDC' | 'WTLOS'
+  'WETH' | 'USDT' | 'KARMA' | 'WBTC' | 'WAVAX' | 'USDC' | 'WTLOS' | 'WBNB' | 'WMATIC' | 'WFTM'
 >;
 
 export type iMultiPoolsAssets<T> = iAssetCommon<T> | iOmniDexPoolAssets<T>;
@@ -395,6 +397,8 @@ export enum TokenContractId {
   xSUSHI = 'xSUSHI',
   WAVAX = 'WAVAX',
   WTLOS = 'WTLOS',
+  WBNB = 'WBNB',
+  WFTM = 'WFTM',
 }
 
 export interface IReserveParams extends IReserveBorrowParams, IReserveCollateralParams {
