@@ -116,8 +116,8 @@ export const CommonsConfig: ICommonConfiguration = {
     [eTelosNetwork.telos_testnet]: '0xB95b6C20E28C0Cd9E4C0B1628EB3E9c48d674AEe',
   },
   FallbackOracle: {
-    [eTelosNetwork.telos_mainnet]: ZERO_ADDRESS,
-    [eTelosNetwork.telos_testnet]: '0xED6b3b9D352Ad02f1685fB8Db9a35EC541de609b',
+    [eTelosNetwork.telos_mainnet]: '',
+    [eTelosNetwork.telos_testnet]: '0x1996E0dbB32C8f11C3e056942a5828Cc00ef2CcA',
   },
   ChainlinkAggregator: {
     [eTelosNetwork.telos_mainnet]: {
