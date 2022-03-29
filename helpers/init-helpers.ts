@@ -6,7 +6,7 @@ import {
   tEthereumAddress,
 } from './types';
 import { OmniDexProtocolDataProvider } from '../types/OmniDexProtocolDataProvider';
-import { chunk, getDb, waitForTx } from './misc-utils';
+import { chunk, getDb, waitForTx, getOTokenExtraParams } from './misc-utils';
 import {
   getOToken,
   getOTokensAndRatesHelper,
@@ -20,14 +20,6 @@ import {
 import { BigNumberish } from 'ethers';
 import { ConfigNames } from './configuration';
 import { deployRateStrategy } from './contracts-deployments';
-
-export const getOTokenExtraParams = async (oTokenName: string, tokenAddress: tEthereumAddress) => {
-  console.log(oTokenName);
-  switch (oTokenName) {
-    default:
-      return '0x10';
-  }
-};
 
 export const initReservesByHelper = async (
   reservesParams: iMultiPoolsAssets<IReserveParams>,

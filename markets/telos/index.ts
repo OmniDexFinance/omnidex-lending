@@ -51,6 +51,9 @@ export const TelosConfig: ITelosConfiguration = {
       KARMA: '0x0A54DC84B497c25A314A997B4Bb8b09bcaF31Abd',
       WTLOS: '0xaE85Bf723A9e74d6c663dd226996AC1b8d075AA9',
       WBNB: '0x56A76233ca1aDc23eECb503E59Ae6E83887a9ABa', // MintableERC20 token
+      WBTC: '0xA23D982c76d0cc99D5497060E8122953b2B20c88', // MintableERC20 token
+      WFTM: '0xA4F1FfA5187Eb1B61c97FA34B871E8C46A6325F0', // MintableERC20 token
+      WMATIC: '0xE0DbA1F5aB9ec3e53D7d59859E9a53D6FB251D0a', // MintableERC20 token
     },
   },
 };

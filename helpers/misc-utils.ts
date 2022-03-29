@@ -152,3 +152,11 @@ export const impersonateAccountsHardhat = async (accounts: string[]) => {
     });
   }
 };
+
+export const getOTokenExtraParams = async (oTokenName: string, tokenAddress: tEthereumAddress) => {
+  console.log(oTokenName);
+  switch (oTokenName) {
+    default:
+      return '0x10';
+  }
+};
