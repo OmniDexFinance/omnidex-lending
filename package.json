@@ -50,6 +50,7 @@
     "telos:testnet:full:migration:add-registry": "npm run compile && npm run hardhat:telos_testnet telos:mainnet -- --pool Telos",
     "telos:mainnet:full:migration:add-registry": "npm run compile && npm run hardhat:telos_mainnet telos:mainnet -- --pool Telos",
     "telos:testnet:deploy-new-assets": "npm run compile && npm run hardhat:telos_testnet external:deploy-new-asset -- --symbol",
+    "telos:mainnet:deploy-new-assets": "npm run compile && npm run hardhat:telos_mainnet external:deploy-new-asset -- --symbol",
     "omnidex:docker:add-market-to-registry-from-config": "npm run compile && npm run hardhat:docker -- add-market-to-registry --pool OmniDex",
     "omnidex:kovan:add-market-to-registry-from-config": "npm run compile && npm run hardhat:kovan -- add-market-to-registry --pool OmniDex",
     "matic:mumbai:add-market-to-registry-from-config": "npm run compile && npm run hardhat:mumbai add-market-to-registry --pool Matic",
