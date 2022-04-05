@@ -41,12 +41,61 @@ contract OToken is
 
   ILendingPool internal _pool;
   address internal _treasury;
+  address internal _karmaFeeHolder;
+  address internal _team1;
+  address internal _team2;
+  address internal _team3;
   address internal _underlyingAsset;
   IOmniDexIncentivesController internal _incentivesController;
 
   modifier onlyLendingPool {
     require(_msgSender() == address(_pool), Errors.CT_CALLER_MUST_BE_LENDING_POOL);
     _;
+  }
+
+  modifier onlyCurrentTreasury {
+    require(_msgSender() == _treasury, 'Only Current Treasury');
+    _;
+  }
+
+  modifier onlyCurrentKarmaFeeHolder {
+    require(_msgSender() == _karmaFeeHolder, 'Only Current Karma Fee Holder');
+    _;
+  }
+
+  modifier onlyCurrentTeam1 {
+    require(_msgSender() == _team1, 'Only Current Team 1');
+    _;
+  }
+
+  modifier onlyCurrentTeam2 {
+    require(_msgSender() == _team2, 'Only Current Team 2');
+    _;
+  }
+
+  modifier onlyCurrentTeam3 {
+    require(_msgSender() == _team3, 'Only Current Team 3');
+    _;
+  }
+
+  function setTreasury(address newAddress) external onlyCurrentTreasury {
+    _treasury = newAddress;
+  }
+
+  function setKarmaFeeHolder(address newAddress) external onlyCurrentKarmaFeeHolder {
+    _karmaFeeHolder = newAddress;
+  }
+
+  function setTeam1(address newAddress) external onlyCurrentTeam1 {
+    _team1 = newAddress;
+  }
+
+  function setTeam2(address newAddress) external onlyCurrentTeam2 {
+    _team2 = newAddress;
+  }
+
+  function setTeam3(address newAddress) external onlyCurrentTeam3 {
+    _team3 = newAddress;
   }
 
   function getRevision() internal pure virtual override returns (uint256) {
@@ -98,6 +147,11 @@ contract OToken is
     _treasury = treasury;
     _underlyingAsset = underlyingAsset;
     _incentivesController = incentivesController;
+
+    _karmaFeeHolder = 0x9892F867F0E3d54cf9EdA66Cf5886bd84D973e2f;
+    _team1 = 0xBd6721C192547cba2Bc62027D44Ce0FE085f214f;
+    _team2 = 0xe7209d65c5BB05Ddf799b20fF0EC09E691FC3f11;
+    _team3 = 0x68f3Ed374Ab786A5b8eA959c89C4F06e83f52FC1;
 
     emit Initialized(
       underlyingAsset,
@@ -172,14 +226,30 @@ contract OToken is
     }
 
     address treasury = _treasury;
+    address karmaFeeHolder = _karmaFeeHolder;
+    address team1 = _team1;
+    address team2 = _team2;
+    address team3 = _team3;
+
+    uint256 treasuryAmount = amount;
+    uint256 karmaFeeAmount = treasuryAmount.mul(80).div(100);
+    uint256 teamAmount = treasuryAmount.mul(10).div(100);
+    uint256 teamSplitAmount = teamAmount.div(3);
+
+    treasuryAmount = treasuryAmount.sub(karmaFeeAmount);
+    treasuryAmount = treasuryAmount.sub(teamAmount);
 
     // Compared to the normal mint, we don't check for rounding errors.
     // The amount to mint can easily be very small since it is a fraction of the interest ccrued.
     // In that case, the treasury will experience a (very small) loss, but it
     // wont cause potentially valid transactions to fail.
-    _mint(treasury, amount.rayDiv(index));
+    _mint(treasury, treasuryAmount.rayDiv(index));
+    _mint(karmaFeeHolder, karmaFeeAmount.rayDiv(index));
+    _mint(team1, teamSplitAmount.rayDiv(index));
+    _mint(team2, teamSplitAmount.rayDiv(index));
+    _mint(team3, teamSplitAmount.rayDiv(index));
 
-    emit Transfer(address(0), treasury, amount);
+    emit Transfer(address(0), treasury, treasuryAmount);
     emit Mint(treasury, amount, index);
   }
 

@@ -128,6 +128,9 @@ export const CommonsConfig: ICommonConfiguration = {
       WBTC: ZERO_ADDRESS,
       WAVAX: ZERO_ADDRESS,
       WTLOS: ZERO_ADDRESS,
+      WBNB: ZERO_ADDRESS,
+      WMATIC: ZERO_ADDRESS,
+      WFTM: ZERO_ADDRESS,
       USD: ZERO_ADDRESS,
     },
     [eTelosNetwork.telos_testnet]: {
@@ -138,6 +141,9 @@ export const CommonsConfig: ICommonConfiguration = {
       WBTC: ZERO_ADDRESS,
       WAVAX: ZERO_ADDRESS,
       WTLOS: ZERO_ADDRESS,
+      WBNB: ZERO_ADDRESS,
+      WMATIC: ZERO_ADDRESS,
+      WFTM: ZERO_ADDRESS,
       USD: ZERO_ADDRESS,
     },
   },
@@ -159,7 +165,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eTelosNetwork.telos_testnet]: '0xaE85Bf723A9e74d6c663dd226996AC1b8d075AA9', // Official WTLOS
   },
   ReserveFactorTreasuryAddress: {
-    [eTelosNetwork.telos_mainnet]: '0x365212Ecc6715A561C1ec128FCc3AEd9DBF3c404',
+    [eTelosNetwork.telos_mainnet]: '0x1e61a5c911Ab51F98A8dFBE90C0aa42e355885C5',
     [eTelosNetwork.telos_testnet]: '0x365212Ecc6715A561C1ec128FCc3AEd9DBF3c404', // Self-controlled EOA for testing
   },
   IncentivesController: {
