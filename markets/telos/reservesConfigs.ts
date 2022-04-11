@@ -52,9 +52,9 @@ export const strategyWMATIC: IReserveParams = {
 
 export const strategyWFTM: IReserveParams = {
   strategy: rateStrategyVolatileOne,
-  baseLTVAsCollateral: '5000',
-  liquidationThreshold: '6500',
-  liquidationBonus: '11000',
+  baseLTVAsCollateral: '2500',
+  liquidationThreshold: '5000',
+  liquidationBonus: '11500',
   borrowingEnabled: true,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
@@ -88,9 +88,9 @@ export const strategyWBTC: IReserveParams = {
 
 export const strategyKARMA: IReserveParams = {
   strategy: rateStrategyVolatileOne,
-  baseLTVAsCollateral: '4000',
-  liquidationThreshold: '6500',
-  liquidationBonus: '11000',
+  baseLTVAsCollateral: '2500',
+  liquidationThreshold: '5000',
+  liquidationBonus: '11500',
   borrowingEnabled: false,
   stableBorrowRateEnabled: false,
   reserveDecimals: '18',
@@ -100,9 +100,9 @@ export const strategyKARMA: IReserveParams = {
 
 export const strategyUSDT: IReserveParams = {
   strategy: rateStrategyStableOne,
-  baseLTVAsCollateral: '7500',
-  liquidationThreshold: '8000',
-  liquidationBonus: '10500',
+  baseLTVAsCollateral: '0',
+  liquidationThreshold: '0',
+  liquidationBonus: '0',
   borrowingEnabled: true,
   stableBorrowRateEnabled: true,
   reserveDecimals: '6',
