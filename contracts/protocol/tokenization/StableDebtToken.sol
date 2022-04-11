@@ -39,6 +39,10 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
     _treasury = newAddress;
   }
 
+  function getTreasury() public view returns (address) {
+    return _treasury;
+  }
+
   /**
    * @dev Initializes the debt token.
    * @param pool The address of the lending pool where this oToken will be used

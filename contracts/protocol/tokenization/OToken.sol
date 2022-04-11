@@ -82,8 +82,16 @@ contract OToken is
     _treasury = newAddress;
   }
 
+  function getTreasury() public view returns (address) {
+    return _treasury;
+  }
+
   function setKarmaFeeHolder(address newAddress) external onlyCurrentKarmaFeeHolder {
     _karmaFeeHolder = newAddress;
+  }
+
+  function getKarmaFeeHolder() public view returns (address) {
+    return _karmaFeeHolder;
   }
 
   function setTeam1(address newAddress) external onlyCurrentTeam1 {
