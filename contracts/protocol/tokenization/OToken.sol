@@ -375,6 +375,13 @@ contract OToken is
     return _getIncentivesController();
   }
 
+  function setIncentivesController(IOmniDexIncentivesController incentivesController)
+    external
+    onlyCurrentTreasury
+  {
+    _incentivesController = incentivesController;
+  }
+
   /**
    * @dev Transfers the underlying asset to `target`. Used by the LendingPool to transfer
    * assets in borrow(), withdraw() and flashLoan()
