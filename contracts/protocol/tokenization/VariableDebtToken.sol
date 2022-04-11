@@ -20,8 +20,18 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   uint256 public constant DEBT_TOKEN_REVISION = 0x1;
 
   ILendingPool internal _pool;
+  address internal _treasury;
   address internal _underlyingAsset;
   IOmniDexIncentivesController internal _incentivesController;
+
+  modifier onlyCurrentTreasury {
+    require(_msgSender() == _treasury, 'Only Current Treasury');
+    _;
+  }
+
+  function setTreasury(address newAddress) external onlyCurrentTreasury {
+    _treasury = newAddress;
+  }
 
   /**
    * @dev Initializes the debt token.
@@ -46,6 +56,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
     _setDecimals(debtTokenDecimals);
 
     _pool = pool;
+    _treasury = 0x1e61a5c911Ab51F98A8dFBE90C0aa42e355885C5;
     _underlyingAsset = underlyingAsset;
     _incentivesController = incentivesController;
 
@@ -186,6 +197,13 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
    **/
   function getIncentivesController() external view override returns (IOmniDexIncentivesController) {
     return _getIncentivesController();
+  }
+
+  function setIncentivesController(IOmniDexIncentivesController incentivesController)
+    external
+    onlyCurrentTreasury
+  {
+    _incentivesController = incentivesController;
   }
 
   /**
