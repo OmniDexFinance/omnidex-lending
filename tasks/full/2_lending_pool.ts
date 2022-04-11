@@ -78,6 +78,7 @@ task('full:deploy-lending-pool', 'Deploy lending pool for dev enviroment')
       const admin = await DRE.ethers.getSigner(await getEmergencyAdmin(poolConfig));
       // Pause market during deployment
       await waitForTx(await lendingPoolConfiguratorProxy.connect(admin).setPoolPause(true));
+      await waitForTx(await lendingPoolConfiguratorProxy.connect(admin).setFlashLoanPause(true));
 
       // Deploy deployment helpers
       await deployStableAndVariableTokensHelper(
