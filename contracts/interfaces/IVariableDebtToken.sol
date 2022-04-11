@@ -59,4 +59,6 @@ interface IVariableDebtToken is IScaledBalanceToken, IInitializableDebtToken {
    * @dev Returns the address of the incentives controller contract
    **/
   function getIncentivesController() external view returns (IOmniDexIncentivesController);
+
+  function setIncentivesController(IOmniDexIncentivesController incentivesController) external;
 }

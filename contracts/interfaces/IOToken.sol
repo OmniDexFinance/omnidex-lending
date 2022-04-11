@@ -100,6 +100,8 @@ interface IOToken is IERC20, IScaledBalanceToken, IInitializableOToken {
    **/
   function getIncentivesController() external view returns (IOmniDexIncentivesController);
 
+  function setIncentivesController(IOmniDexIncentivesController incentivesController) external;
+
   /**
    * @dev Returns the address of the underlying asset of this oToken (E.g. WETH for aWETH)
    **/
