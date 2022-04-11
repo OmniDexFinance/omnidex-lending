@@ -369,6 +369,7 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
 
   function setIncentivesController(IOmniDexIncentivesController incentivesController)
     external
+    override
     onlyCurrentTreasury
   {
     _incentivesController = incentivesController;

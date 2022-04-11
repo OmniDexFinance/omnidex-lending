@@ -377,6 +377,7 @@ contract OToken is
 
   function setIncentivesController(IOmniDexIncentivesController incentivesController)
     external
+    override
     onlyCurrentTreasury
   {
     _incentivesController = incentivesController;

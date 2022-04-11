@@ -201,6 +201,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
 
   function setIncentivesController(IOmniDexIncentivesController incentivesController)
     external
+    override
     onlyCurrentTreasury
   {
     _incentivesController = incentivesController;
