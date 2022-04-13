@@ -4,11 +4,11 @@ pragma experimental ABIEncoderV2;
 
 import {IERC20Detailed} from '../dependencies/openzeppelin/contracts/IERC20Detailed.sol';
 import {ILendingPoolAddressesProvider} from '../interfaces/ILendingPoolAddressesProvider.sol';
-import {IAaveIncentivesController} from '../interfaces/IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from '../interfaces/IOmniDexIncentivesController.sol';
 import {IUiPoolDataProvider} from './interfaces/IUiPoolDataProvider.sol';
 import {ILendingPool} from '../interfaces/ILendingPool.sol';
 import {IPriceOracleGetter} from '../interfaces/IPriceOracleGetter.sol';
-import {IAToken} from '../interfaces/IAToken.sol';
+import {IOToken} from '../interfaces/IOToken.sol';
 import {IVariableDebtToken} from '../interfaces/IVariableDebtToken.sol';
 import {IStableDebtToken} from '../interfaces/IStableDebtToken.sol';
 import {WadRayMath} from '../protocol/libraries/math/WadRayMath.sol';
@@ -25,10 +25,12 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
   using UserConfiguration for DataTypes.UserConfigurationMap;
 
   address public constant MOCK_USD_ADDRESS = 0x10F7Fc1F91Ba351f9C629c5947AD69bD03C05b96;
-  IAaveIncentivesController public immutable override incentivesController;
+  IOmniDexIncentivesController public immutable override incentivesController;
   IPriceOracleGetter public immutable oracle;
 
-  constructor(IAaveIncentivesController _incentivesController, IPriceOracleGetter _oracle) public {
+  constructor(IOmniDexIncentivesController _incentivesController, IPriceOracleGetter _oracle)
+    public
+  {
     incentivesController = _incentivesController;
     oracle = _oracle;
   }
@@ -88,14 +90,14 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
       reserveData.variableBorrowRate = baseData.currentVariableBorrowRate;
       reserveData.stableBorrowRate = baseData.currentStableBorrowRate;
       reserveData.lastUpdateTimestamp = baseData.lastUpdateTimestamp;
-      reserveData.aTokenAddress = baseData.aTokenAddress;
+      reserveData.oTokenAddress = baseData.oTokenAddress;
       reserveData.stableDebtTokenAddress = baseData.stableDebtTokenAddress;
       reserveData.variableDebtTokenAddress = baseData.variableDebtTokenAddress;
       reserveData.interestRateStrategyAddress = baseData.interestRateStrategyAddress;
       reserveData.priceInEth = oracle.getAssetPrice(reserveData.underlyingAsset);
 
       reserveData.availableLiquidity = IERC20Detailed(reserveData.underlyingAsset).balanceOf(
-        reserveData.aTokenAddress
+        reserveData.oTokenAddress
       );
       (
         reserveData.totalPrincipalStableDebt,
@@ -108,7 +110,7 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
 
       // reserve configuration
 
-      // we're getting this info from the aToken, because some of assets can be not compliant with ETC20Detailed
+      // we're getting this info from the oToken, because some of assets can be not compliant with ETC20Detailed
       reserveData.symbol = IERC20Detailed(reserveData.underlyingAsset).symbol();
       reserveData.name = '';
 
@@ -138,17 +140,17 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
       // incentives
       if (address(0) != address(incentivesController)) {
         (
-          reserveData.aTokenIncentivesIndex,
+          reserveData.oTokenIncentivesIndex,
           reserveData.aEmissionPerSecond,
           reserveData.aIncentivesLastUpdateTimestamp
-        ) = incentivesController.getAssetData(reserveData.aTokenAddress);
-     
+        ) = incentivesController.getAssetData(reserveData.oTokenAddress);
+
         (
           reserveData.sTokenIncentivesIndex,
           reserveData.sEmissionPerSecond,
           reserveData.sIncentivesLastUpdateTimestamp
         ) = incentivesController.getAssetData(reserveData.stableDebtTokenAddress);
-     
+
         (
           reserveData.vTokenIncentivesIndex,
           reserveData.vEmissionPerSecond,
@@ -182,9 +184,9 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
       DataTypes.ReserveData memory baseData = lendingPool.getReserveData(reserves[i]);
       // incentives
       if (address(0) != address(incentivesController)) {
-        userReservesData[i].aTokenincentivesUserIndex = incentivesController.getUserAssetData(
+        userReservesData[i].oTokenincentivesUserIndex = incentivesController.getUserAssetData(
           user,
-          baseData.aTokenAddress
+          baseData.oTokenAddress
         );
         userReservesData[i].vTokenincentivesUserIndex = incentivesController.getUserAssetData(
           user,
@@ -197,7 +199,7 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
       }
       // user reserve data
       userReservesData[i].underlyingAsset = reserves[i];
-      userReservesData[i].scaledATokenBalance = IAToken(baseData.aTokenAddress).scaledBalanceOf(
+      userReservesData[i].scaledOTokenBalance = IOToken(baseData.oTokenAddress).scaledBalanceOf(
         user
       );
       userReservesData[i].usageAsCollateralEnabledOnUser = userConfig.isUsingAsCollateral(i);
@@ -262,14 +264,14 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
       reserveData.variableBorrowRate = baseData.currentVariableBorrowRate;
       reserveData.stableBorrowRate = baseData.currentStableBorrowRate;
       reserveData.lastUpdateTimestamp = baseData.lastUpdateTimestamp;
-      reserveData.aTokenAddress = baseData.aTokenAddress;
+      reserveData.oTokenAddress = baseData.oTokenAddress;
       reserveData.stableDebtTokenAddress = baseData.stableDebtTokenAddress;
       reserveData.variableDebtTokenAddress = baseData.variableDebtTokenAddress;
       reserveData.interestRateStrategyAddress = baseData.interestRateStrategyAddress;
       reserveData.priceInEth = oracle.getAssetPrice(reserveData.underlyingAsset);
 
       reserveData.availableLiquidity = IERC20Detailed(reserveData.underlyingAsset).balanceOf(
-        reserveData.aTokenAddress
+        reserveData.oTokenAddress
       );
       (
         reserveData.totalPrincipalStableDebt,
@@ -282,7 +284,7 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
 
       // reserve configuration
 
-      // we're getting this info from the aToken, because some of assets can be not compliant with ETC20Detailed
+      // we're getting this info from the oToken, because some of assets can be not compliant with ETC20Detailed
       reserveData.symbol = IERC20Detailed(reserveData.underlyingAsset).symbol();
       reserveData.name = '';
 
@@ -312,17 +314,17 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
       // incentives
       if (address(0) != address(incentivesController)) {
         (
-          reserveData.aTokenIncentivesIndex,
+          reserveData.oTokenIncentivesIndex,
           reserveData.aEmissionPerSecond,
           reserveData.aIncentivesLastUpdateTimestamp
-        ) = incentivesController.getAssetData(reserveData.aTokenAddress); 
-     
+        ) = incentivesController.getAssetData(reserveData.oTokenAddress);
+
         (
           reserveData.sTokenIncentivesIndex,
           reserveData.sEmissionPerSecond,
           reserveData.sIncentivesLastUpdateTimestamp
         ) = incentivesController.getAssetData(reserveData.stableDebtTokenAddress);
-     
+
         (
           reserveData.vTokenIncentivesIndex,
           reserveData.vEmissionPerSecond,
@@ -333,9 +335,9 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
       if (user != address(0)) {
         // incentives
         if (address(0) != address(incentivesController)) {
-          userReservesData[i].aTokenincentivesUserIndex = incentivesController.getUserAssetData(
+          userReservesData[i].oTokenincentivesUserIndex = incentivesController.getUserAssetData(
             user,
-            reserveData.aTokenAddress
+            reserveData.oTokenAddress
           );
           userReservesData[i].vTokenincentivesUserIndex = incentivesController.getUserAssetData(
             user,
@@ -348,7 +350,7 @@ contract UiPoolDataProvider is IUiPoolDataProvider {
         }
         // user reserve data
         userReservesData[i].underlyingAsset = reserveData.underlyingAsset;
-        userReservesData[i].scaledATokenBalance = IAToken(reserveData.aTokenAddress)
+        userReservesData[i].scaledOTokenBalance = IOToken(reserveData.oTokenAddress)
           .scaledBalanceOf(user);
         userReservesData[i].usageAsCollateralEnabledOnUser = userConfig.isUsingAsCollateral(i);
 

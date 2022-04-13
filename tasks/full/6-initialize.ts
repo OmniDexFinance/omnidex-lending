@@ -13,7 +13,7 @@ import { notFalsyOrZeroAddress, waitForTx } from '../../helpers/misc-utils';
 import { initReservesByHelper, configureReservesByHelper } from '../../helpers/init-helpers';
 import { exit } from 'process';
 import {
-  getAaveProtocolDataProvider,
+  getOmniDexProtocolDataProvider,
   getLendingPoolAddressesProvider,
 } from '../../helpers/contracts-getters';
 import { chainlinkAggregatorProxy, chainlinkEthUsdAggregatorProxy } from '../../helpers/constants';
@@ -27,7 +27,7 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
       const network = <eNetwork>localBRE.network.name;
       const poolConfig = loadPoolConfig(pool);
       const {
-        ATokenNamePrefix,
+        OTokenNamePrefix,
         StableDebtTokenNamePrefix,
         VariableDebtTokenNamePrefix,
         SymbolPrefix,
@@ -42,7 +42,7 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
       const incentivesController = await getParamPerNetwork(IncentivesController, network);
       const addressesProvider = await getLendingPoolAddressesProvider();
 
-      const testHelpers = await getAaveProtocolDataProvider();
+      const testHelpers = await getOmniDexProtocolDataProvider();
 
       const admin = await addressesProvider.getPoolAdmin();
       const oracle = await addressesProvider.getPriceOracle();
@@ -56,7 +56,7 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
       await initReservesByHelper(
         ReservesConfig,
         reserveAssets,
-        ATokenNamePrefix,
+        OTokenNamePrefix,
         StableDebtTokenNamePrefix,
         VariableDebtTokenNamePrefix,
         SymbolPrefix,
@@ -87,14 +87,14 @@ task('full:initialize-lending-pool', 'Initialize lending pool configuration.')
       );
 
       console.log(
-        '\tSetting AaveProtocolDataProvider at AddressesProvider at id: 0x01',
+        '\tSetting OmniDexProtocolDataProvider at AddressesProvider at id: 0x01',
         collateralManagerAddress
       );
-      const aaveProtocolDataProvider = await getAaveProtocolDataProvider();
+      const omniDexProtocolDataProvider = await getOmniDexProtocolDataProvider();
       await waitForTx(
         await addressesProvider.setAddress(
           '0x0100000000000000000000000000000000000000000000000000000000000000',
-          aaveProtocolDataProvider.address
+          omniDexProtocolDataProvider.address
         )
       );
 

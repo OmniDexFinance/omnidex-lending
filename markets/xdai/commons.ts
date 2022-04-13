@@ -14,9 +14,9 @@ import { ICommonConfiguration, eXDaiNetwork } from '../../helpers/types';
 
 export const CommonsConfig: ICommonConfiguration = {
   MarketId: 'Commons',
-  ATokenNamePrefix: 'Aave XDAI Market',
-  StableDebtTokenNamePrefix: 'Aave XDAI Market stable debt',
-  VariableDebtTokenNamePrefix: 'Aave XDAI Market variable debt',
+  OTokenNamePrefix: 'OmniDex XDAI Market',
+  StableDebtTokenNamePrefix: 'OmniDex XDAI Market stable debt',
+  VariableDebtTokenNamePrefix: 'OmniDex XDAI Market variable debt',
   SymbolPrefix: 'm',
   ProviderId: 0, // Overriden in index.ts
   OracleQuoteCurrency: 'ETH',
@@ -26,7 +26,7 @@ export const CommonsConfig: ICommonConfiguration = {
     UsdAddress: '0x10F7Fc1F91Ba351f9C629c5947AD69bD03C05b96',
     NilAddress: '0x0000000000000000000000000000000000000000',
     OneAddress: '0x0000000000000000000000000000000000000001',
-    AaveReferral: '0',
+    OmniDexReferral: '0',
   },
 
   // ----------------
@@ -96,7 +96,7 @@ export const CommonsConfig: ICommonConfiguration = {
   WethGateway: {
     [eXDaiNetwork.xdai]: '',
   },
-  AaveOracle: {
+  OmniDexOracle: {
     [eXDaiNetwork.xdai]: '',
   },
   FallbackOracle: {
@@ -115,7 +115,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eXDaiNetwork.xdai]: {},
   },
   ReservesConfig: {},
-  ATokenDomainSeparator: {
+  OTokenDomainSeparator: {
     [eXDaiNetwork.xdai]: '',
   },
   WETH: {

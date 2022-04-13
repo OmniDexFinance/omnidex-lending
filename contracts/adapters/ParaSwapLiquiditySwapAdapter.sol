@@ -26,7 +26,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
   /**
    * @dev Swaps the received reserve amount from the flash loan into the asset specified in the params.
    * The received funds from the swap are then deposited into the protocol on behalf of the user.
-   * The user should give this contract allowance to pull the ATokens in order to withdraw the underlying asset and repay the flash loan.
+   * The user should give this contract allowance to pull the OTokens in order to withdraw the underlying asset and repay the flash loan.
    * @param assets Address of the underlying asset to be swapped from
    * @param amounts Amount of the flash loan i.e. maximum amount to swap
    * @param premiums Fee of the flash loan
@@ -91,7 +91,7 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
   /**
    * @dev Swaps an amount of an asset to another and deposits the new asset amount on behalf of the user without using a flash loan.
    * This method can be used when the temporary transfer of the collateral asset to this contract does not affect the user position.
-   * The user should give this contract allowance to pull the ATokens in order to withdraw the underlying asset and perform the swap.
+   * The user should give this contract allowance to pull the OTokens in order to withdraw the underlying asset and perform the swap.
    * @param assetToSwapFrom Address of the underlying asset to be swapped from
    * @param assetToSwapTo Address of the underlying asset to be swapped to and deposited
    * @param amountToSwap Amount to be swapped, or maximum amount when swapping all balance
@@ -111,18 +111,18 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
     IParaSwapAugustus augustus,
     PermitSignature calldata permitParams
   ) external nonReentrant {
-    IERC20WithPermit aToken =
-      IERC20WithPermit(_getReserveData(address(assetToSwapFrom)).aTokenAddress);
+    IERC20WithPermit oToken =
+      IERC20WithPermit(_getReserveData(address(assetToSwapFrom)).oTokenAddress);
 
     if (swapAllBalanceOffset != 0) {
-      uint256 balance = aToken.balanceOf(msg.sender);
+      uint256 balance = oToken.balanceOf(msg.sender);
       require(balance <= amountToSwap, 'INSUFFICIENT_AMOUNT_TO_SWAP');
       amountToSwap = balance;
     }
 
-    _pullATokenAndWithdraw(
+    _pullOTokenAndWithdraw(
       address(assetToSwapFrom),
-      aToken,
+      oToken,
       msg.sender,
       amountToSwap,
       permitParams
@@ -168,17 +168,17 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
     IERC20Detailed assetToSwapTo,
     uint256 minAmountToReceive
   ) internal {
-    IERC20WithPermit aToken =
-      IERC20WithPermit(_getReserveData(address(assetToSwapFrom)).aTokenAddress);
+    IERC20WithPermit oToken =
+      IERC20WithPermit(_getReserveData(address(assetToSwapFrom)).oTokenAddress);
     uint256 amountToSwap = flashLoanAmount;
 
-    uint256 balance = aToken.balanceOf(initiator);
+    uint256 balance = oToken.balanceOf(initiator);
     if (swapAllBalanceOffset != 0) {
       uint256 balanceToSwap = balance.sub(premium);
       require(balanceToSwap <= amountToSwap, 'INSUFFICIENT_AMOUNT_TO_SWAP');
       amountToSwap = balanceToSwap;
     } else {
-      require(balance >= amountToSwap.add(premium), 'INSUFFICIENT_ATOKEN_BALANCE');
+      require(balance >= amountToSwap.add(premium), 'INSUFFICIENT_OTOKEN_BALANCE');
     }
 
     uint256 amountReceived = _sellOnParaSwap(
@@ -195,9 +195,9 @@ contract ParaSwapLiquiditySwapAdapter is BaseParaSwapSellAdapter, ReentrancyGuar
     assetToSwapTo.safeApprove(address(LENDING_POOL), amountReceived);
     LENDING_POOL.deposit(address(assetToSwapTo), amountReceived, initiator, 0);
 
-    _pullATokenAndWithdraw(
+    _pullOTokenAndWithdraw(
       address(assetToSwapFrom),
-      aToken,
+      oToken,
       initiator,
       amountToSwap.add(premium),
       permitParams

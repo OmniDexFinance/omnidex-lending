@@ -3,11 +3,11 @@ pragma solidity 0.6.12;
 
 import {IScaledBalanceToken} from './IScaledBalanceToken.sol';
 import {IInitializableDebtToken} from './IInitializableDebtToken.sol';
-import {IAaveIncentivesController} from './IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from './IOmniDexIncentivesController.sol';
 
 /**
  * @title IVariableDebtToken
- * @author Aave
+ * @author OmniDex
  * @notice Defines the basic interface for a variable debt token.
  **/
 interface IVariableDebtToken is IScaledBalanceToken, IInitializableDebtToken {
@@ -58,5 +58,7 @@ interface IVariableDebtToken is IScaledBalanceToken, IInitializableDebtToken {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view returns (IAaveIncentivesController);
+  function getIncentivesController() external view returns (IOmniDexIncentivesController);
+
+  function setIncentivesController(IOmniDexIncentivesController incentivesController) external;
 }

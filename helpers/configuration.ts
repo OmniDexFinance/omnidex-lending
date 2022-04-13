@@ -1,5 +1,5 @@
 import {
-  AavePools,
+  OmniDexPools,
   iMultiPoolsAssets,
   IReserveParams,
   PoolConfiguration,
@@ -7,12 +7,13 @@ import {
   IBaseConfiguration,
 } from './types';
 import { getEthersSignersAddresses, getParamPerPool } from './contracts-helpers';
-import AaveConfig from '../markets/aave';
+import OmniDexConfig from '../markets/omnidex';
 import MaticConfig from '../markets/matic';
 import AvalancheConfig from '../markets/avalanche';
+import TelosConfig from '../markets/telos';
 import AmmConfig from '../markets/amm';
 
-import { CommonsConfig } from '../markets/aave/commons';
+import { CommonsConfig } from '../markets/omnidex/commons';
 import { DRE, filterMapBy } from './misc-utils';
 import { tEthereumAddress } from './types';
 import { getParamPerNetwork } from './contracts-helpers';
@@ -20,22 +21,25 @@ import { deployWETHMocked } from './contracts-deployments';
 
 export enum ConfigNames {
   Commons = 'Commons',
-  Aave = 'Aave',
+  OmniDex = 'OmniDex',
   Matic = 'Matic',
   Amm = 'Amm',
-  Avalanche = 'Avalanche'
+  Avalanche = 'Avalanche',
+  Telos = 'Telos',
 }
 
 export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
   switch (configName) {
-    case ConfigNames.Aave:
-      return AaveConfig;
+    case ConfigNames.OmniDex:
+      return OmniDexConfig;
     case ConfigNames.Matic:
       return MaticConfig;
     case ConfigNames.Amm:
       return AmmConfig;
-      case ConfigNames.Avalanche:
-        return AvalancheConfig;
+    case ConfigNames.Avalanche:
+      return AvalancheConfig;
+    case ConfigNames.Telos:
+      return TelosConfig;
     case ConfigNames.Commons:
       return CommonsConfig;
     default:
@@ -51,21 +55,24 @@ export const loadPoolConfig = (configName: ConfigNames): PoolConfiguration => {
 // PROTOCOL PARAMS PER POOL
 // ----------------
 
-export const getReservesConfigByPool = (pool: AavePools): iMultiPoolsAssets<IReserveParams> =>
+export const getReservesConfigByPool = (pool: OmniDexPools): iMultiPoolsAssets<IReserveParams> =>
   getParamPerPool<iMultiPoolsAssets<IReserveParams>>(
     {
-      [AavePools.proto]: {
-        ...AaveConfig.ReservesConfig,
+      [OmniDexPools.proto]: {
+        ...OmniDexConfig.ReservesConfig,
       },
-      [AavePools.amm]: {
+      [OmniDexPools.amm]: {
         ...AmmConfig.ReservesConfig,
       },
-      [AavePools.matic]: {
+      [OmniDexPools.matic]: {
         ...MaticConfig.ReservesConfig,
       },
-      [AavePools.avalanche]: {
+      [OmniDexPools.avalanche]: {
         ...AvalancheConfig.ReservesConfig,
-      }
+      },
+      [OmniDexPools.telos]: {
+        ...TelosConfig.ReservesConfig,
+      },
     },
     pool
   );
@@ -99,10 +106,10 @@ export const getTreasuryAddress = async (config: IBaseConfiguration): Promise<tE
   return getParamPerNetwork(config.ReserveFactorTreasuryAddress, <eNetwork>currentNetwork);
 };
 
-export const getATokenDomainSeparatorPerNetwork = (
+export const getOTokenDomainSeparatorPerNetwork = (
   network: eNetwork,
   config: IBaseConfiguration
-): tEthereumAddress => getParamPerNetwork<tEthereumAddress>(config.ATokenDomainSeparator, network);
+): tEthereumAddress => getParamPerNetwork<tEthereumAddress>(config.OTokenDomainSeparator, network);
 
 export const getWethAddress = async (config: IBaseConfiguration) => {
   const currentNetwork = process.env.FORK ? process.env.FORK : DRE.network.name;

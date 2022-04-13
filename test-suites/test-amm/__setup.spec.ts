@@ -16,10 +16,10 @@ import {
   deployLendingPoolCollateralManager,
   deployMockFlashLoanReceiver,
   deployWalletBalancerProvider,
-  deployAaveProtocolDataProvider,
+  deployOmniDexProtocolDataProvider,
   deployLendingRateOracle,
   deployStableAndVariableTokensHelper,
-  deployATokensAndRatesHelper,
+  deployOTokensAndRatesHelper,
   deployWETHGateway,
   deployWETHMocked,
   deployMockUniswapRouter,
@@ -27,11 +27,11 @@ import {
   deployUniswapRepayAdapter,
   deployFlashLiquidationAdapter,
   authorizeWETHGateway,
-  deployATokenImplementations,
-  deployAaveOracle,
+  deployOTokenImplementations,
+  deployOmniDexOracle,
 } from '../../helpers/contracts-deployments';
 import { Signer } from 'ethers';
-import { TokenContractId, eContractid, tEthereumAddress, AavePools } from '../../helpers/types';
+import { TokenContractId, eContractid, tEthereumAddress, OmniDexPools } from '../../helpers/types';
 import { MintableERC20 } from '../../types/MintableERC20';
 import {
   ConfigNames,
@@ -66,7 +66,7 @@ const LENDING_RATE_ORACLE_RATES_COMMON = AmmConfig.LendingRateOracleRatesCommon;
 const deployAllMockTokens = async (deployer: Signer) => {
   const tokens: { [symbol: string]: MockContract | MintableERC20 | WETH9Mocked } = {};
 
-  const ammConfigData = getReservesConfigByPool(AavePools.amm);
+  const ammConfigData = getReservesConfigByPool(OmniDexPools.amm);
 
   for (const tokenSymbol of Object.keys(TokenContractId)) {
     if (tokenSymbol === 'WETH') {
@@ -95,10 +95,10 @@ const deployAllMockTokens = async (deployer: Signer) => {
 
 const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   console.time('setup');
-  const aaveAdmin = await deployer.getAddress();
+  const omniDexAdmin = await deployer.getAddress();
   const config = loadPoolConfig(ConfigNames.Amm);
   const {
-    ATokenNamePrefix,
+    OTokenNamePrefix,
     StableDebtTokenNamePrefix,
     VariableDebtTokenNamePrefix,
     SymbolPrefix,
@@ -108,7 +108,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   const mockTokens = await deployAllMockTokens(deployer);
 
   const addressesProvider = await deployLendingPoolAddressesProvider(AmmConfig.MarketId);
-  await waitForTx(await addressesProvider.setPoolAdmin(aaveAdmin));
+  await waitForTx(await addressesProvider.setPoolAdmin(omniDexAdmin));
 
   //setting users[1] as emergency admin, which is in position 2 in the DRE addresses list
   const addressList = await getEthersSignersAddresses();
@@ -143,7 +143,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
 
   // Deploy deployment helpers
   await deployStableAndVariableTokensHelper([lendingPoolProxy.address, addressesProvider.address]);
-  await deployATokensAndRatesHelper([
+  await deployOTokensAndRatesHelper([
     lendingPoolProxy.address,
     addressesProvider.address,
     lendingPoolConfiguratorProxy.address,
@@ -160,7 +160,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       USDC: mockTokens.USDC.address,
       USDT: mockTokens.USDT.address,
       SUSD: mockTokens.SUSD.address,
-      AAVE: mockTokens.AAVE.address,
+      KARMA: mockTokens.KARMA.address,
       BAT: mockTokens.BAT.address,
       MKR: mockTokens.MKR.address,
       LINK: mockTokens.LINK.address,
@@ -181,7 +181,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       // WETH: mockTokens.LpWETH.address,
       UniDAIWETH: mockTokens.UniDAIWETH.address,
       UniWBTCWETH: mockTokens.UniWBTCWETH.address,
-      UniAAVEWETH: mockTokens.UniAAVEWETH.address,
+      UniKARMAWETH: mockTokens.UniKARMAWETH.address,
       UniBATWETH: mockTokens.UniBATWETH.address,
       UniDAIUSDC: mockTokens.UniDAIUSDC.address,
       UniCRVWETH: mockTokens.UniCRVWETH.address,
@@ -199,6 +199,8 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
       USD: USD_ADDRESS,
       STAKE: mockTokens.STAKE.address,
       xSUSHI: ZERO_ADDRESS,
+      WAVAX: ZERO_ADDRESS,
+      WTLOS: ZERO_ADDRESS,
     },
     fallbackOracle
   );
@@ -226,7 +228,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     config.OracleQuoteCurrency
   );
 
-  await deployAaveOracle([
+  await deployOmniDexOracle([
     tokens,
     aggregators,
     fallbackOracle.address,
@@ -246,13 +248,13 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
     LENDING_RATE_ORACLE_RATES_COMMON,
     allReservesAddresses,
     lendingRateOracle,
-    aaveAdmin
+    omniDexAdmin
   );
-  await deployATokenImplementations(ConfigNames.Amm, ReservesConfig);
+  await deployOTokenImplementations(ConfigNames.Amm, ReservesConfig);
 
-  const testHelpers = await deployAaveProtocolDataProvider(addressesProvider.address);
+  const testHelpers = await deployOmniDexProtocolDataProvider(addressesProvider.address);
 
-  await insertContractAddressInDb(eContractid.AaveProtocolDataProvider, testHelpers.address);
+  await insertContractAddressInDb(eContractid.OmniDexProtocolDataProvider, testHelpers.address);
   const admin = await deployer.getAddress();
 
   console.log('Initialize configuration');
@@ -262,7 +264,7 @@ const buildTestEnv = async (deployer: Signer, secondaryWallet: Signer) => {
   await initReservesByHelper(
     ReservesConfig,
     allReservesAddresses,
-    ATokenNamePrefix,
+    OTokenNamePrefix,
     StableDebtTokenNamePrefix,
     VariableDebtTokenNamePrefix,
     SymbolPrefix,

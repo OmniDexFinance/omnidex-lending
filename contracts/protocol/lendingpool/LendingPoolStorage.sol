@@ -24,6 +24,8 @@ contract LendingPoolStorage {
 
   bool internal _paused;
 
+  bool internal _flashLoansPaused;
+
   uint256 internal _maxStableRateBorrowSizePercent;
 
   uint256 internal _flashLoanPremiumTotal;

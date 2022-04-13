@@ -4,7 +4,12 @@ export interface SymbolMap<T> {
   [symbol: string]: T;
 }
 
-export type eNetwork = eEthereumNetwork | ePolygonNetwork | eXDaiNetwork | eAvalancheNetwork;
+export type eNetwork =
+  | eEthereumNetwork
+  | ePolygonNetwork
+  | eXDaiNetwork
+  | eAvalancheNetwork
+  | eTelosNetwork;
 
 export enum eEthereumNetwork {
   buidlerevm = 'buidlerevm',
@@ -30,6 +35,11 @@ export enum eAvalancheNetwork {
   fuji = 'fuji',
 }
 
+export enum eTelosNetwork {
+  telos_mainnet = 'telos_mainnet',
+  telos_testnet = 'telos_testnet',
+}
+
 export enum EthereumNetworkNames {
   kovan = 'kovan',
   ropsten = 'ropsten',
@@ -39,13 +49,16 @@ export enum EthereumNetworkNames {
   xdai = 'xdai',
   avalanche = 'avalanche',
   fuji = 'fuji',
+  telos_mainnet = 'telos_mainnet',
+  telos_testnet = 'telos_testnet',
 }
 
-export enum AavePools {
+export enum OmniDexPools {
   proto = 'proto',
   matic = 'matic',
   amm = 'amm',
   avalanche = 'avalanche',
+  telos = 'telos',
 }
 
 export enum eContractid {
@@ -64,25 +77,26 @@ export enum eContractid {
   Proxy = 'Proxy',
   MockAggregator = 'MockAggregator',
   LendingRateOracle = 'LendingRateOracle',
-  AaveOracle = 'AaveOracle',
+  OmniDexOracle = 'OmniDexOracle',
+  OmniDexFallbackOracle = 'OmniDexFallbackOracle',
   DefaultReserveInterestRateStrategy = 'DefaultReserveInterestRateStrategy',
   LendingPoolCollateralManager = 'LendingPoolCollateralManager',
   InitializableAdminUpgradeabilityProxy = 'InitializableAdminUpgradeabilityProxy',
   MockFlashLoanReceiver = 'MockFlashLoanReceiver',
   WalletBalanceProvider = 'WalletBalanceProvider',
-  AToken = 'AToken',
-  MockAToken = 'MockAToken',
-  DelegationAwareAToken = 'DelegationAwareAToken',
+  OToken = 'OToken',
+  MockOToken = 'MockOToken',
+  DelegationAwareOToken = 'DelegationAwareOToken',
   MockStableDebtToken = 'MockStableDebtToken',
   MockVariableDebtToken = 'MockVariableDebtToken',
-  AaveProtocolDataProvider = 'AaveProtocolDataProvider',
+  OmniDexProtocolDataProvider = 'OmniDexProtocolDataProvider',
   IERC20Detailed = 'IERC20Detailed',
   StableDebtToken = 'StableDebtToken',
   VariableDebtToken = 'VariableDebtToken',
   FeeProvider = 'FeeProvider',
   TokenDistributor = 'TokenDistributor',
   StableAndVariableTokensHelper = 'StableAndVariableTokensHelper',
-  ATokensAndRatesHelper = 'ATokensAndRatesHelper',
+  OTokensAndRatesHelper = 'OTokensAndRatesHelper',
   UiPoolDataProvider = 'UiPoolDataProvider',
   UiPoolDataProviderV2 = 'UiPoolDataProviderV2',
   UiPoolDataProviderV2V3 = 'UiPoolDataProviderV2V3',
@@ -108,7 +122,7 @@ export enum eContractid {
  * Error messages prefix glossary:
  *  - VL = ValidationLogic
  *  - MATH = Math libraries
- *  - AT = aToken or DebtTokens
+ *  - AT = oToken or DebtTokens
  *  - LP = LendingPool
  *  - LPAPR = LendingPoolAddressesProviderRegistry
  *  - LPC = LendingPoolConfiguration
@@ -154,7 +168,7 @@ export enum ProtocolErrors {
   CT_TRANSFER_AMOUNT_NOT_GT_0 = '31', // 'Transferred amount needs to be greater than zero'
   RL_RESERVE_ALREADY_INITIALIZED = '32', // 'Reserve has already been initialized'
   LPC_RESERVE_LIQUIDITY_NOT_0 = '34', // 'The liquidity of the reserve needs to be 0'
-  LPC_INVALID_ATOKEN_POOL_ADDRESS = '35', // 'The liquidity of the reserve needs to be 0'
+  LPC_INVALID_OTOKEN_POOL_ADDRESS = '35', // 'The liquidity of the reserve needs to be 0'
   LPC_INVALID_STABLE_DEBT_TOKEN_POOL_ADDRESS = '36', // 'The liquidity of the reserve needs to be 0'
   LPC_INVALID_VARIABLE_DEBT_TOKEN_POOL_ADDRESS = '37', // 'The liquidity of the reserve needs to be 0'
   LPC_INVALID_STABLE_DEBT_TOKEN_UNDERLYING_ADDRESS = '38', // 'The liquidity of the reserve needs to be 0'
@@ -183,7 +197,7 @@ export enum ProtocolErrors {
   LP_FAILED_COLLATERAL_SWAP = '60',
   LP_INVALID_EQUAL_ASSETS_TO_SWAP = '61',
   LP_REENTRANCY_NOT_ALLOWED = '62',
-  LP_CALLER_MUST_BE_AN_ATOKEN = '63',
+  LP_CALLER_MUST_BE_AN_OTOKEN = '63',
   LP_IS_PAUSED = '64', // 'Pool is paused'
   LP_NO_MORE_RESERVES_ALLOWED = '65',
   LP_INVALID_FLASH_LOAN_EXECUTOR_RETURN = '66',
@@ -220,7 +234,7 @@ export interface iAssetBase<T> {
   USDC: T;
   USDT: T;
   SUSD: T;
-  AAVE: T;
+  KARMA: T;
   BAT: T;
   MKR: T;
   LINK: T;
@@ -237,7 +251,7 @@ export interface iAssetBase<T> {
   ENJ: T;
   UniDAIWETH: T;
   UniWBTCWETH: T;
-  UniAAVEWETH: T;
+  UniKARMAWETH: T;
   UniBATWETH: T;
   UniDAIUSDC: T;
   UniCRVWETH: T;
@@ -255,20 +269,23 @@ export interface iAssetBase<T> {
   STAKE: T;
   xSUSHI: T;
   WAVAX: T;
+  WTLOS: T;
+  WBNB: T;
+  WFTM: T;
 }
 
 export type iAssetsWithoutETH<T> = Omit<iAssetBase<T>, 'ETH'>;
 
 export type iAssetsWithoutUSD<T> = Omit<iAssetBase<T>, 'USD'>;
 
-export type iAavePoolAssets<T> = Pick<
+export type iOmniDexPoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
   | 'DAI'
   | 'TUSD'
   | 'USDC'
   | 'USDT'
   | 'SUSD'
-  | 'AAVE'
+  | 'KARMA'
   | 'BAT'
   | 'MKR'
   | 'LINK'
@@ -295,7 +312,7 @@ export type iLpPoolAssets<T> = Pick<
   | 'WETH'
   | 'UniDAIWETH'
   | 'UniWBTCWETH'
-  | 'UniAAVEWETH'
+  | 'UniKARMAWETH'
   | 'UniBATWETH'
   | 'UniDAIUSDC'
   | 'UniCRVWETH'
@@ -313,7 +330,7 @@ export type iLpPoolAssets<T> = Pick<
 
 export type iMaticPoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'DAI' | 'USDC' | 'USDT' | 'WBTC' | 'WETH' | 'WMATIC' | 'AAVE'
+  'DAI' | 'USDC' | 'USDT' | 'WBTC' | 'WETH' | 'WMATIC' | 'KARMA'
 >;
 
 export type iXDAIPoolAssets<T> = Pick<
@@ -323,18 +340,23 @@ export type iXDAIPoolAssets<T> = Pick<
 
 export type iAvalanchePoolAssets<T> = Pick<
   iAssetsWithoutUSD<T>,
-  'WETH' | 'DAI' | 'USDT' | 'AAVE' | 'WBTC' | 'WAVAX' | 'USDC'
+  'WETH' | 'DAI' | 'USDT' | 'KARMA' | 'WBTC' | 'WAVAX' | 'USDC'
 >;
 
-export type iMultiPoolsAssets<T> = iAssetCommon<T> | iAavePoolAssets<T>;
+export type iTelosPoolAssets<T> = Pick<
+  iAssetsWithoutUSD<T>,
+  'WETH' | 'USDT' | 'KARMA' | 'WBTC' | 'WAVAX' | 'USDC' | 'WTLOS' | 'WBNB' | 'WMATIC' | 'WFTM'
+>;
 
-export type iAavePoolTokens<T> = Omit<iAavePoolAssets<T>, 'ETH'>;
+export type iMultiPoolsAssets<T> = iAssetCommon<T> | iOmniDexPoolAssets<T>;
+
+export type iOmniDexPoolTokens<T> = Omit<iOmniDexPoolAssets<T>, 'ETH'>;
 
 export type iAssetAggregatorBase<T> = iAssetsWithoutETH<T>;
 
 export enum TokenContractId {
   DAI = 'DAI',
-  AAVE = 'AAVE',
+  KARMA = 'KARMA',
   TUSD = 'TUSD',
   BAT = 'BAT',
   WETH = 'WETH',
@@ -356,7 +378,7 @@ export enum TokenContractId {
   ENJ = 'ENJ',
   UniDAIWETH = 'UniDAIWETH',
   UniWBTCWETH = 'UniWBTCWETH',
-  UniAAVEWETH = 'UniAAVEWETH',
+  UniKARMAWETH = 'UniKARMAWETH',
   UniBATWETH = 'UniBATWETH',
   UniDAIUSDC = 'UniDAIUSDC',
   UniCRVWETH = 'UniCRVWETH',
@@ -374,10 +396,13 @@ export enum TokenContractId {
   STAKE = 'STAKE',
   xSUSHI = 'xSUSHI',
   WAVAX = 'WAVAX',
+  WTLOS = 'WTLOS',
+  WBNB = 'WBNB',
+  WFTM = 'WFTM',
 }
 
 export interface IReserveParams extends IReserveBorrowParams, IReserveCollateralParams {
-  aTokenImpl: eContractid;
+  oTokenImpl: eContractid;
   reserveFactor: string;
   strategy: IInterestRateStrategyParams;
 }
@@ -417,7 +442,8 @@ export type iParamsPerNetwork<T> =
   | iEthereumParamsPerNetwork<T>
   | iPolygonParamsPerNetwork<T>
   | iXDaiParamsPerNetwork<T>
-  | iAvalancheParamsPerNetwork<T>;
+  | iAvalancheParamsPerNetwork<T>
+  | iTelosParamsPerNetwork<T>;
 
 export interface iParamsPerNetworkAll<T>
   extends iEthereumParamsPerNetwork<T>,
@@ -448,11 +474,17 @@ export interface iAvalancheParamsPerNetwork<T> {
   [eAvalancheNetwork.fuji]: T;
 }
 
+export interface iTelosParamsPerNetwork<T> {
+  [eTelosNetwork.telos_mainnet]: T;
+  [eTelosNetwork.telos_testnet]: T;
+}
+
 export interface iParamsPerPool<T> {
-  [AavePools.proto]: T;
-  [AavePools.matic]: T;
-  [AavePools.amm]: T;
-  [AavePools.avalanche]: T;
+  [OmniDexPools.proto]: T;
+  [OmniDexPools.matic]: T;
+  [OmniDexPools.amm]: T;
+  [OmniDexPools.avalanche]: T;
+  [OmniDexPools.telos]: T;
 }
 
 export interface iBasicDistributionParams {
@@ -476,7 +508,7 @@ export interface IProtocolGlobalConfig {
   UsdAddress: tEthereumAddress;
   NilAddress: tEthereumAddress;
   OneAddress: tEthereumAddress;
-  AaveReferral: string;
+  OmniDexReferral: string;
 }
 
 export interface IMocksConfig {
@@ -493,7 +525,7 @@ export interface ILendingRate {
 
 export interface IBaseConfiguration {
   MarketId: string;
-  ATokenNamePrefix: string;
+  OTokenNamePrefix: string;
   StableDebtTokenNamePrefix: string;
   VariableDebtTokenNamePrefix: string;
   SymbolPrefix: string;
@@ -507,14 +539,14 @@ export interface IBaseConfiguration {
   LendingRateOracleRatesCommon: iMultiPoolsAssets<IMarketRates>;
   LendingRateOracle: iParamsPerNetwork<tEthereumAddress>;
   TokenDistributor: iParamsPerNetwork<tEthereumAddress>;
-  AaveOracle: iParamsPerNetwork<tEthereumAddress>;
+  OmniDexOracle: iParamsPerNetwork<tEthereumAddress>;
   FallbackOracle: iParamsPerNetwork<tEthereumAddress>;
   ChainlinkAggregator: iParamsPerNetwork<ITokenAddress>;
   PoolAdmin: iParamsPerNetwork<tEthereumAddress | undefined>;
   PoolAdminIndex: number;
   EmergencyAdmin: iParamsPerNetwork<tEthereumAddress | undefined>;
   EmergencyAdminIndex: number;
-  ATokenDomainSeparator: iParamsPerNetwork<string>;
+  OTokenDomainSeparator: iParamsPerNetwork<string>;
   WETH: iParamsPerNetwork<tEthereumAddress>;
   WrappedNativeToken: iParamsPerNetwork<tEthereumAddress>;
   WethGateway: iParamsPerNetwork<tEthereumAddress>;
@@ -532,8 +564,8 @@ export interface ICommonConfiguration extends IBaseConfiguration {
   Mocks: IMocksConfig;
 }
 
-export interface IAaveConfiguration extends ICommonConfiguration {
-  ReservesConfig: iAavePoolAssets<IReserveParams>;
+export interface IOmniDexConfiguration extends ICommonConfiguration {
+  ReservesConfig: iOmniDexPoolAssets<IReserveParams>;
 }
 
 export interface IAmmConfiguration extends ICommonConfiguration {
@@ -552,8 +584,12 @@ export interface IAvalancheConfiguration extends ICommonConfiguration {
   ReservesConfig: iAvalanchePoolAssets<IReserveParams>;
 }
 
+export interface ITelosConfiguration extends ICommonConfiguration {
+  ReservesConfig: iTelosPoolAssets<IReserveParams>;
+}
+
 export interface ITokenAddress {
   [token: string]: tEthereumAddress;
 }
 
-export type PoolConfiguration = ICommonConfiguration | IAaveConfiguration;
+export type PoolConfiguration = ICommonConfiguration | IOmniDexConfiguration;

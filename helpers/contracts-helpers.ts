@@ -8,7 +8,7 @@ import {
   eContractid,
   tStringTokenSmallUnits,
   eEthereumNetwork,
-  AavePools,
+  OmniDexPools,
   iParamsPerNetwork,
   iParamsPerPool,
   ePolygonNetwork,
@@ -18,7 +18,9 @@ import {
   iPolygonParamsPerNetwork,
   iXDaiParamsPerNetwork,
   iAvalancheParamsPerNetwork,
+  iTelosParamsPerNetwork,
   eAvalancheNetwork,
+  eTelosNetwork,
 } from './types';
 import { MintableERC20 } from '../types/MintableERC20';
 import { Artifact } from 'hardhat/types';
@@ -150,6 +152,7 @@ export const getParamPerNetwork = <T>(param: iParamsPerNetwork<T>, network: eNet
   const { matic, mumbai } = param as iPolygonParamsPerNetwork<T>;
   const { xdai } = param as iXDaiParamsPerNetwork<T>;
   const { avalanche, fuji } = param as iAvalancheParamsPerNetwork<T>;
+  const { telos_mainnet, telos_testnet } = param as iTelosParamsPerNetwork<T>;
   if (process.env.FORK) {
     return param[process.env.FORK as eNetwork] as T;
   }
@@ -179,6 +182,10 @@ export const getParamPerNetwork = <T>(param: iParamsPerNetwork<T>, network: eNet
       return avalanche;
     case eAvalancheNetwork.fuji:
       return fuji;
+    case eTelosNetwork.telos_mainnet:
+      return telos_mainnet;
+    case eTelosNetwork.telos_testnet:
+      return telos_testnet;
   }
 };
 
@@ -194,16 +201,16 @@ export const getOptionalParamAddressPerNetwork = (
 
 export const getParamPerPool = <T>(
   { proto, amm, matic, avalanche }: iParamsPerPool<T>,
-  pool: AavePools
+  pool: OmniDexPools
 ) => {
   switch (pool) {
-    case AavePools.proto:
+    case OmniDexPools.proto:
       return proto;
-    case AavePools.amm:
+    case OmniDexPools.amm:
       return amm;
-    case AavePools.matic:
+    case OmniDexPools.matic:
       return matic;
-    case AavePools.avalanche:
+    case OmniDexPools.avalanche:
       return avalanche;
     default:
       return proto;

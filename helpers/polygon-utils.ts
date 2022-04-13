@@ -107,7 +107,7 @@ export const verifyAtPolygon = async (
         },
         headers: {
           'Content-Type': 'application/json',
-          Referer: 'aavematic-42e1f6da',
+          Referer: 'omnidexmatic-42e1f6da',
         },
       }
     );

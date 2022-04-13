@@ -3,13 +3,13 @@ pragma solidity 0.6.12;
 
 /**
  * @title Errors library
- * @author Aave
- * @notice Defines the error messages emitted by the different contracts of the Aave protocol
+ * @author OmniDex
+ * @notice Defines the error messages emitted by the different contracts of the OmniDex protocol
  * @dev Error messages prefix glossary:
  *  - VL = ValidationLogic
  *  - MATH = Math libraries
- *  - CT = Common errors between tokens (AToken, VariableDebtToken and StableDebtToken)
- *  - AT = AToken
+ *  - CT = Common errors between tokens (OToken, VariableDebtToken and StableDebtToken)
+ *  - AT = OToken
  *  - SDT = StableDebtToken
  *  - VDT = VariableDebtToken
  *  - LP = LendingPool
@@ -58,7 +58,7 @@ library Errors {
   string public constant CT_TRANSFER_AMOUNT_NOT_GT_0 = '31'; // 'Transferred amount needs to be greater than zero'
   string public constant RL_RESERVE_ALREADY_INITIALIZED = '32'; // 'Reserve has already been initialized'
   string public constant LPC_RESERVE_LIQUIDITY_NOT_0 = '34'; // 'The liquidity of the reserve needs to be 0'
-  string public constant LPC_INVALID_ATOKEN_POOL_ADDRESS = '35'; // 'The liquidity of the reserve needs to be 0'
+  string public constant LPC_INVALID_OTOKEN_POOL_ADDRESS = '35'; // 'The liquidity of the reserve needs to be 0'
   string public constant LPC_INVALID_STABLE_DEBT_TOKEN_POOL_ADDRESS = '36'; // 'The liquidity of the reserve needs to be 0'
   string public constant LPC_INVALID_VARIABLE_DEBT_TOKEN_POOL_ADDRESS = '37'; // 'The liquidity of the reserve needs to be 0'
   string public constant LPC_INVALID_STABLE_DEBT_TOKEN_UNDERLYING_ADDRESS = '38'; // 'The liquidity of the reserve needs to be 0'
@@ -87,7 +87,7 @@ library Errors {
   string public constant LP_FAILED_COLLATERAL_SWAP = '60';
   string public constant LP_INVALID_EQUAL_ASSETS_TO_SWAP = '61';
   string public constant LP_REENTRANCY_NOT_ALLOWED = '62';
-  string public constant LP_CALLER_MUST_BE_AN_ATOKEN = '63';
+  string public constant LP_CALLER_MUST_BE_AN_OTOKEN = '63';
   string public constant LP_IS_PAUSED = '64'; // 'Pool is paused'
   string public constant LP_NO_MORE_RESERVES_ALLOWED = '65';
   string public constant LP_INVALID_FLASH_LOAN_EXECUTOR_RETURN = '66';
@@ -103,6 +103,7 @@ library Errors {
   string public constant LP_NOT_CONTRACT = '78';
   string public constant SDT_STABLE_DEBT_OVERFLOW = '79';
   string public constant SDT_BURN_EXCEEDS_BALANCE = '80';
+  string public constant LP_FLASHLOAN_IS_PAUSED = '81'; // 'Flash loans are paused'
 
   enum CollateralManagerErrors {
     NO_ERROR,

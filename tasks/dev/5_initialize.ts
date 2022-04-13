@@ -3,7 +3,7 @@ import {
   deployLendingPoolCollateralManager,
   deployMockFlashLoanReceiver,
   deployWalletBalancerProvider,
-  deployAaveProtocolDataProvider,
+  deployOmniDexProtocolDataProvider,
   authorizeWETHGateway,
 } from '../../helpers/contracts-deployments';
 import { getParamPerNetwork } from '../../helpers/contracts-helpers';
@@ -15,7 +15,7 @@ import {
   loadPoolConfig,
 } from '../../helpers/configuration';
 
-import { tEthereumAddress, AavePools, eContractid } from '../../helpers/types';
+import { tEthereumAddress, OmniDexPools, eContractid } from '../../helpers/types';
 import { waitForTx, filterMapBy, notFalsyOrZeroAddress } from '../../helpers/misc-utils';
 import { configureReservesByHelper, initReservesByHelper } from '../../helpers/init-helpers';
 import { getAllTokenAddresses } from '../../helpers/mock-helpers';
@@ -35,7 +35,7 @@ task('dev:initialize-lending-pool', 'Initialize lending pool configuration.')
     const network = <eNetwork>localBRE.network.name;
     const poolConfig = loadPoolConfig(pool);
     const {
-      ATokenNamePrefix,
+      OTokenNamePrefix,
       StableDebtTokenNamePrefix,
       VariableDebtTokenNamePrefix,
       SymbolPrefix,
@@ -51,7 +51,7 @@ task('dev:initialize-lending-pool', 'Initialize lending pool configuration.')
       filterMapBy(allTokenAddresses, (key: string) => !key.includes('UNI_'))
     );
 
-    const testHelpers = await deployAaveProtocolDataProvider(addressesProvider.address, verify);
+    const testHelpers = await deployOmniDexProtocolDataProvider(addressesProvider.address, verify);
 
     const admin = await addressesProvider.getPoolAdmin();
 
@@ -60,7 +60,7 @@ task('dev:initialize-lending-pool', 'Initialize lending pool configuration.')
     await initReservesByHelper(
       ReservesConfig,
       protoPoolReservesAddresses,
-      ATokenNamePrefix,
+      OTokenNamePrefix,
       StableDebtTokenNamePrefix,
       VariableDebtTokenNamePrefix,
       SymbolPrefix,
@@ -88,7 +88,7 @@ task('dev:initialize-lending-pool', 'Initialize lending pool configuration.')
 
     await deployWalletBalancerProvider(verify);
 
-    await insertContractAddressInDb(eContractid.AaveProtocolDataProvider, testHelpers.address);
+    await insertContractAddressInDb(eContractid.OmniDexProtocolDataProvider, testHelpers.address);
 
     const lendingPoolAddress = await addressesProvider.getLendingPool();
 

@@ -8,6 +8,7 @@ import {
   eEthereumNetwork,
   eNetwork,
   ePolygonNetwork,
+  eTelosNetwork,
   eXDaiNetwork,
 } from './helpers/types';
 import { BUIDLEREVM_CHAINID, COVERAGE_CHAINID } from './helpers/buidler-constants';
@@ -31,7 +32,7 @@ import { fork } from 'child_process';
 
 const SKIP_LOAD = process.env.SKIP_LOAD === 'true';
 const DEFAULT_BLOCK_GAS_LIMIT = 8000000;
-const DEFAULT_GAS_MUL = 5;
+const DEFAULT_GAS_MUL = 2;
 const HARDFORK = 'istanbul';
 const ETHERSCAN_KEY = process.env.ETHERSCAN_KEY || '';
 const MNEMONIC_PATH = "m/44'/60'/0'/0";
@@ -108,6 +109,8 @@ const buidlerConfig: HardhatUserConfig = {
     xdai: getCommonNetworkConfig(eXDaiNetwork.xdai, 100),
     avalanche: getCommonNetworkConfig(eAvalancheNetwork.avalanche, 43114),
     fuji: getCommonNetworkConfig(eAvalancheNetwork.fuji, 43113),
+    telos_mainnet: getCommonNetworkConfig(eTelosNetwork.telos_mainnet, 40),
+    telos_testnet: getCommonNetworkConfig(eTelosNetwork.telos_testnet, 41),
     hardhat: {
       hardfork: 'berlin',
       blockGasLimit: DEFAULT_BLOCK_GAS_LIMIT,

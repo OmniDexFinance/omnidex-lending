@@ -2,13 +2,13 @@
 pragma solidity 0.6.12;
 
 import {IInitializableDebtToken} from './IInitializableDebtToken.sol';
-import {IAaveIncentivesController} from './IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from './IOmniDexIncentivesController.sol';
 
 /**
  * @title IStableDebtToken
  * @notice Defines the interface for the stable debt token
  * @dev It does not inherit from IERC20 to save in code size
- * @author Aave
+ * @author OmniDex
  **/
 
 interface IStableDebtToken is IInitializableDebtToken {
@@ -129,5 +129,7 @@ interface IStableDebtToken is IInitializableDebtToken {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view returns (IAaveIncentivesController);
+  function getIncentivesController() external view returns (IOmniDexIncentivesController);
+
+  function setIncentivesController(IOmniDexIncentivesController incentivesController) external;
 }

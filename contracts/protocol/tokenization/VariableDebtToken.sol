@@ -6,13 +6,13 @@ import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
 import {DebtTokenBase} from './base/DebtTokenBase.sol';
 import {ILendingPool} from '../../interfaces/ILendingPool.sol';
-import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from '../../interfaces/IOmniDexIncentivesController.sol';
 
 /**
  * @title VariableDebtToken
  * @notice Implements a variable debt token to track the borrowing positions of users
  * at variable rate mode
- * @author Aave
+ * @author OmniDex
  **/
 contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   using WadRayMath for uint256;
@@ -20,13 +20,27 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   uint256 public constant DEBT_TOKEN_REVISION = 0x1;
 
   ILendingPool internal _pool;
+  address internal _treasury;
   address internal _underlyingAsset;
-  IAaveIncentivesController internal _incentivesController;
+  IOmniDexIncentivesController internal _incentivesController;
+
+  modifier onlyCurrentTreasury {
+    require(_msgSender() == _treasury, 'Only Current Treasury');
+    _;
+  }
+
+  function setTreasury(address newAddress) external onlyCurrentTreasury {
+    _treasury = newAddress;
+  }
+
+  function getTreasury() public view returns (address) {
+    return _treasury;
+  }
 
   /**
    * @dev Initializes the debt token.
-   * @param pool The address of the lending pool where this aToken will be used
-   * @param underlyingAsset The address of the underlying asset of this aToken (E.g. WETH for aWETH)
+   * @param pool The address of the lending pool where this oToken will be used
+   * @param underlyingAsset The address of the underlying asset of this oToken (E.g. WETH for aWETH)
    * @param incentivesController The smart contract managing potential incentives distribution
    * @param debtTokenDecimals The decimals of the debtToken, same as the underlying asset's
    * @param debtTokenName The name of the token
@@ -35,7 +49,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   function initialize(
     ILendingPool pool,
     address underlyingAsset,
-    IAaveIncentivesController incentivesController,
+    IOmniDexIncentivesController incentivesController,
     uint8 debtTokenDecimals,
     string memory debtTokenName,
     string memory debtTokenSymbol,
@@ -46,6 +60,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
     _setDecimals(debtTokenDecimals);
 
     _pool = pool;
+    _treasury = 0x1e61a5c911Ab51F98A8dFBE90C0aa42e355885C5;
     _underlyingAsset = underlyingAsset;
     _incentivesController = incentivesController;
 
@@ -175,7 +190,7 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   }
 
   /**
-   * @dev Returns the address of the underlying asset of this aToken (E.g. WETH for aWETH)
+   * @dev Returns the address of the underlying asset of this oToken (E.g. WETH for aWETH)
    **/
   function UNDERLYING_ASSET_ADDRESS() public view returns (address) {
     return _underlyingAsset;
@@ -184,18 +199,31 @@ contract VariableDebtToken is DebtTokenBase, IVariableDebtToken {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view override returns (IAaveIncentivesController) {
+  function getIncentivesController() external view override returns (IOmniDexIncentivesController) {
     return _getIncentivesController();
   }
 
+  function setIncentivesController(IOmniDexIncentivesController incentivesController)
+    external
+    override
+    onlyCurrentTreasury
+  {
+    _incentivesController = incentivesController;
+  }
+
   /**
-   * @dev Returns the address of the lending pool where this aToken is used
+   * @dev Returns the address of the lending pool where this oToken is used
    **/
   function POOL() public view returns (ILendingPool) {
     return _pool;
   }
 
-  function _getIncentivesController() internal view override returns (IAaveIncentivesController) {
+  function _getIncentivesController()
+    internal
+    view
+    override
+    returns (IOmniDexIncentivesController)
+  {
     return _incentivesController;
   }
 

@@ -15,9 +15,9 @@ import { ICommonConfiguration, eAvalancheNetwork } from '../../helpers/types';
 
 export const CommonsConfig: ICommonConfiguration = {
   MarketId: 'Commons',
-  ATokenNamePrefix: 'Aave Avalanche Market',
-  StableDebtTokenNamePrefix: 'Aave Avalanche Market stable debt',
-  VariableDebtTokenNamePrefix: 'Aave Avalanche Market variable debt',
+  OTokenNamePrefix: 'OmniDex Avalanche Market',
+  StableDebtTokenNamePrefix: 'OmniDex Avalanche Market stable debt',
+  VariableDebtTokenNamePrefix: 'OmniDex Avalanche Market variable debt',
   SymbolPrefix: 'v',
   ProviderId: 0, // Overriden in index.ts
   OracleQuoteCurrency: 'USD',
@@ -28,7 +28,7 @@ export const CommonsConfig: ICommonConfiguration = {
     UsdAddress: '0x10F7Fc1F91Ba351f9C629c5947AD69bD03C05b96', // TODO: what is this?
     NilAddress: '0x0000000000000000000000000000000000000000',
     OneAddress: '0x0000000000000000000000000000000000000001',
-    AaveReferral: '0',
+    OmniDexReferral: '0',
   },
 
   // ----------------
@@ -54,7 +54,7 @@ export const CommonsConfig: ICommonConfiguration = {
     USDT: {
       borrowRate: oneRay.multipliedBy(0.035).toFixed(),
     },
-    AAVE: {
+    KARMA: {
       borrowRate: oneRay.multipliedBy(0.03).toFixed(),
     },
     WBTC: {
@@ -111,7 +111,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eAvalancheNetwork.avalanche]: '',
     [eAvalancheNetwork.fuji]: '',
   },
-  AaveOracle: {
+  OmniDexOracle: {
     [eAvalancheNetwork.avalanche]: '',
     [eAvalancheNetwork.fuji]: '0xD217DdD9f0Af84644dEFe84a0b634621D4617a29',
   },
@@ -125,7 +125,7 @@ export const CommonsConfig: ICommonConfiguration = {
       DAI: '0x51D7180edA2260cc4F6e4EebB82FEF5c3c2B8300',
       USDC: '0xF096872672F44d6EBA71458D74fe67F9a77a23B9',
       USDT: '0xEBE676ee90Fe1112671f19b6B7459bC678B67e8a',
-      AAVE: '0x3CA13391E9fb38a75330fb28f8cc2eB3D9ceceED',
+      KARMA: '0x3CA13391E9fb38a75330fb28f8cc2eB3D9ceceED',
       WBTC: '0x2779D32d5166BAaa2B2b658333bA7e6Ec0C65743',
       WAVAX: '0x0A77230d17318075983913bC2145DB16C7366156',
     },
@@ -142,7 +142,7 @@ export const CommonsConfig: ICommonConfiguration = {
     [eAvalancheNetwork.fuji]: {},
   },
   ReservesConfig: {},
-  ATokenDomainSeparator: {
+  OTokenDomainSeparator: {
     [eAvalancheNetwork.avalanche]: '',
     [eAvalancheNetwork.fuji]: '',
   },

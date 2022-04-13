@@ -10,7 +10,7 @@ interface ILendingPool {
    * @dev Emitted on deposit()
    * @param reserve The address of the underlying asset of the reserve
    * @param user The address initiating the deposit
-   * @param onBehalfOf The beneficiary of the deposit, receiving the aTokens
+   * @param onBehalfOf The beneficiary of the deposit, receiving the oTokens
    * @param amount The amount deposited
    * @param referral The referral code used
    **/
@@ -25,7 +25,7 @@ interface ILendingPool {
   /**
    * @dev Emitted on withdraw()
    * @param reserve The address of the underlyng asset being withdrawn
-   * @param user The address initiating the withdrawal, owner of aTokens
+   * @param user The address initiating the withdrawal, owner of oTokens
    * @param to Address that will receive the underlying
    * @param amount The amount to be withdrawn
    **/
@@ -124,6 +124,16 @@ interface ILendingPool {
   event Unpaused();
 
   /**
+   * @dev Emitted when the flash loan pause is triggered.
+   */
+  event FlashLoansPaused();
+
+  /**
+   * @dev Emitted when the flash loan pause is lifted.
+   */
+  event FlashLoansUnpaused();
+
+  /**
    * @dev Emitted when a borrower is liquidated. This event is emitted by the LendingPool via
    * LendingPoolCollateral manager using a DELEGATECALL
    * This allows to have the events in the generated ABI for LendingPool.
@@ -133,7 +143,7 @@ interface ILendingPool {
    * @param debtToCover The debt amount of borrowed `asset` the liquidator wants to cover
    * @param liquidatedCollateralAmount The amount of collateral received by the liiquidator
    * @param liquidator The address of the liquidator
-   * @param receiveAToken `true` if the liquidators wants to receive the collateral aTokens, `false` if he wants
+   * @param receiveOToken `true` if the liquidators wants to receive the collateral oTokens, `false` if he wants
    * to receive the underlying collateral asset directly
    **/
   event LiquidationCall(
@@ -143,7 +153,7 @@ interface ILendingPool {
     uint256 debtToCover,
     uint256 liquidatedCollateralAmount,
     address liquidator,
-    bool receiveAToken
+    bool receiveOToken
   );
 
   /**
@@ -168,12 +178,12 @@ interface ILendingPool {
   );
 
   /**
-   * @dev Deposits an `amount` of underlying asset into the reserve, receiving in return overlying aTokens.
+   * @dev Deposits an `amount` of underlying asset into the reserve, receiving in return overlying oTokens.
    * - E.g. User deposits 100 USDC and gets in return 100 aUSDC
    * @param asset The address of the underlying asset to deposit
    * @param amount The amount to be deposited
-   * @param onBehalfOf The address that will receive the aTokens, same as msg.sender if the user
-   *   wants to receive them on his own wallet, or a different address if the beneficiary of aTokens
+   * @param onBehalfOf The address that will receive the oTokens, same as msg.sender if the user
+   *   wants to receive them on his own wallet, or a different address if the beneficiary of oTokens
    *   is a different wallet
    * @param referralCode Code used to register the integrator originating the operation, for potential rewards.
    *   0 if the action is executed directly by the user, without any middle-man
@@ -186,11 +196,11 @@ interface ILendingPool {
   ) external;
 
   /**
-   * @dev Withdraws an `amount` of underlying asset from the reserve, burning the equivalent aTokens owned
+   * @dev Withdraws an `amount` of underlying asset from the reserve, burning the equivalent oTokens owned
    * E.g. User has 100 aUSDC, calls withdraw() and receives 100 USDC, burning the 100 aUSDC
    * @param asset The address of the underlying asset to withdraw
    * @param amount The underlying amount to be withdrawn
-   *   - Send the value type(uint256).max in order to withdraw the whole aToken balance
+   *   - Send the value type(uint256).max in order to withdraw the whole oToken balance
    * @param to Address that will receive the underlying, same as msg.sender if the user
    *   wants to receive it on his own wallet, or a different address if the beneficiary is a
    *   different wallet
@@ -277,7 +287,7 @@ interface ILendingPool {
    * @param debtAsset The address of the underlying borrowed asset to be repaid with the liquidation
    * @param user The address of the borrower getting liquidated
    * @param debtToCover The debt amount of borrowed `asset` the liquidator wants to cover
-   * @param receiveAToken `true` if the liquidators wants to receive the collateral aTokens, `false` if he wants
+   * @param receiveOToken `true` if the liquidators wants to receive the collateral oTokens, `false` if he wants
    * to receive the underlying collateral asset directly
    **/
   function liquidationCall(
@@ -285,14 +295,14 @@ interface ILendingPool {
     address debtAsset,
     address user,
     uint256 debtToCover,
-    bool receiveAToken
+    bool receiveOToken
   ) external;
 
   /**
    * @dev Allows smartcontracts to access the liquidity of the pool within one transaction,
    * as long as the amount taken plus a fee is returned.
    * IMPORTANT There are security concerns for developers of flashloan receiver contracts that must be kept into consideration.
-   * For further details please visit https://developers.aave.com
+   * For further details please visit https://developers.omnidex.finance
    * @param receiverAddress The address of the contract receiving the funds, implementing the IFlashLoanReceiver interface
    * @param assets The addresses of the assets being flash-borrowed
    * @param amounts The amounts amounts being flash-borrowed
@@ -339,7 +349,7 @@ interface ILendingPool {
 
   function initReserve(
     address reserve,
-    address aTokenAddress,
+    address oTokenAddress,
     address stableDebtAddress,
     address variableDebtAddress,
     address interestRateStrategyAddress
@@ -407,4 +417,8 @@ interface ILendingPool {
   function setPause(bool val) external;
 
   function paused() external view returns (bool);
+
+  function setFlashLoansPause(bool val) external;
+
+  function flashLoansPaused() external view returns (bool);
 }

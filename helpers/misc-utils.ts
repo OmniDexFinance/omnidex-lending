@@ -9,7 +9,7 @@ import { BuidlerRuntimeEnvironment } from '@nomiclabs/buidler/types';
 import { tEthereumAddress } from './types';
 import { isAddress } from 'ethers/lib/utils';
 import { isZeroAddress } from 'ethereumjs-util';
-import { SignerWithAddress } from '../test-suites/test-aave/helpers/make-suite';
+import { SignerWithAddress } from '../test-suites/test-omnidex/helpers/make-suite';
 import { usingTenderly } from './tenderly-utils';
 
 export const toWad = (value: string | number) => new BigNumber(value).times(WAD).toFixed();
@@ -150,5 +150,13 @@ export const impersonateAccountsHardhat = async (accounts: string[]) => {
       method: 'hardhat_impersonateAccount',
       params: [account],
     });
+  }
+};
+
+export const getOTokenExtraParams = async (oTokenName: string, tokenAddress: tEthereumAddress) => {
+  console.log(oTokenName);
+  switch (oTokenName) {
+    default:
+      return '0x10';
   }
 };

@@ -6,14 +6,14 @@ import {MathUtils} from '../libraries/math/MathUtils.sol';
 import {WadRayMath} from '../libraries/math/WadRayMath.sol';
 import {IStableDebtToken} from '../../interfaces/IStableDebtToken.sol';
 import {ILendingPool} from '../../interfaces/ILendingPool.sol';
-import {IAaveIncentivesController} from '../../interfaces/IAaveIncentivesController.sol';
+import {IOmniDexIncentivesController} from '../../interfaces/IOmniDexIncentivesController.sol';
 import {Errors} from '../libraries/helpers/Errors.sol';
 
 /**
  * @title StableDebtToken
  * @notice Implements a stable debt token to track the borrowing positions of users
  * at stable rate mode
- * @author Aave
+ * @author OmniDex
  **/
 contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   using WadRayMath for uint256;
@@ -26,13 +26,27 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   uint40 internal _totalSupplyTimestamp;
 
   ILendingPool internal _pool;
+  address internal _treasury;
   address internal _underlyingAsset;
-  IAaveIncentivesController internal _incentivesController;
+  IOmniDexIncentivesController internal _incentivesController;
+
+  modifier onlyCurrentTreasury {
+    require(_msgSender() == _treasury, 'Only Current Treasury');
+    _;
+  }
+
+  function setTreasury(address newAddress) external onlyCurrentTreasury {
+    _treasury = newAddress;
+  }
+
+  function getTreasury() public view returns (address) {
+    return _treasury;
+  }
 
   /**
    * @dev Initializes the debt token.
-   * @param pool The address of the lending pool where this aToken will be used
-   * @param underlyingAsset The address of the underlying asset of this aToken (E.g. WETH for aWETH)
+   * @param pool The address of the lending pool where this oToken will be used
+   * @param underlyingAsset The address of the underlying asset of this oToken (E.g. WETH for aWETH)
    * @param incentivesController The smart contract managing potential incentives distribution
    * @param debtTokenDecimals The decimals of the debtToken, same as the underlying asset's
    * @param debtTokenName The name of the token
@@ -41,7 +55,7 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   function initialize(
     ILendingPool pool,
     address underlyingAsset,
-    IAaveIncentivesController incentivesController,
+    IOmniDexIncentivesController incentivesController,
     uint8 debtTokenDecimals,
     string memory debtTokenName,
     string memory debtTokenSymbol,
@@ -52,6 +66,7 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
     _setDecimals(debtTokenDecimals);
 
     _pool = pool;
+    _treasury = 0x1e61a5c911Ab51F98A8dFBE90C0aa42e355885C5;
     _underlyingAsset = underlyingAsset;
     _incentivesController = incentivesController;
 
@@ -336,14 +351,14 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   }
 
   /**
-   * @dev Returns the address of the underlying asset of this aToken (E.g. WETH for aWETH)
+   * @dev Returns the address of the underlying asset of this oToken (E.g. WETH for aWETH)
    **/
   function UNDERLYING_ASSET_ADDRESS() public view returns (address) {
     return _underlyingAsset;
   }
 
   /**
-   * @dev Returns the address of the lending pool where this aToken is used
+   * @dev Returns the address of the lending pool where this oToken is used
    **/
   function POOL() public view returns (ILendingPool) {
     return _pool;
@@ -352,14 +367,27 @@ contract StableDebtToken is IStableDebtToken, DebtTokenBase {
   /**
    * @dev Returns the address of the incentives controller contract
    **/
-  function getIncentivesController() external view override returns (IAaveIncentivesController) {
+  function getIncentivesController() external view override returns (IOmniDexIncentivesController) {
     return _getIncentivesController();
+  }
+
+  function setIncentivesController(IOmniDexIncentivesController incentivesController)
+    external
+    override
+    onlyCurrentTreasury
+  {
+    _incentivesController = incentivesController;
   }
 
   /**
    * @dev For internal usage in the logic of the parent contracts
    **/
-  function _getIncentivesController() internal view override returns (IAaveIncentivesController) {
+  function _getIncentivesController()
+    internal
+    view
+    override
+    returns (IOmniDexIncentivesController)
+  {
     return _incentivesController;
   }
 
