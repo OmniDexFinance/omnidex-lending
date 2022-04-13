@@ -19,9 +19,7 @@ OmniDex Lending is a decentralized non-custodial liquidity markets protocol wher
 
 ## Documentation
 
-The documentation of OmniDex Lending V1 is in the following [OmniDex Lending V1 documentation](https://docs.omnidex.finance/developers/v/1.0/) link. At the documentation you can learn more about the protocol, see the contract interfaces, integration guides and audits.
-
-For getting the latest contracts addresses, please check the [Deployed contracts](https://docs.omnidex.finance/developers/v/1.0/deployed-contracts/deployed-contracts) page at the documentation to stay up to date.
+The documentation of OmniDex Lending V1 is in the following [OmniDex Lending V1 documentation](https://omnidex-1.gitbook.io/omnidex/products/lending) link. At the documentation you can learn more about the protocol, see the contract interfaces, integration guides and audits.
 
 OmniDex Lending is a fork of Aave Protocol V2 and as such a more detailed and technical description of the protocol can be found in this repository, [here](./aave-v2-whitepaper.pdf)
 
@@ -29,7 +27,7 @@ OmniDex Lending is a fork of Aave Protocol V2 and as such a more detailed and te
 
 ## Connect with the community
 
-You can join at the [Discord](https://discord.com/invite/P7ezrGbD) channel or at the [Telegram group](https://governance.omnidex.finance/) for asking questions about the protocol or talk about OmniDex Lending with other peers.
+You can join at the [Discord](https://discord.gg/X3YcpkHY) channel or at the [Telegram group](https://t.me/omnidex1) for asking questions about the protocol or talk about OmniDex Lending with other peers.
 
 ## Getting Started
 
